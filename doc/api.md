@@ -1,17 +1,19 @@
 # About
 This document shall be a reference to all the API's the **AF_ADMIN** client consumes.
 
-Since there might be multiple API's offered by multiple **vendors**; each API
-shall be placed under a _section named after the supplying vendor or service
-offered._
+Since there might be multiple API's offered by multiple **vendors**.
 
-For example the primary **backend** used by _AF_ADMIN** is given the label
-**MQTT_BACKEND_1**. Hence the API exposed by the _vendor_ **MQTT_BACKEND_1**
-shall be placed under a section named *MQTT_BACKEND_1.*
+Each API shall be placed under a _section named after the supplying vendor or
+service offered._
+
+For example the primary **backend** used by *AF_ADMIN* is given the label
+**MQTT_BACKEND_1**. 
+
+Hence the API exposed by the _vendor_ **MQTT_BACKEND_1** shall be placed under a
+section named *MQTT_BACKEND_1.*
 
 # MQTT_BACKEND_1
----
-## About
+
 This is the API exposed by the main backend server the AF_ADMIN client interacts
 with.
 
