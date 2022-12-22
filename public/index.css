@@ -1,0 +1,15 @@
+:root {
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+html, body, #root {
+    min-height: 100vh;
+    min-width: 100vw;
+    background-color: rgba(160, 169, 200, 0.05);
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+                 Helvetica Neue, sans-serif;
+}
