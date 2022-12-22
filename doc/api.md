@@ -1,7 +1,9 @@
 # Player
 ## Login
 **url:** player/login
+
 **req-res:** Object Object
+
 **content-type:** application/json application/json
 
 ### Request
