@@ -1,10 +1,10 @@
 # Player
 ## Login
-url:
-req-res: Object Object
-content-type: application/json application/json
+**url:** player/login
+**req-res:** Object Object
+**content-type:** application/json application/json
 
-**Request**
+### Request
 ``` javascript
     {
         username: "string"
@@ -12,7 +12,7 @@ content-type: application/json application/json
     }
 ```
 
-**Succsessfull request:**
+### Succsessfull response
 ```javascript
     {
         timestamp:  "123324324" // milliseconds
@@ -28,7 +28,7 @@ content-type: application/json application/json
     }
 ```
 
-**Failed request:**
+### Failed response
 ```javascript
     {
         timestamp: "12342342" // milliseconds
