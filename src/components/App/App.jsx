@@ -1,6 +1,10 @@
+import './app.css';
+
 export default
 function App() {
   return (
-    <div>Hello af_admin!</div>
+    <div className="app">
+      <p>hello app</p>
+    </div>
   );
 }
