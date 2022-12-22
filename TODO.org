@@ -1,0 +1,4 @@
+* Documenting API calls
+** DONE Create Team
+** TODO Create Package
+** DONE Register Wristband
