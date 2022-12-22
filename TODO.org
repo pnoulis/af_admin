@@ -1,4 +1,5 @@
 * Documenting API calls
 ** DONE Create Team
-** TODO Create Package
+** DONE Create Package
+CLOSED: [2022-12-22 Thu 20:55]
 ** DONE Register Wristband

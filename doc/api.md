@@ -1,12 +1,33 @@
-# Player
-## **Login**
+# About
+This document shall be a reference to all the API's the **AF_ADMIN** client consumes.
+
+Since there might be multiple API's offered by multiple **vendors**; each API
+shall be placed under a _section named after the supplying vendor or service
+offered._
+
+For example the primary **backend** used by _AF_ADMIN** is given the label
+**MQTT_BACKEND_1**. Hence the API exposed by the _vendor_ **MQTT_BACKEND_1**
+shall be placed under a section named *MQTT_BACKEND_1.*
+
+# MQTT_BACKEND_1
 ---
-protocol: MQTT
+## About
+This is the API exposed by the main backend server the AF_ADMIN client interacts
+with.
 
+The exposed API is consumed through the use of the **MQTT** protocol.
 
-### **Publish** (_/themaze/registrationPoint1/gui/player/login_)
+MQTT: https://en.wikipedia.org/wiki/MQTT
 
-content-type: application/json
+## Examples
+
+## Player
+### **Login**
+---
+Login player.
+
+#### **Publish** (_/themaze/registrationPoint1/gui/player/login_)
+
 ```javascript
     {
         timestamp: 123456789, // Milliseconds
@@ -14,9 +35,9 @@ content-type: application/json
         password: "string"
     }
 ```
-### **Subscribe** (_/themaze/registrationPoint1/gui/player/login/response_)
 
-content-type: application/json
+#### **Subscribe** (_/themaze/registrationPoint1/gui/player/login/response_)
+
 ```javascript
     // Success
     {
@@ -41,14 +62,12 @@ content-type: application/json
 
 ```
 
-## **Register**
+### **Register**
 ---
-protocol: MQTT
+Register a new player.
 
+#### **Publish** (_/themaze/registrationPoint1/gui/player/registration_)
 
-### **Publish** (_/themaze/registrationPoint1/gui/player/registration_)
-
-content-type: application/json
 ``` javascript
     {
         timestamp: 123456789, // Milliseconds
@@ -63,9 +82,8 @@ content-type: application/json
     }
 ```
 
-### **Subscribe** (_/themaze/registrationPoint1/gui/player/registration/response_)
+#### **Subscribe** (_/themaze/registrationPoint1/gui/player/registration/response_)
 
-content-type: application/json
 ``` javascript
     // Success
     {
@@ -95,18 +113,13 @@ content-type: application/json
 
 ```
 
-# Wristband
-## **Register**
+## Wristband
+### **Register**
 ---
-protocol: MQTT
+Match player with their wristband.
 
-
-### **Subscribe** (_/themaze/registrationPoint1/gui/player/wristbandScan_)
-
-content-type: application/json
-
+#### **Subscribe** (_/themaze/registrationPoint1/gui/player/wristbandScan_)
 ``` javascript
-    // application/json
     {
         timestamp: 123456789, // Milliseconds
         result: "OK",
@@ -114,9 +127,7 @@ content-type: application/json
         wristbandColor: 1
     }
 ```
-### **Publish** (_/themaze/registrationPoint1/gui/player/registerWristband_)
-
-content-type: application/json
+#### **Publish** (_/themaze/registrationPoint1/gui/player/registerWristband_)
 ``` javascript
     {
         timestamp: 123456789, // Milliseconds
@@ -125,9 +136,7 @@ content-type: application/json
     }
 ```
 
-### **Subscribe** (_/themaze/registrationPoint1/gui/player/registerWristband/response_)
-
-content-type: application/json
+#### **Subscribe** (_/themaze/registrationPoint1/gui/player/registerWristband/response_)
 ``` javascript
     {
         timestamp: 123456789, // Milliseconds
@@ -136,15 +145,21 @@ content-type: application/json
     }
 ```
 
-# Team
-## **Merge**
+## Team
+### **Merge**
 ---
-protocol: MQTT
+Create a new team.
 
+TODO issue #1
+should the client check if all the players have had their wristbands assigned?
+before creating a new Team?
 
-### **Publish** (_/themaze/registrationPoint1/gui/team/merge_)
+TODO issue #2
+A team should not be identified with its name but rather its ID since
+people tend to pick names from a small pool of possibilites such as: [
+"the_invicibles", "the_amazing_4", ...]
 
-content-type: application/json
+#### **Publish** (_/themaze/registrationPoint1/gui/team/merge_)
 ``` javascript
     {
         timestamp: 123456789, // Milliseconds
@@ -152,9 +167,7 @@ content-type: application/json
         usernames: ["user#0", "user#1"] // Array<string>
     }
 ```
-### **Subscribe** (_/themaze/registrationPoint1/gui/team/merge/response_)
-
-content-type: application/json
+#### **Subscribe** (_/themaze/registrationPoint1/gui/team/merge/response_)
 ``` javascript
     // Success
     {
@@ -169,20 +182,60 @@ content-type: application/json
         message: "team with this name already exists"
     }
 ```
-### **Publish**
+
+## Package
+### **Add**
+---
+Add a paid package to the team.
+
+#### **Publish** (_/themaze/registrationPoint1/gui/team/package/add_)
 ``` javascript
+    {
+        timestamp: 123456789, // Milliseconds
+        teamName: "string", // teamName or ID (check issue 2)
+        package: {
+            type: "string", // [ "time" || "element" || "missions" ]
+            // **Package** is an evolving entity. Until its development
+            // has settled all info could be send within an array
+            // which would allow for maximum flexibility.
+            info: ["string", 123456789, {} ],
+            discountCode: 123456789,
+            players: [
+                {
+                    id: 123456789,
+                    discountCode: 123456789
+                }
+            ]
+            
+        }
+    }
 ```
-# Package
-## Add
-**url:** team/package/add
-
-**req/res:** Object Object
-
-**content-type:** application/json application/json
-
-### Request
+#### **Subscribe** (_/themaze/registrationPoint1/gui/team/package/add/response_)
 ``` javascript
-```
-### Response
-``` javascript
+    // Success
+    {
+        timestamp: 123456789, // Milliseconds
+        result: "OK",
+        message: "successfully added package"
+        package: {
+            price: 200.3 // Float
+            discountPrice: 150.3 // Float
+            players: [
+                {
+                   id: 123456789,
+                   amount: 15.3 // Float
+                   discountCode: 123456789 // [ Integer || null ]
+                   // The discountCode field acts as a Boolean at the same time
+                }
+            ]
+            
+        }
+        
+    }
+    // Failed
+    {
+        timestamp: 123456789, // Milliseconds
+        result: "NOK",
+        message: "Failed to receive payment"
+    }
 ```
