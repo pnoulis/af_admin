@@ -10,10 +10,15 @@ html {
     background-color: rgba(160, 169, 200, 0.05);
 }
 
-html, body, #root {
+html,
+body,
+#root {
     min-height: 100vh;
     min-width: 100vw;
     font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-                 Helvetica Neue, sans-serif;
+        Helvetica Neue, sans-serif;
 }
 
+.isActive {
+    background-color: "#d199ff"
+}

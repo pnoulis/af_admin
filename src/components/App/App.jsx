@@ -7,8 +7,10 @@ import Header from '/src/components/Header/index.jsx';
 
 const s = {
   Container: styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  min-width: 100vw;
+  min-height: 100vh;
   display: grid;
   grid-template-rows: min-content 1fr;
   grid-template-columns: 250px 1fr;
