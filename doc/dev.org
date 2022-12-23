@@ -2,6 +2,62 @@
 ** Container
 ** Box
 ** sx
-*flexShrink*
-If the parent container is flex prevents the child from shrinking
-  
+* Localizing the app
+** Resources
+https://developer.mozilla.org/en-US/docs/Glossary/Locale
+** Detect the user's locale
+https://stackoverflow.com/questions/673905/how-to-determine-users-locale-within-browser
+
+The stack overflow article suggests that the most reliable method for detecting a user's prefered language is
+to read the <Accept-Language> Http header.
+
+However MDN supports that newer browser versions offer the same functionality.
+https://developer.mozilla.org/en-US/docs/Web/API/Navigator/languages
+
+** Translate typography elements
+** Server locale-specific content such as dates, currencies and numbers
+- Dates
+    - Day names
+    - Day name format
+    - Month names
+    - Month name format
+    - Time format
+- Currencies
+    - Value
+    - Symbol
+- Numbers
+    - Decimal points
+
+** Flow
+Enter Site -> (detect users locale) -> (store the locale to be offered, in a Cookie or somehing) -> render app
+
+Attach listener to browser settings change
+Fire event when user clicks on locale offered
+
+User selects another language -> (store the locale to be offerd, in a Cookie or something) -> render app
+User changes his language settings through the browser -> (store the locale to be offered, in a Cookie or something) -> render app
+* State persistance
+** resources
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
+** Local && Session Storage
+Setting local storage:
+Window.localStorage.setting = "string"
+Window.localStorage['setting'] = "string"
+Window.localStorage.setItem('setting') = 'string'
+
+Retreiving local storage:
+Window.localStorage.setting
+Window.localStorage['setting']
+Window.localStorage.getItem('setting')
+
+Window.localStorage value is a storage object
+Window.sessionStorage value is a storage object
+THeir difference is their expiration date. The localStorage storage object persists across even system reboots.
+The sessionStorage object does not persist even across browser sessions.
+
+Responding to storage changes with the StorageEvent:
+the StorageEvent is fired whenever a change is made to the Storage object.
+
+
+** Cookies
+* Session implementation
