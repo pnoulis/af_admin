@@ -1,0 +1,7 @@
+* Material UI
+** Container
+** Box
+** sx
+*flexShrink*
+If the parent container is flex prevents the child from shrinking
+  
