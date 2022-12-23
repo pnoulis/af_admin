@@ -8,7 +8,7 @@ import Test from './Test.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: import.meta.env.VITE_TEST ? <Test/> : <App/>
+    element: import.meta.env.VITE_TEST ? <Test /> : <App />
   }
 ]);
 

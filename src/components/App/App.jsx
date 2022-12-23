@@ -1,24 +1,39 @@
 import React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Container from '@mui/material/Container';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import styled from 'styled-components';
+import Sidebar from '/src/components/Sidebar/index.jsx';
+import Header from '/src/components/Header/index.jsx';
 
-const drawerWidth = 240;
-export default
-function App() {
+
+const s = {
+  Container: styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  grid-template-columns: 250px 1fr;
+  grid-template-areas:
+    "Sidebar Header"
+    "Sidebar Main"
+`,
+  Main: styled.main`
+  background-color: yellow;
+  grid-area: Main;
+  padding: 50px 25px 25px 100px;
+`
+}
+
+export default function App() {
   return (
     <React.Fragment>
-      <p>Hello App</p>
+      <CssBaseline />
+      <s.Container>
+        <Header/>
+        <Sidebar/>
+        <s.Main>
+          Main
+        </s.Main>
+      </s.Container>
     </React.Fragment>
   );
 }
