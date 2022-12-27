@@ -14,7 +14,7 @@ grid-template-areas:
   "Add Register Wristband";
 align-items: start;
 justify-items: center;
-margin-top: 100px;
+padding-top: 100px;
 `;
 
 export default function AddPlayer() {
