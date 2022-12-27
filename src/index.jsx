@@ -7,6 +7,7 @@ import Test from './Test.jsx';
 import Login from './components/Auth/Login.jsx';
 import GlobalStore from '/src/stores/app.js';
 import Registration from './pages/Registration.jsx';
+import AddPlayer from './pages/AddPlayer.jsx';
 
 const router = createBrowserRouter([
   {
@@ -19,19 +20,19 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'team/player/add',
-            element: <div>add player</div>
+            element: <AddPlayer/>
           },
           {
             path: 'team/create',
-            element: <div>merge team</div>
-          },
-          {
-            path: 'team/package/edit',
-            element: <div>package</div>
+            element: <div>create team</div>
           },
           {
             path: 'team/package/create',
-            element: <div>summary</div>
+            element: <div>create package</div>
+          },
+          {
+            path: 'team/package/add',
+            element: <div>submit</div>
           }
         ]
       },
@@ -66,7 +67,7 @@ function GlobalState({ children }) {
     <GlobalStore.Provide value={{ state, dispatch }}>
       {children}
     </GlobalStore.Provide>
-  )
+  );
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -28,7 +28,7 @@ const Page = styled.main`
   border-radius: 5px;
   display: grid;
   gap: 20px 0;
-  padding: 10px;
+  padding: 10px 10px 10px 25px;
   grid-template-rows: 130px 1fr;
   grid-template-columns: 1fr;
   grid-template-areas:

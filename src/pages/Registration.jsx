@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 
 import {ReactComponent as AddPlayerIcon } from '/src/assets/add_player.svg';
@@ -13,11 +12,13 @@ export default function Registration() {
         <React.Fragment>
           <PanelHeader>
             <HeaderItem redirect to='team/player/add' Img={AddPlayerIcon} content='add player'/>
-            <HeaderItem to='team/create' Img={MergeTeamIcon} content='merge team'/>
-            <HeaderItem to='team/package/edit' Img={PackageIcon} content='add player'/>
-            <HeaderItem to='team/package/create' Img={SummaryIcon} content='add player'/>
+            <HeaderItem to='team/create' Img={MergeTeamIcon} content='create team'/>
+            <HeaderItem to='team/package/create' Img={PackageIcon} content='create package'/>
+            <HeaderItem to='team/package/add' Img={SummaryIcon} content='submit'/>
           </PanelHeader>
-          <section><Outlet/></section>
+          <section>
+            <Outlet/>
+          </section>
         </React.Fragment>
     );
 }

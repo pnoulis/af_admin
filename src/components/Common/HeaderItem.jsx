@@ -8,7 +8,7 @@ display: flex;
 flex-flow: column nowrap;
 width: 110px;
 height: 100px;
-padding: 10px 3px 0px 3px;
+padding: 10px 5px 0px 5px;
 background-color: #555555;
 align-items: center;
 text-transform: uppercase;
