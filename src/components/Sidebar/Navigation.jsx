@@ -13,7 +13,7 @@ const Container = styled.nav`
         row-gap: 10px;
         align-self: stretch;
     }
-`
+`;
 const NavItem = styled.li`
     flex: 1 1 max-content;
     > a {
@@ -26,17 +26,13 @@ const NavItem = styled.li`
         text-decoration: none;
         border-radius: 5px;
     }
-`
+`;
 
 const activeStyle = {
     backgroundColor: "#d199ff"
-}
+};
 
 const links = [
-    {
-        name: 'Home',
-        url: '/'
-    },
     {
         name: 'Registration',
         url: '/registration'
@@ -57,7 +53,7 @@ const links = [
         name: 'Cashier',
         url: '/cashier'
     }
-]
+];
 
 
 export default function Navigation() {
@@ -76,5 +72,5 @@ export default function Navigation() {
                 }
             </ul>
         </Container>
-    )
+    );
 }

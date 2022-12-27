@@ -1,4 +1,5 @@
-import {NavLink} from 'react-router-dom';
+import {useEffect} from 'react';
+import {NavLink, useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -42,7 +43,11 @@ background-color: #d199ff;
 }
 `;
 
-export function HeaderItem({to, content, Img}) {
+export function HeaderItem({redirect, to, content, Img}) {
+  const navigate = useNavigate();
+  useEffect(() => {
+    redirect && navigate(to);
+  }, [redirect]);
   return (
     <Container>
       <NavLink
