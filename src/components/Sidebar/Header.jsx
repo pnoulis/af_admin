@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import logo from '/maze_logo.svg';
+import logo from '/src/assets/maze_logo.svg';
 
 const Container = styled.header`
     flex: 0 1 200px;

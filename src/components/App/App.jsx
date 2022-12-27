@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import styled from 'styled-components';
 import Sidebar from '/src/components/Sidebar/index.jsx';
@@ -20,25 +21,50 @@ const s = {
     "Sidebar Main"
 `,
   Main: styled.main`
-  background-color: yellow;
+  background-color: rgba(160, 169, 200, 0.3);
   grid-area: Main;
-  padding: 50px 25px 25px 100px;
+  padding: 30px 25px 25px 50px;
+  > .page {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 5px;
+    display: flex;
+    padding: 20px;
+    display: grid;
+    gap: 20px;
+    grid-template-rows: 130px 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "content"
+
+  }
 `
 }
 
 export default function App() {
-  const [state, dispatch] = GlobalStore.init();
+  const navigate = useNavigate();
+  const { state, dispatch } = GlobalStore.use();
+
+  useEffect(() => {
+    if (!state.login) {
+      navigate('/login');
+    }
+  }, [state.login])
 
   return (
-    <GlobalStore.Provide value={{ state, dispatch }}>
+    <React.Fragment>
       <CssBaseline />
       <s.Container>
         <Header />
         <Sidebar />
         <s.Main>
-          Main
+          <div className='page'>
+            <Outlet />
+          </div>
         </s.Main>
       </s.Container>
-    </GlobalStore.Provide>
+    </React.Fragment>
   );
 }

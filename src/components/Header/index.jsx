@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Container = styled.header`
     grid-area: Header;
-    background-color: blue;
+  background-color: rgba(160, 169, 200, 0.3);
 `
 
 export default function Header() {

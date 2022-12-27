@@ -24,7 +24,7 @@ const NavItem = styled.li`
         text-align: left;
         outline: none;
         text-decoration: none;
-        border-radius: 3px;
+        border-radius: 5px;
     }
 `
 
@@ -35,27 +35,27 @@ const activeStyle = {
 const links = [
     {
         name: 'Home',
-        url: '#'
+        url: '/'
     },
     {
         name: 'Registration',
-        url: '#'
+        url: '/registration'
     },
     {
         name: 'Manager',
-        url: '#'
+        url: '/manager'
     },
     {
         name: 'Scorebord',
-        url: '#'
+        url: '/scoreboard'
     },
     {
         name: 'Statistics',
-        url: '#'
+        url: '/statistics'
     },
     {
         name: 'Cashier',
-        url: 'c'
+        url: '/cashier'
     }
 ]
 
@@ -69,7 +69,7 @@ export default function Navigation() {
                         <NavItem key={i}>
                             <NavLink to={link.url}
                                 style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                                > {link.name}
+                            > {link.name}
                             </NavLink>
                         </NavItem>
                     ))

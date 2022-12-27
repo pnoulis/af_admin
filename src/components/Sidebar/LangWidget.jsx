@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { language } from '/src/misc';
 import GlobalStore from '/src/stores/app.js';
 
-            //font-weight: bolder;
 const Container = styled.div`
     flex: 0 0 100px;
     display: flex;
