@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
+import GlobalState from '/src/stores/app.js';
 import styled from 'styled-components';
 
-const LANG = 'en-us';
-
 const getTime = (() => {
-    const locale = new Intl.DateTimeFormat(LANG, {
-        month: 'short', weekday: 'short', day: 'numeric',
-        hour: '2-digit', second: '2-digit', hourCycle: 'h24'
-    });
+    let currentLang;
+    let locale;
     const time = new Map();
-    return () => {
+    return (lang) => {
+        if (typeof locale === 'undefined' || lang !== currentLang) {
+            locale = new Intl.DateTimeFormat(lang, {
+                month: 'short', weekday: 'short', day: 'numeric',
+                hour: '2-digit', second: '2-digit', hourCycle: 'h24'
+            })
+        }
         locale.formatToParts().forEach(el => {
             switch (el.type) {
                 case 'month': return time.set(el.type, el.value);
@@ -58,12 +61,13 @@ const Container = styled.article`
 `
 
 export default function TimeWidget() {
-    const [time, setTime] = useState(getTime());
+    const {state, dispatch} = GlobalState.use();
+    const [time, setTime] = useState(() => getTime(state.lang));
 
     useEffect(() => {
-        const event = setInterval(() => setTime(getTime()), 1000);
+        const event = setInterval(() => setTime(getTime(state.lang)), 1000);
         return () => clearInterval(event);
-    }, []);
+    }, [state.lang]);
 
     return (
         <Container>

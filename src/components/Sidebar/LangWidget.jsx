@@ -1,42 +1,55 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import { language } from '/src/misc';
+import GlobalStore from '/src/stores/app.js';
 
-const Langs = ['en', 'fr', 'de', 'nl'];
-
+            //font-weight: bolder;
 const Container = styled.div`
     flex: 0 0 100px;
     display: flex;
     align-items: center;
     color: white;
-    text-transform: uppercase;
     font-size: 1em;
     line-height: 0.9;
     letter-spacing: 1.5px;
+    color: grey;
     > ul {
         display: flex;
         flex-flow: row nowrap;
     }
 
     .lang:not(:last-child) {
-        > a::after {
+        > em::after {
+            color: grey;
             content: '|';
-            font-weight: bolder;
             margin: 0 4px;
             position: relative;
         }
     }
+
+    .lang:hover {
+        cursor: pointer;
+        color: white;
+    }
+
+    .lang.onDisplay > em {
+        color: white;
+    }
 `
+
 export default function LangWidget() {
+    const { state, dispatch } = GlobalStore.use();
     return (
         <Container>
             <ul>
                 {
-                    Langs.map((lang, i) => (
-                        <li key={i} className='lang'>
-                            <NavLink to={`/${lang}`}
-                                style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                            > {lang}
-                            </NavLink>
+                    language.langs.map((lang, i) => (
+                        <li key={i} className={`lang ${state.lang === lang.bcp47 ? 'onDisplay' : undefined}`}>
+                            <em
+                                onClick={() => dispatch('switchLanguage', lang.bcp47)}
+                            >
+                                {lang.iso639_1}
+                            </em>
                         </li>
                     ))
                 }

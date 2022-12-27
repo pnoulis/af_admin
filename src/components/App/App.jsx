@@ -3,6 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import styled from 'styled-components';
 import Sidebar from '/src/components/Sidebar/index.jsx';
 import Header from '/src/components/Header/index.jsx';
+import GlobalStore from '/src/stores/app.js';
 
 
 const s = {
@@ -26,16 +27,18 @@ const s = {
 }
 
 export default function App() {
+  const [state, dispatch] = GlobalStore.init();
+
   return (
-    <React.Fragment>
+    <GlobalStore.Provide value={{ state, dispatch }}>
       <CssBaseline />
       <s.Container>
-        <Header/>
-        <Sidebar/>
+        <Header />
+        <Sidebar />
         <s.Main>
           Main
         </s.Main>
       </s.Container>
-    </React.Fragment>
+    </GlobalStore.Provide>
   );
 }
