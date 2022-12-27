@@ -1,93 +1,28 @@
 import React from 'react';
-import addPlayer from '/src/assets/add_player.svg';
-import mergeTeam from '/src/assets/merge_team.svg';
-import packageSVG from '/src/assets/package.svg';
-import summary from '/src/assets/summary.svg';
+import {ReactComponent as AddPlayerIcon } from '/src/assets/add_player.svg';
+import {ReactComponent as MergeTeamIcon } from '/src/assets/merge_team.svg';
+import {ReactComponent as PackageIcon } from '/src/assets/package.svg';
+import {ReactComponent as SummaryIcon } from '/src/assets/summary.svg';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import {HeaderItem} from '/src/components/Common';
 
-
-const Container = styled.header`
+const ConNav = styled.nav`
+height: 100%;
 display: flex;
-flex-flow: row nowrap;
-gap: 10px;
+flex-flow: row wrap;
 justify-content: flex-start;
-height: 100px;
-background-color: white;
-
-div {
-    display: flex;
-    flex-flow: column nowrap;
-    background-color: #555555;
-    box-sizing: content-box;
-    width: 100px;
-    height: 90px;
-    padding: 8px 5px;
-    justify-content: center;
-    align-items: center;
-    text-transform: uppercase;
-    font-size: 0.8em;
-    border-radius: 5px;
-    cursor: pointer;
-    gap: 10px;
-    letter-spacing: 0.8px;
-    color: white;
-    img {
-        color: white;
-        fill: white;
-        height: 60%;
-        width: 60%;
-        position: relative;
-    }
-
-    a {
-        cursor: pointer;
-    }
-}
-`
-
-
-const activeStyle = {
-    backgroundColor: '#d199ff',
-}
+align-items: center;
+gap: 10px;
+`;
 
 export default function Navbar() {
-    return (
-        <Container>
-            {/* <div>
-                <img src={addPlayer} alt='addPlayer' />
-                <NavLink to='team/player/add'>
-                    add player
-                </NavLink>
-            </div> */}
-            <div>
-                <img src={addPlayer} alt='addPlayer' />
-                <NavLink to={'team/player/add'}
-                    style={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                        add player
-                </NavLink>
-            </div>
-            <div>
-                <img src={mergeTeam} alt='mergeTeam' />
-                <NavLink to={'team/create'}
-                    style={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                        merge team
-                </NavLink>
-            </div>
-            <div>
-                <img src={packageSVG} alt='package' />
-                <NavLink to={'team/package/edit'}
-                    style={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                        package
-                </NavLink>
-            </div>
-            <div>
-                <img src={summary} alt='summary' />
-                <NavLink to={'team/package/create'}
-                    style={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                        summary
-                </NavLink>
-            </div>
-        </Container>
-    )
+  return (
+    <ConNav>
+      <HeaderItem to='team/player/add' Img={AddPlayerIcon} content='add player'/>
+      <HeaderItem to='team/create' Img={MergeTeamIcon} content='merge team'/>
+      <HeaderItem to='team/package/edit' Img={PackageIcon} content='add player'/>
+      <HeaderItem to='team/package/create' Img={SummaryIcon} content='add player'/>
+    </ConNav>
+  );
 }

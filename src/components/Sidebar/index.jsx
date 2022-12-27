@@ -13,13 +13,13 @@ const Container = styled.aside`
     flex-flow: column nowrap;
     align-items: center;
     background-image: url(${background});
-`
+`;
 
 const Divider = styled.hr`
     height: 2px;
     width: 100%;
     background-color: white;
-`
+`;
 
 export default function Sidebar() {
     return (

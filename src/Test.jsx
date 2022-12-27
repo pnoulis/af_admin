@@ -1,17 +1,16 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import GlobalStore from '/src/stores/app.js';
+import {ReactComponent as ReactLogo} from '/src/assets/add_player.svg';
 
 export default function Test() {
     const [state, dispatch] = GlobalStore.init();
 
     return (
-        <GlobalStore.Provide value={{ state, dispatch }}>
-            <p>hello {state.login && state.login.username}</p>
-            <Login/>
-            <Logout/>
-        </GlobalStore.Provide >
-    )
+      <React.Fragment>
+        <ReactLogo/>
+      </React.Fragment>
+    );
 }
 
 
@@ -28,7 +27,7 @@ function Login() {
                 <input type='submit' value='Login' />
             </form>
         </React.Fragment>
-    )
+    );
 }
 
 function Logout() {
@@ -43,5 +42,5 @@ function Logout() {
                 <input type='submit' value='Logout' />
             </form>
         </React.Fragment>
-    )
+    );
 }
