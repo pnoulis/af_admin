@@ -1,46 +1,26 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import GlobalStore from '/src/stores/app.js';
-import {ReactComponent as ReactLogo} from '/src/assets/add_player.svg';
+import Mqtt from '/src/mqtt/client.js';
 
+const client = Mqtt();
+const url = '/themaze/registrationPoint1/gui/player/wristbandScan';
+const unsubscribe1 = client.subscribe(url, (data) => console.log("run 1", data));
+const unsubscribe2 = client.subscribe(url, (data) => console.log("run 2", data));
 export default function Test() {
-    const [state, dispatch] = GlobalStore.init();
+  const [message, setMessage] = useState('');
 
-    return (
-      <React.Fragment>
-        <ReactLogo/>
-      </React.Fragment>
-    );
+  useEffect(() => {
+  }, [])
+
+  return (
+    <React.Fragment>
+      <p onClick={() => {
+        unsubscribe1();
+        unsubscribe2();
+      }}>unsubscribe</p>
+      <p>{message}</p>
+    </React.Fragment>
+  );
 }
 
-
-function Login() {
-    const { state, dispatch } = GlobalStore.use();
-    return (
-        <React.Fragment>
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                dispatch('login', { username: 'eutheu' });
-            }}>
-                <label htmlFor='username'>Username:</label>
-                <input type='text' name='username' id='username' />
-                <input type='submit' value='Login' />
-            </form>
-        </React.Fragment>
-    );
-}
-
-function Logout() {
-    const { state, dispatch } = GlobalStore.use();
-    return (
-        <React.Fragment>
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                dispatch('logout');
-            }}>
-                <h3>{state.login && state.login.username}</h3>
-                <input type='submit' value='Logout' />
-            </form>
-        </React.Fragment>
-    );
-}
