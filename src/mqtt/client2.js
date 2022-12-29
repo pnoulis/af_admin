@@ -63,9 +63,6 @@ export default function MqttClient(server = DEFAULT_SERVER, userOptions = {}) {
     }
 
     // client configuration
-
-    // key = 'event name'
-    // value = subscribers: [() => {}]
     this.subscriptions = new Map();
     this.subscriptions.set('connect', []);
     return this;
