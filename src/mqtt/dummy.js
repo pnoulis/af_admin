@@ -28,6 +28,7 @@ class MqttServer extends EventTarget {
     if (!this.intervalId) {
       this.intervalId = setInterval(() => {
         topics.forEach(({topic, message}) => {
+          console.log(`from within interval ${message.name}`)
           this.emit(topic, message);
         });
       }, this.tempo);
