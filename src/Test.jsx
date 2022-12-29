@@ -4,7 +4,7 @@ import GlobalStore from '/src/stores/app.js';
 import Mqtt from '/src/mqtt/client2.js';
 
 import styled from 'styled-components';
-const url = '/themaze/registrationPoint1/gui/player/wristbandScan'
+const url = '/themaze/registrationPoint1/gui/player/wristbandScan';
 const client = new Mqtt();
 // client.server.on('connect', () => {
 //   console.log(`mqtt client connected`);
@@ -27,16 +27,17 @@ function useMqtt(topic) {
       setSubscription({
         publish,
         message: response.toString(),
-      })
-    })
+      });
+    });
     return () => {
       console.log('unmounting');
       unsub();
-    }
-  }, [])
+    };
+  }, []);
 
-  return [subscription.message, subscription.publish]
+  return [subscription.message, subscription.publish];
 }
+
 // client.server.on('connect', () => {
 //   console.log('connected');
 //   client.server.subscribe(url, (err) => {
