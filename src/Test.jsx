@@ -1,11 +1,17 @@
-import * as React from 'react';
+ import * as React from 'react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import GlobalStore from '/src/stores/app.js';
-import Mqtt from '/src/mqtt/client2.js';
+import * as MQTT from '/src/mqtt';
+// import Mqtt from '/src/mqtt/client2.js';
+const { msqClient } = MQTT;
+
+msqClient.test('testTopic');
+console.log(msqClient);
+
 
 import styled from 'styled-components';
 const url = '/themaze/registrationPoint1/gui/player/wristbandScan';
-const client = new Mqtt();
+// const client = new Mqtt();
 // client.server.on('connect', () => {
 //   console.log(`mqtt client connected`);
 //   const [unsub, pub] = client.subscribe(url, (message) => {
@@ -15,27 +21,35 @@ const client = new Mqtt();
 //   })
 // })
 
-function useMqtt(topic) {
-  const [subscription, setSubscription] = useState({
-    publish: () => { },
-    message: null,
-  });
+// function useMqtt(topic) {
+//   const [subscription, setSubscription] = useState({
+//     publish: () => { },
+//     message: null,
+//   });
 
-  useEffect(() => {
-    const [unsub, publish] = client.subscribe(topic, (response) => {
-      console.log(`response:${response.toString()}`);
-      setSubscription({
-        publish,
-        message: response.toString(),
-      });
-    });
-    return () => {
-      console.log('unmounting');
-      unsub();
-    };
-  }, []);
+//   useEffect(() => {
+//     const [unsub, publish] = client.subscribe(topic, (response) => {
+//       console.log(`response:${response.toString()}`);
+//       setSubscription({
+//         publish,
+//         message: response.toString(),
+//       });
+//     });
+//     return () => {
+//       console.log('unmounting');
+//       unsub();
+//     };
+//   }, []);
 
-  return [subscription.message, subscription.publish];
+//   return [subscription.message, subscription.publish];
+// }
+
+export default function Test3() {
+  return (
+    <React.Fragment>
+      <h1>Hi this is a test</h1>
+    </React.Fragment>
+  );
 }
 
 // client.server.on('connect', () => {
@@ -220,44 +234,44 @@ align-items: center;
 // }
 
 
-export default function Test2() {
-  const [show, setShow] = useState(true);
-  const [color, setColor] = useState('blue');
+// export default function Test2() {
+//   const [show, setShow] = useState(true);
+//   const [color, setColor] = useState('blue');
 
-  useEffect(() => {
-    if (!show) location.reload();
-  }, [])
-  return (
-    <React.Fragment>
-      <h1 onClick={() => setShow(!show)} style={{ backgroundColor: color }}>
-        {show ? "UNMOUNT" : "MOUNT"}
-      </h1>
-      {show ? <Ch /> : null}
-      <Change color={color} setColor={setColor} />
-    </React.Fragment>
-  );
-}
+//   useEffect(() => {
+//     if (!show) location.reload();
+//   }, []);
+//   return (
+//     <React.Fragment>
+//       <h1 onClick={() => setShow(!show)} style={{ backgroundColor: color }}>
+//         {show ? "UNMOUNT" : "MOUNT"}
+//       </h1>
+//       {show ? <Ch /> : null}
+//       <Change color={color} setColor={setColor} />
+//     </React.Fragment>
+//   );
+// }
 
-function Ch() {
-  const [message, publish] = useMqtt(url);
-  return (
-    <React.Fragment>
-      <p>{message}</p>
-      <p>tohuneth</p>
+// function Ch() {
+//   const [message, publish] = useMqtt(url);
+//   return (
+//     <React.Fragment>
+//       <p>{message}</p>
+//       <p>tohuneth</p>
 
-    </React.Fragment>
-  );
+//     </React.Fragment>
+//   );
 
-}
+// }
 
-function Change({ color, setColor }) {
-  return (
-    <p onClick={() => {
-      if (color === 'blue') {
-        setColor('red');
-      } else {
-        setColor('blue');
-      }
-    }}>change color</p>
-  );
-}
+// function Change({ color, setColor }) {
+//   return (
+//     <p onClick={() => {
+//       if (color === 'blue') {
+//         setColor('red');
+//       } else {
+//         setColor('blue');
+//       }
+//     }}>change color</p>
+//   );
+// }

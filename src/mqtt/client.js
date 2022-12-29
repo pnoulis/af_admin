@@ -1,3 +1,4 @@
+import { connect as MqttServer } from 'precompiled-mqtt';
 // General information
 // A *Topic* is considered registered if it is a member of the *registry map*.
 // The *registry map* maps *Aliases* to *Topics*. However, the user needs not
@@ -42,7 +43,9 @@ Registry.prototype.resolve = function(topic) {
 };
 
 export default function MqttClient(config) {
+  this.name = config.name;
   const {server, registry} = this.parseConfig(config);
+  this.server = MqttServer(server.host, server.options);
   this.subscriptions = new Map();
   this.registry = new Registry(registry);
 }
@@ -70,6 +73,44 @@ MqttClient.prototype.parseConfig = function(config) {
     },
     errorHandler: config.errorHandler
   };
+};
+
+MqttClient.prototype.test = function(topic) {
+  this.server
+    .on('connect', () => {
+      console.log(`client:${this.name} successfully connected`);
+      const timerID = setInterval(() => {
+        this.server.publish(topic, 'hello world', (err) => {
+          console.log(`client:${this.name} failed to publish`);
+        });
+      }, 3000);
+      document.addEventListener('beforeunload', (e) => {
+        e.preventDefault();
+        clearTimeout(timerID);
+      });
+      setTimeout(() => {
+        clearTimeout(timerID);
+      }, 30000);
+      this.server.subscribe(topic, (err) => {
+        if (err) {
+          console.log(err);
+          console.log(`client:${this.name} failed to subscribe to topic:${topic}`);
+          return;
+        }
+        console.log(`client:${this.name} successfully subscribed to topic:${topic}`);
+        this.server.on('message', (topic, message) => {
+          console.log(`New message:
+client:${this.name}
+topic:${topic}
+message:${message.toString()}`);
+        });
+      });
+    });
+    // .on('reconnect', () => cb('Mqtt client reconnected'))
+    // .on('error', (err) => cb(`Mqqt client error: ${err.message}`))
+    // .on('close', () => cb('Mqtt client connection closed'))
+    // .on('offline', () => cb('Mqtt client offline'))
+    // .on('disconnect', (packet) => cb(`Mqtt client disconnected: ${packet}`));
 };
 
 MqttClient.prototype.subscribe = function(event, handler) {
