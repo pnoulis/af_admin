@@ -1,12 +1,34 @@
- import * as React from 'react';
+import * as React from 'react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import GlobalStore from '/src/stores/app.js';
-import * as MQTT from '/src/mqtt';
-// import Mqtt from '/src/mqtt/client2.js';
-const { msqClient } = MQTT;
+import {devClient} from '/src/mqtt';
+console.log(devClient);
 
-msqClient.test('testTopic');
-console.log(msqClient);
+const { pub, sub } = devClient.registry.resolve('somehow');
+console.log(pub);
+console.log(sub);
+// import Mqtt from '/src/mqtt/client2.js';
+// const { msqClient, devClient, client, useMqtt2 } = MQTT;
+
+// msqClient.test('testTopic');
+// console.log(msqClient);
+// devClient.start();
+
+// const url2 = `/themaze/booted/${devClient.id}`;
+// const pub = {
+//   deviceId: devClient.id,
+//   roomName: 'registration5',
+//   deviceType: 'REGISTRATION_SCREEN',
+// }
+// const [unsubscribe, publish] = devClient.subscribe(url2, (message) => {
+//   console.log(`Message from:${url2}`);
+//   console.log(message.toString());
+// })
+
+// devClient.publish('/themaze/booted', pub);
+// publish(pub, (err) => {
+//   err ? console.log(`error publishing:${err}`) : console.log('published ok');
+// });
 
 
 import styled from 'styled-components';
@@ -45,9 +67,26 @@ const url = '/themaze/registrationPoint1/gui/player/wristbandScan';
 // }
 
 export default function Test3() {
+  // const { err, message } = useMqtt2('player/login/response');
+
+  // const publish = (msg) => devClient.publish('player/login', msg);
+  // useEffect(() => {
+  //   console.log('test3 change');
+  //   console.log(message);
+  // }, [err, message])
+
   return (
     <React.Fragment>
       <h1>Hi this is a test</h1>
+      <p onClick={() => {
+        console.log(publish);
+        const user = {
+          timestamp: new Date().getTime(),
+          username: 'TG10',
+          password: '123',
+        }
+        // publish(user);
+      }}>login</p>
     </React.Fragment>
   );
 }

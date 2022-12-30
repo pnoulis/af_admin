@@ -30,27 +30,53 @@ import { connect as MqttServer } from 'precompiled-mqtt';
 // p -> literally, perform no parsing of any kind
 
 function Registry(config) {
-  this.registry = new Map(config.topics);
+  this.registry = new Map(config.topics.map(topic => [
+    topic.alias,
+    {
+      pub: topic.pub,
+      sub: topic.sub,
+    }
+  ]));
   this.strict = config.strict;
 }
 
-Registry.prototype.resolve = function(topic) {
-  const registered = this.registry.get(topic);
-  if (this.strict && !registered) {
+Registry.prototype.resolve = function (topic, id) {
+  if (this.strict && !this.registry.has(topic)) {
     throw new Error(`No registry entry for topic:${topic}`);
   }
-  return registered || topic;
+
+  let { pub, sub } = this.registry.get(topic) || { pub: topic, sub: topic };
+
+  pub = pub.replace(/\${clientId}/, id);
+  sub = sub.replace(/\${clientId}/, id);
+
+  return { pubpath : pub, subpath: sub }
 };
 
 export default function MqttClient(config) {
   this.name = config.name;
-  const {server, registry} = this.parseConfig(config);
-  this.server = MqttServer(server.host, server.options);
+  this.id = config.id;
+  const { server, registry } = this.parseConfig(config);
+  this.server = server;
+  this.start = (mode, topics) => {
+    this.server = MqttServer(server.host, server.options)
+      .on('connect', () => {
+        console.log(`Broker:${this.name} successfully connected`);
+        if (mode === 'test') {
+          setTimeout(() => this.dummyServer(topics), 1000);
+        }
+      })
+      .on('reconnect', () => console.log(`Client:${this.name} trying to reconnect`))
+      .on('error', (err) => console.log(`Client:${this.name} error: ${err}`))
+      .on('close', () => console.log(`Client:${this.name} closed`))
+      .on('offline', () => console.log(`Client:${this.name} offline`))
+      .on('disconnect', (packet) => console.log(`Client:${this.name} disconnected`));
+  }
   this.subscriptions = new Map();
   this.registry = new Registry(registry);
 }
 
-MqttClient.prototype.parseConfig = function(config) {
+MqttClient.prototype.parseConfig = function (config) {
   return {
     server: {
       host: config?.server?.host,
@@ -61,7 +87,7 @@ MqttClient.prototype.parseConfig = function(config) {
         clean: false,
         reconnectPeriod: 1000,
         connectTimeout: 30 * 1000, // 30 seconds
-        clientId: `mqttjs_${Math.random().toString(16).slice(2, 8)}`,
+        clientId: this.id,
         ...config?.server?.options,
       }
     },
@@ -75,77 +101,133 @@ MqttClient.prototype.parseConfig = function(config) {
   };
 };
 
-MqttClient.prototype.test = function(topic) {
+MqttClient.prototype.dummyServer = function (...topics) {
+  if (topics.length === 0) {
+    topics = Array.from(this.registry.registry.values());
+  }
+
+  const message = (i) => {
+    return JSON.stringify(`dummy server:${this.name} TEST MESSAGE`);
+  };
+  const onErr = (topic, msg, err) => {
+    if (err) {
+      console.log(`server:${this.name} ${msg} ${err?.message}`);
+    } else {
+      console.log(`server:${this.name} published message:${msg} at topic:${topic}`);
+    }
+  };
+  const publish = () => {
+    topics.forEach((topic, i) => {
+      this.server.publish(topic, message(i), (err) => onErr(topic, message(i), err));
+    })
+  }
+
+  const fire = () => {
+    const interval = 3000;
+    const start = () => publish();
+    const loopId = setInterval(start, interval);
+    const stop = () => {
+      clearTimeout(loopId);
+    }
+    //Release event handler
+    window.addEventListener('beforeunload', (e) => {
+      e.preventDefault();
+      stop();
+    });
+    setTimeout(stop, 10 * interval);
+  }
+
+  if (this.server.connected) {
+    console.log(`Server:${this.name} successfully connected`);
+    fire();
+  } else {
+    this.start().on('connect', () => {
+      console.log(`Server:${this.name} successfully connected`);
+      fire();
+    })
+  }
+}
+
+MqttClient.prototype.dummyClient = function (...topics) {
+  if (topics.length === 0) {
+    topics = Array.from(this.registry.registry.values());
+  }
   this.server
     .on('connect', () => {
       console.log(`client:${this.name} successfully connected`);
-      const timerID = setInterval(() => {
-        this.server.publish(topic, 'hello world', (err) => {
-          console.log(`client:${this.name} failed to publish`);
-        });
-      }, 3000);
-      document.addEventListener('beforeunload', (e) => {
-        e.preventDefault();
-        clearTimeout(timerID);
-      });
-      setTimeout(() => {
-        clearTimeout(timerID);
-      }, 30000);
-      this.server.subscribe(topic, (err) => {
-        if (err) {
-          console.log(err);
-          console.log(`client:${this.name} failed to subscribe to topic:${topic}`);
-          return;
-        }
-        console.log(`client:${this.name} successfully subscribed to topic:${topic}`);
-        this.server.on('message', (topic, message) => {
-          console.log(`New message:
+      topics.forEach(t => {
+        this.server.subscribe(t, (err) => {
+          if (err) {
+            console.log(err);
+            console.log(`client:${this.name} failed to subscribe to topic:${t}`);
+            return;
+          }
+          console.log(`client:${this.name} successfully subscribed to topic:${t}`);
+          this.server.on('message', (t, message) => {
+            console.log(`New message:
 client:${this.name}
-topic:${topic}
+topic:${t}
 message:${message.toString()}`);
+          });
         });
-      });
+      })
     });
-    // .on('reconnect', () => cb('Mqtt client reconnected'))
-    // .on('error', (err) => cb(`Mqqt client error: ${err.message}`))
-    // .on('close', () => cb('Mqtt client connection closed'))
-    // .on('offline', () => cb('Mqtt client offline'))
-    // .on('disconnect', (packet) => cb(`Mqtt client disconnected: ${packet}`));
 };
 
-MqttClient.prototype.subscribe = function(event, handler) {
+MqttClient.prototype.subscribe = function (event, handler, cb) {
+  const { pubpath, subpath } = this.registry.resolve(event, this.id);
   let subscription = this.subscriptions.get(event);
 
   // setup subscription
   if (!subscription) {
-    this._subscribe(event);
+    this._subscribe(subpath, cb);
     subscription = [];
     this.subscriptions.set(event, subscription);
     this.server.on('message', (topic, message) => {
-      subscription.forEach(handler => handler && handler(message));
+      if (topic === subpath) {
+        subscription.forEach(handler => handler && handler(message.toString()));
+      }
     });
   }
 
   // register event handler
   const handlerId = subscription.push(handler) - 1;
   const unsubscribe = () => subscription.splice(handlerId, 1);
-  const publish = (message, options) => this._publish(event, message, options);
+  const publish = (message, options, cb) => this._publish(pubpath, message, options, cb);
 
   return [unsubscribe, publish];
 };
 
-MqttClient.prototype._subscribe = function(event) {
-  this.server.subscribe(event, (err) => {
-    if (err) throw new Error(err);
+MqttClient.prototype._subscribe = function (subpath, cb) {
+  this.server.subscribe(subpath, (err) => {
+    if (err) {
+      if (cb) cb(err);
+      throw new Error(err);
+    }
   });
 };
 
-MqttClient.prototype.publish = function() {
+MqttClient.prototype.publish = function (topic, message, options, cb) {
+  topic = this.registry.resolve(topic, this.id);
+  if (options instanceof Function) {
+    cb ||= options;
+    options = {};
+  }
+  this._publish(topic, message, options, cb)
   return 0;
 };
 
-MqttClient.prototype._publish = function(topic, message, options = {}) {
+MqttClient.prototype._publish = function (topic, message, options = {}, cb) {
+  if (options instanceof Function) {
+    cb ||= options;
+    options = {};
+  }
   this.server.publish(topic, JSON.stringify(message), options, (err) => {
-    if (err) throw new Error(err);
+    if (err) {
+      if (cb) cb(err);
+      throw new Error(err);
+    } else {
+      cb && cb(null);
+    }
   });
 };

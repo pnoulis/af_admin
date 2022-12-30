@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {client} from './index.js';
+import {devClient as client} from './index.js';
 
 export default function useMqtt(topic) {
   const [subscription, setSubscription] = useState({
@@ -24,20 +24,24 @@ export default function useMqtt(topic) {
   return [subscription.message, subscription.publish];
 }
 
-function useMqtt2(topic) {
+export function useMqtt2(topic) {
   const [subscription, setSubscription] = useState({
     err: null,
     message: null,
-    publish: () => {},
+    publish: (message, options, cb) => client.publish(topic, message, options, cb),
   });
 
   useEffect(() => {
     const [unsubscribe, publish] = client.subscribe(topic, (message) => {
-      setSubscription({err: null, message, publish});
+      setSubscription({...subscription, err: null, message: message.toString()});
     }, (err) => {
       err && setSubscription({...subscription, err});
     });
+    return () => {
+      console.log('unmounting');
+      unsubscribe();
+    }
   }, [topic]);
 
-  return subscription;
+  return {...subscription}
 }
