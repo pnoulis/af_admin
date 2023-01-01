@@ -173,35 +173,36 @@ function testClient(client, loadInterval = 5000) {
 }
 
 export default function setupClient(test = false, name, type, config = {}) {
-  const DEV = 0, PROD = 1, MSQ = 2;
   let conf = {};
-  conf.name = name;
+  conf.name = name || import.meta.env.MODE;
+  let client = CLIENTS.get(conf.name);
+  if (client) {
+    if (test) {
+      testClient(client);
+    }
+    return client;
+  }
+
+  const DEV = 0, PROD = 1, MSQ = 2;
   switch (type || import.meta.env.MODE) {
   case 'development':
     console.log('MQTT CLIENT RUNNING ON DEV MODE');
     conf = configureConf(DEV, DEV, DEV, DEV, config);
-    conf.name ||= 'dev';
     break;
   case 'production':
     console.log('MQTT CLIENT RUNNING ON PRODUCTION MODE');
     conf = configureConf(PROD, PROD, PROD, PROD, config);
-    conf.name ||= 'prod';
     break;
   case 'msq':
     console.log('MQTT CLIENT RUNNING ON MSQ MODE');
     conf = configureConf(MSQ, MSQ, MSQ, MSQ, config);
-    conf.name ||= 'msq';
     break;
   default:
     throw new Error(`Undefined client type:${type || import.meta.env.MODE}`);
   }
 
-  let client = CLIENTS.get(conf.name);
-  if (!client) {
-    client = new Client(conf);
-    CLIENTS.set(conf.name, client);
-  }
-
+  client = new Client(conf);
+  CLIENTS.set(conf.name, client);
   if (test) {
     testClient(client);
   }

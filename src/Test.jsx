@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import GlobalStore from '/src/stores/app.js';
-import setupClient from '/src/mqtt';
+import Client from '/src/mqtt';
 
-const client = setupClient(true, 'msq', 'msq');
+const client = Client(true, 'msq', 'msq');
 
 export default function Test() {
 
