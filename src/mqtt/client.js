@@ -1,85 +1,88 @@
 import { connect as MqttServer } from 'precompiled-mqtt';
-// General information
-// A *Topic* is considered registered if it is a member of the *registry map*.
-// The *registry map* maps *Aliases* to *Topics*. However, the user needs not
-// provide an Alias for each Topic, in which case the key of the Topic becomes
-// the Topic itself.
-
-// Default behavior:
-// By default each subscription shall first perform topic resolution.
-// The topic parser will try and match the Alias to the Topic.
-// If the Topic is found in the registry with a registered Alias
-// then the Topic is returned in the place of the Alias.
-// If the Topic is found in the registry but no Alias has been mapped
-// then the Topic is returned as is.
-
-// Options:
-
-// *strict*: [true | false] default: false
-// If true then the parser shall expect each Topic provided
-// to have been registered. If the Topic fails to meet that
-// condition then an Error is thrown.
-
-// The user can provide instructions to the topic parser individually on each
-// subscription.
-// A topic with an instruction attached is of the form:
-// ----> \instruction\/topic/path
-// The following characters are to be interpreted specially if found
-// within the instruction block of a topic if any.
-// r -> dont have to be in the registry
-// p -> literally, perform no parsing of any kind
 
 function Registry(config) {
-  this.registry = new Map(config.topics.map(topic => [
-    topic.alias,
-    {
-      pub: topic.pub,
-      sub: topic.sub,
-    }
-  ]));
   this.strict = config.strict;
+  this.params = config.params;
+  this.registry = new Map(config.topics.map((topic) => [
+    this.canonicalize(topic.alias),
+    {
+      pub: this.canonicalize(topic.pub || topic.alias),
+      sub: this.canonicalize(topic.sub || topic.alias),
+    }
+  ]))
+  return this;
 }
 
-Registry.prototype.resolve = function (topic, id) {
+Registry.prototype.canonicalize = function(...topics) {
+  // must conform to the syntax: /[a-zA-Z0-9]/[a-zA-Z0-9]
+  topics = topics.map(topic => {
+    if (!topic.startsWith('/')) topic = '/' + topic;
+    if (topic.endsWith('/')) topic = topic.slice(0, -1);
+    return topic;
+  });
+
+  return topics.length > 1 ? topics : topics.pop();
+}
+
+Registry.prototype.resolve = function(alias) {
+  let adhocParams = {};
+  if (typeof alias === 'object') {
+    adhocParams = alias;
+    alias = alias.alias;
+    delete adhocParams.alias;
+  }
+  const topic = this.canonicalize(alias);
   if (this.strict && !this.registry.has(topic)) {
     throw new Error(`No registry entry for topic:${topic}`);
   }
+  const { pub, sub } = this.registry.get(topic) || { pub: topic, sub: topic };
 
-  let { pub, sub } = this.registry.get(topic) || { pub: topic, sub: topic };
-
-  pub = pub.replace(/\${clientId}/, id);
-  sub = sub.replace(/\${clientId}/, id);
-
-  return { pubpath : pub, subpath: sub }
-};
-
-export default function MqttClient(config) {
-  this.name = config.name;
-  this.id = config.id;
-  const { server, registry } = this.parseConfig(config);
-  this.server = server;
-  this.start = (mode, topics) => {
-    this.server = MqttServer(server.host, server.options)
-      .on('connect', () => {
-        console.log(`Broker:${this.name} successfully connected`);
-        if (mode === 'test') {
-          setTimeout(() => this.dummyServer(topics), 1000);
-        }
-      })
-      .on('reconnect', () => console.log(`Client:${this.name} trying to reconnect`))
-      .on('error', (err) => console.log(`Client:${this.name} error: ${err}`))
-      .on('close', () => console.log(`Client:${this.name} closed`))
-      .on('offline', () => console.log(`Client:${this.name} offline`))
-      .on('disconnect', (packet) => console.log(`Client:${this.name} disconnected`));
-  }
-  this.subscriptions = new Map();
-  this.registry = new Registry(registry);
+  return [
+    topic,
+    ...this.canonicalize(...this.replaceParams(pub, sub, adhocParams)),
+  ]
 }
 
-MqttClient.prototype.parseConfig = function (config) {
+Registry.prototype.replaceParams = function(...topics) {
+  const params = (typeof topics[topics.length - 1] === 'object')
+        ? Object.assign({}, this.params, topics.pop())
+        : this.params;
+
+  topics = topics.map((topic) => topic.split(/\//).reduce((car, cdr) => {
+    if (!cdr.startsWith('$')) return car + cdr + '/';
+    const param = params[cdr.slice(2, -1)];
+    if (!param) throw new Error(`Missing parameter:${cdr} for topic:${topic}`);
+    return car + param + '/';
+  }));
+  return topics.length > 1 ? topics : topics.pop();
+}
+
+export default function Proxy(config = {}) {
+  const { proxy, server, registry, logger } = this.parseConfig(config);
+  this.name = proxy.name,
+  this.id = proxy.id,
+  this.server = server;
+  this.logger = logger;
+  this.registry = new Registry(registry);
+  this.events = new Map([
+    ['connect', []],
+    ['error', []],
+    ['close', []],
+    ['reconnect', []],
+    ['offline', []],
+    ['disconnect', []],
+  ]);
+  this.subscriptions = new Map();
+  return this;
+}
+
+Proxy.prototype.parseConfig = function(config) {
+  const proxy = { name: config.name || 'mqtt' };
+  proxy.id = proxy.id || proxy.name.concat('_', Math.random().toString(16).slice(2, 8));
   return {
+    proxy,
     server: {
-      host: config?.server?.host,
+      host: config.server?.host,
       options: {
         keepalive: 30,
         protocolId: 'MQTT',
@@ -87,147 +90,132 @@ MqttClient.prototype.parseConfig = function (config) {
         clean: false,
         reconnectPeriod: 1000,
         connectTimeout: 30 * 1000, // 30 seconds
-        clientId: this.id,
-        ...config?.server?.options,
-      }
+        clientId: proxy.id,
+        ...config.server?.options,
+      },
     },
     registry: {
-      topics: config.registry.topics || [],
-      strict: config.registry.hasOwnProperty('strict')
-        ? config.registry.strict
-        : true,
+      strict: config.registry?.hasOwnProperty('strict') ? config.registry.strict : true,
+      topics: config.registry?.topics || [],
+      params: config.registry?.params || {},
     },
-    errorHandler: config.errorHandler
-  };
-};
-
-MqttClient.prototype.dummyServer = function (...topics) {
-  if (topics.length === 0) {
-    topics = Array.from(this.registry.registry.values());
-  }
-
-  const message = (i) => {
-    return JSON.stringify(`dummy server:${this.name} TEST MESSAGE`);
-  };
-  const onErr = (topic, msg, err) => {
-    if (err) {
-      console.log(`server:${this.name} ${msg} ${err?.message}`);
-    } else {
-      console.log(`server:${this.name} published message:${msg} at topic:${topic}`);
+    logger: {
+      ...config.logger
     }
-  };
-  const publish = () => {
-    topics.forEach((topic, i) => {
-      this.server.publish(topic, message(i), (err) => onErr(topic, message(i), err));
-    })
-  }
-
-  const fire = () => {
-    const interval = 3000;
-    const start = () => publish();
-    const loopId = setInterval(start, interval);
-    const stop = () => {
-      clearTimeout(loopId);
-    }
-    //Release event handler
-    window.addEventListener('beforeunload', (e) => {
-      e.preventDefault();
-      stop();
-    });
-    setTimeout(stop, 10 * interval);
-  }
-
-  if (this.server.connected) {
-    console.log(`Server:${this.name} successfully connected`);
-    fire();
-  } else {
-    this.start().on('connect', () => {
-      console.log(`Server:${this.name} successfully connected`);
-      fire();
-    })
   }
 }
 
-MqttClient.prototype.dummyClient = function (...topics) {
-  if (topics.length === 0) {
-    topics = Array.from(this.registry.registry.values());
+Proxy.prototype.decode = function(payload) {
+  try {
+    payload = payload.toString();
+    payload = JSON.parse(payload);
+  } catch (err) {
+    throw err;
   }
-  this.server
+  return payload;
+}
+
+Proxy.prototype.encode = function(payload) {
+  try {
+    payload = JSON.stringify(payload);
+  } catch (err) {
+    throw err;
+  }
+  return payload;
+}
+
+Proxy.prototype.start = function() {
+  this.server = MqttServer(this.server.host, this.server.options)
     .on('connect', () => {
-      console.log(`client:${this.name} successfully connected`);
-      topics.forEach(t => {
-        this.server.subscribe(t, (err) => {
-          if (err) {
-            console.log(err);
-            console.log(`client:${this.name} failed to subscribe to topic:${t}`);
-            return;
-          }
-          console.log(`client:${this.name} successfully subscribed to topic:${t}`);
-          this.server.on('message', (t, message) => {
-            console.log(`New message:
-client:${this.name}
-topic:${t}
-message:${message.toString()}`);
-          });
-        });
-      })
+      this.events.get('connect')?.forEach(listener => listener && listener());
+    })
+    .on('error', (err) => {
+      this.events.get('error')?.forEach(listener => listener && listener(err))
+    })
+    .on('close', () => {
+      this.events.get('close')?.forEach(listener => listener && listener())
+    })
+    .on('reconnect', () => {
+      this.events.get('reconnect')?.forEach(listener => listener && listener())
+    })
+    .on('offline', () => {
+      this.events.get('offline')?.forEach(listener => listener && listener())
+    })
+    .on('disconnect', () => {
+      this.events.get('disconnect')?.forEach(listener => listener && listener())
     });
-};
+  return this;
+}
 
-MqttClient.prototype.subscribe = function (event, handler, cb) {
-  const { pubpath, subpath } = this.registry.resolve(event, this.id);
-  let subscription = this.subscriptions.get(event);
+Proxy.prototype.stop = function(force = false, options = {}, cb) {
+  if (typeof force === 'function') {
+    cb = force;
+    force = false;
+  } else if (typeof options === 'function') {
+    cb = options;
+    options = {};
+  }
+  this.server.end(force, options, cb);
+  return this;
+}
 
-  // setup subscription
-  if (!subscription) {
-    this._subscribe(subpath, cb);
-    subscription = [];
-    this.subscriptions.set(event, subscription);
-    this.server.on('message', (topic, message) => {
-      if (topic === subpath) {
-        subscription.forEach(handler => handler && handler(message.toString()));
+Proxy.prototype.on = function(event, listener) {
+  this.events.get(event).push(listener);
+  return this;
+}
+
+Proxy.prototype.subscribe = function(alias, client, cb) {
+  const [ topic, pub, sub ] = this.registry.resolve(alias);
+  const clients = this.subscriptions.get(topic) || [];
+  if (!clients.length) {
+    this._subscribe(sub, cb);
+    this.subscriptions.set(topic, clients);
+    this.server.on('message', (topic, payload) => {
+      if (topic === sub) {
+        clients.forEach(client => client && client(this.decode(payload)))
       }
     });
   }
+  const clientId = clients.push(client) - 1;
+  return [
+    // unsubscribe
+    () => clients.splice(clientId, 1),
+    // publish
+    (payload, options, cb) => this._publish(pub, payload, options, cb),
+  ];
+}
 
-  // register event handler
-  const handlerId = subscription.push(handler) - 1;
-  const unsubscribe = () => subscription.splice(handlerId, 1);
-  const publish = (message, options, cb) => this._publish(pubpath, message, options, cb);
-
-  return [unsubscribe, publish];
-};
-
-MqttClient.prototype._subscribe = function (subpath, cb) {
-  this.server.subscribe(subpath, (err) => {
+Proxy.prototype._subscribe = function(sub, options, cb) {
+  if (options instanceof Function) {
+    cb = options;
+    options = {};
+  }
+  this.server.subscribe(sub, options, (err) => {
+    cb && cb(err);
     if (err) {
-      if (cb) cb(err);
+      throw new Error(err);
+    }
+  })
+}
+
+Proxy.prototype.publish = function(alias, payload, options, cb) {
+  const [ topic, pub, sub ] = this.registry.resolve(alias);
+  if (options instanceof Function) {
+    cb = options;
+    options = {};
+  }
+  this._publish(pub, payload, options, cb);
+}
+
+Proxy.prototype._publish = function(pub, payload, options, cb) {
+  if (options instanceof Function) {
+    cb = options;
+    options = {};
+  }
+  this.server.publish(pub, this.encode(payload), options, (err) => {
+    cb && cb(err);
+    if (err) {
       throw new Error(err);
     }
   });
-};
-
-MqttClient.prototype.publish = function (topic, message, options, cb) {
-  topic = this.registry.resolve(topic, this.id);
-  if (options instanceof Function) {
-    cb ||= options;
-    options = {};
-  }
-  this._publish(topic, message, options, cb)
-  return 0;
-};
-
-MqttClient.prototype._publish = function (topic, message, options = {}, cb) {
-  if (options instanceof Function) {
-    cb ||= options;
-    options = {};
-  }
-  this.server.publish(topic, JSON.stringify(message), options, (err) => {
-    if (err) {
-      if (cb) cb(err);
-      throw new Error(err);
-    } else {
-      cb && cb(null);
-    }
-  });
-};
+}

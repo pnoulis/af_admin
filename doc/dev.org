@@ -61,3 +61,43 @@ the StorageEvent is fired whenever a change is made to the Storage object.
 
 ** Cookies
 * Session implementation
+* Mqtt
+An mqtt client is a message delivery agent.
+
+A responsible mqtt client *must* provide such facilities as to be able to bring
+forth *accurate*, *definitive* and *up to date* information about the state of a
+message.
+
+** Questions
+If an mqtt exchange operates in blocking and non-blocking mode (synchronous and
+asynchronous) which facilities does npm/mqtt offer for selecting between the 2?
+
+** Glossary
+*** Payload
+A payload is the client's data admitted for distribution. The term excludes the
+data added by the broker.
+*** Message
+A message is comprised of the payload, the topic and any other information added
+by the broker.
+*** Topic
+A topic is an address of channel.
+*** Broker
+A broker is relatively equivalent to a server in the mqtt universe.
+It is responsible for:
+
+Enabling publishers.
+Admitting subscribers.
+Making sure to forward messages to their registered channel.
+*** Publisher
+A client to the broker, who has submitted a payload for distribution to the
+network.
+*** Subscriber
+A client to the broker, who has registered an interest in collecting published
+payloads.
+
+
+
+
+** My Client
+this.server._subscibe -> asynchronous
+this.server._publish -> asynchronous

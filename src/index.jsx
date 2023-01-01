@@ -72,12 +72,10 @@ function GlobalState({ children }) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Test/>
+    <React.StrictMode>
+      <GlobalState>
+        <RouterProvider router={router} />
+      </GlobalState>
+    </React.StrictMode>
   </React.StrictMode>
-  );
-
-/* <React.StrictMode> */
-/* <GlobalState> */
-/* <RouterProvider router={router} /> */
-/* </GlobalState> */
-/* </React.StrictMode> */
+);

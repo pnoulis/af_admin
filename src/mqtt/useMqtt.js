@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react';
-import {devClient as client} from './index.js';
 
 export default function useMqtt(topic) {
   const [subscription, setSubscription] = useState({
