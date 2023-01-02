@@ -4,7 +4,7 @@ import GlobalStore from '/src/stores/app.js';
 import Client from '/src/mqtt';
 
 const {useMqtt, client} = Client(false, 'msq', 'msq');
-client.start().on('connect', () => {
+client.on('connect', () => {
   console.log('CONNECTED');
   client.publish('test/one', 'pavlos');
 })

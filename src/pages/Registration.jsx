@@ -11,8 +11,8 @@ export default function Registration() {
     return (
         <React.Fragment>
           <PanelHeader>
-            <HeaderItem redirect to='team/player/add' Img={AddPlayerIcon} content='add player'/>
-            <HeaderItem to='team/create' Img={MergeTeamIcon} content='create team'/>
+            <HeaderItem redirect to='team/create' Img={MergeTeamIcon} content='create team'/>
+            <HeaderItem to='team/player/add' Img={AddPlayerIcon} content='add player'/>
             <HeaderItem to='team/package/create' Img={PackageIcon} content='create package'/>
             <HeaderItem to='team/package/add' Img={SummaryIcon} content='submit'/>
           </PanelHeader>

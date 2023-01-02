@@ -204,6 +204,7 @@ export default function setupClient(test = false, name, type, config = {}) {
 
   client = new Client(conf);
   CLIENTS.set(conf.name, client);
+  client.start();
   if (test) {
     testClient(client);
   }

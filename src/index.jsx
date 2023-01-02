@@ -8,7 +8,9 @@ import Login from './components/Auth/Login.jsx';
 import GlobalStore from '/src/stores/app.js';
 import Registration from './pages/Registration.jsx';
 import AddPlayer from './pages/AddPlayer.jsx';
+import MQTT_START from '/src/mqtt';
 
+MQTT_START();
 const router = createBrowserRouter([
   {
     path: "/",

@@ -6,8 +6,8 @@ const Container = styled.div`
 .HeaderItem-link {
 display: flex;
 flex-flow: column nowrap;
-width: 110px;
-height: 100px;
+width: 120px;
+height: 110px;
 padding: 10px 5px 0px 5px;
 background-color: #555555;
 align-items: center;
