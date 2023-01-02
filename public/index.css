@@ -1,24 +1,26 @@
 :root {
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
 
 html {
-    background-color: rgba(160, 169, 200, 0.05);
+  background-color: rgba(160, 169, 200, 0.05);
 }
 
 html,
 body,
 #root {
-    min-height: 100vh;
-    min-width: 100vw;
-    font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-        Helvetica Neue, sans-serif;
+  box-sizing: border-box;
+  min-height: 100vh;
+  min-width: 100vh;
+  padding: 0 2px;
+  font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, sans-serif;
 }
 
 .isActive {
-    background-color: "#d199ff"
+  background-color: "#d199ff"
 }

@@ -1,26 +1,26 @@
 import {useState, useEffect} from 'react';
 import {FormStore} from '/src/stores';
 
-function handleInput(e, set, name, value) {
-  e.preventDefault();
-  set('setInput', name, value);
-}
 
-
-
-export function TextField_0({disabled, type, name, placeholder}) {
+export function TextField_0({className, disabled, type, name, placeholder}) {
   const {fields, setForm} = FormStore.use();
 
+  function handle(e) {
+    e.preventDefault();
+    setForm('setInput', name, e.target.value);
+  }
+
   return (
-    <div>
-      <label htmlFor={name}>
+    <div className={className + `${fields[name] ? ' hasText' : ' empty'}`}
+    >
+      <label className='label' htmlFor={name}>
         {name}
       </label>
       <input
-      type={type || text}
+      className='input'
+      type={type || 'text'}
       id={name}
-      value={fields[name]}
-      onChange={(e) => handleInput(e, setForm, name, e.target.value)}
+      onChange={(e) => handle(e)}
       autoComplete='off'
       placeholder={placeholder}
       disabled={disabled}
