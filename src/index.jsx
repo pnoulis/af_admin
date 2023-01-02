@@ -20,7 +20,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'team/player/add',
-            element: <AddPlayer/>
+            element: <AddPlayer />
           },
           {
             path: 'team/create',
@@ -72,10 +72,10 @@ function GlobalState({ children }) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <React.StrictMode>
-      <GlobalState>
-        <RouterProvider router={router} />
-      </GlobalState>
-    </React.StrictMode>
+    <GlobalState>
+      <RouterProvider router={router} />
+    </GlobalState>
   </React.StrictMode>
 );
+
+

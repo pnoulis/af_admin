@@ -1,46 +1,23 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
-export default function useMqtt(topic) {
-  const [subscription, setSubscription] = useState({
-    publish: () => { },
-    message: null,
-  });
+export default function setupHooks(client) {
+  function useMqtt(alias, defer = false) {
+    const [subscription, setSubscription] = useState({});
+    useEffect(() => {
+      const [unsubscribe, publish, subscribe] = client.subscribe(alias)
 
-  useEffect(() => {
-    const [unsub, publish] = client.subscribe(topic, (response) => {
-      console.log(`response:${response.toString()}`);
-      setSubscription({
-        publish,
-        message: response.toString(),
-      });
-    });
-    return () => {
-      console.log('unmounting');
-      unsub();
-    };
-  }, []);
+      if (defer) {
+        setSubscription({ publish, subscribe });
+      } else {
+        subscribe((message) => {
+          setSubscription({ message, ...subscription })
+        })
+      }
+      return () => unsubscribe();
+    }, [alias])
 
-  return [subscription.message, subscription.publish];
-}
+    return { ...subscription };
+  }
 
-export function useMqtt2(topic) {
-  const [subscription, setSubscription] = useState({
-    err: null,
-    message: null,
-    publish: (message, options, cb) => client.publish(topic, message, options, cb),
-  });
-
-  useEffect(() => {
-    const [unsubscribe, publish] = client.subscribe(topic, (message) => {
-      setSubscription({...subscription, err: null, message: message.toString()});
-    }, (err) => {
-      err && setSubscription({...subscription, err});
-    });
-    return () => {
-      console.log('unmounting');
-      unsubscribe();
-    }
-  }, [topic]);
-
-  return {...subscription}
+  return useMqtt;
 }

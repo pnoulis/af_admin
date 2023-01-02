@@ -1,4 +1,5 @@
 import Client from './client.js';
+import setupHooks from './useMqtt.js';
 
 const CLIENTS = new Map();
 
@@ -43,7 +44,7 @@ const serverPresets = [
       `${import.meta.env?.VITE_REACT_APP_BROKER_URL}:` +
       `${import.meta.env?.VITE_REACT_APP_BROKER_PORT}`,
     options: {
-      username:  import.meta.env?.VITE_REACT_APP_BROKER_USERNAME,
+      username: import.meta.env?.VITE_REACT_APP_BROKER_USERNAME,
       password: import.meta.env?.VITE_REACT_APP_BROKER_PASSWORD,
     }
   },
@@ -91,12 +92,12 @@ const loggerPresets = [
 ]
 
 function configureConf(clientPreset, serverPreset,
-                   registryPreset, loggerPreset, adhocConf) {
+  registryPreset, loggerPreset, adhocConf) {
   return {
-    proxy: {...clientPresets[clientPreset], ...adhocConf?.client},
-    server: {...serverPresets[serverPreset], ...adhocConf?.server},
-    registry: {...registryPresets[registryPreset], ...adhocConf?.registry},
-    logger: {...loggerPresets[loggerPreset], ...adhocConf?.logger},
+    proxy: { ...clientPresets[clientPreset], ...adhocConf?.client },
+    server: { ...serverPresets[serverPreset], ...adhocConf?.server },
+    registry: { ...registryPresets[registryPreset], ...adhocConf?.registry },
+    logger: { ...loggerPresets[loggerPreset], ...adhocConf?.logger },
   }
 }
 
@@ -151,10 +152,10 @@ function subscribeAll(client) {
 
 function testClient(client, loadInterval = 5000) {
   client.start().on('connect', () => {
-      console.log(`client:${client.id} CONNECTED`);
-      emulateLoad(client, loadInterval);
-      subscribeAll(client);
-    })
+    console.log(`client:${client.id} CONNECTED`);
+    emulateLoad(client, loadInterval);
+    subscribeAll(client);
+  })
     .on('error', (err) => {
       console.log(`client:${client.id} ERR: ${err.message}`);
     })
@@ -180,25 +181,25 @@ export default function setupClient(test = false, name, type, config = {}) {
     if (test) {
       testClient(client);
     }
-    return client;
+    return {useMqtt: setupHooks(client), client};
   }
 
   const DEV = 0, PROD = 1, MSQ = 2;
   switch (type || import.meta.env.MODE) {
-  case 'development':
-    console.log('MQTT CLIENT RUNNING ON DEV MODE');
-    conf = configureConf(DEV, DEV, DEV, DEV, config);
-    break;
-  case 'production':
-    console.log('MQTT CLIENT RUNNING ON PRODUCTION MODE');
-    conf = configureConf(PROD, PROD, PROD, PROD, config);
-    break;
-  case 'msq':
-    console.log('MQTT CLIENT RUNNING ON MSQ MODE');
-    conf = configureConf(MSQ, MSQ, MSQ, MSQ, config);
-    break;
-  default:
-    throw new Error(`Undefined client type:${type || import.meta.env.MODE}`);
+    case 'development':
+      console.log('MQTT CLIENT RUNNING ON DEV MODE');
+      conf = configureConf(DEV, DEV, DEV, DEV, config);
+      break;
+    case 'production':
+      console.log('MQTT CLIENT RUNNING ON PRODUCTION MODE');
+      conf = configureConf(PROD, PROD, PROD, PROD, config);
+      break;
+    case 'msq':
+      console.log('MQTT CLIENT RUNNING ON MSQ MODE');
+      conf = configureConf(MSQ, MSQ, MSQ, MSQ, config);
+      break;
+    default:
+      throw new Error(`Undefined client type:${type || import.meta.env.MODE}`);
   }
 
   client = new Client(conf);
@@ -206,5 +207,6 @@ export default function setupClient(test = false, name, type, config = {}) {
   if (test) {
     testClient(client);
   }
-  return client;
+
+  return {useMqtt: setupHooks(client), client};
 }

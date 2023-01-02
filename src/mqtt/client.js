@@ -172,16 +172,21 @@ Proxy.prototype.subscribe = function(alias, client, cb) {
     this.subscriptions.set(topic, clients);
     this.server.on('message', (topic, payload) => {
       if (topic === sub) {
-        clients.forEach(client => client && client(this.decode(payload)))
+        clients.forEach((client) => client && client(this.decode(payload)))
       }
     });
   }
-  const clientId = clients.push(client) - 1;
+
+  const clientId = clients.push(client || null) - 1;
+
+  if (!client) {
+    var defer = (client) => clients[clientId] = client;
+  }
+
   return [
-    // unsubscribe
     () => clients.splice(clientId, 1),
-    // publish
     (payload, options, cb) => this._publish(pub, payload, options, cb),
+    defer,
   ];
 }
 
