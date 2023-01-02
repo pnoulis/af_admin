@@ -101,3 +101,96 @@ payloads.
 ** My Client
 this.server._subscibe -> asynchronous
 this.server._publish -> asynchronous
+
+* Color pallete
+** purple
+#+begin_src css
+  /* BLACK */
+  #000000
+
+  /* WHITE */
+  #ffffff
+
+  /* PURPLE */
+  #f3e5f5
+  #e1bee7
+  #ce93d8
+  #ba68c8
+  #ab47bc
+  #9c27b0
+  #8e24aa
+  #7b1fa2
+  #6a1b9a
+  #4a148c
+  #ea80fc
+  #e040fb
+  #d500f9
+  #aa00ff
+
+
+  #f2f0fc
+  #cbc1ff
+  #b2a3ff
+  #a18fff
+  #8476d1
+  #6753ac
+  #40199a
+  #1f0066
+
+  /* DEEP PURPLE */
+  #ede7f6
+  #d1c4e9
+  #b39ddb
+  #9575cd
+  #7e57c2
+  #673ab7
+  #5e35b1
+  #512da8
+  #4527a0
+  #311b92
+  #b388ff
+  #7c4dff
+  #651fff
+  #6200ea
+
+  /* GREY */
+  #FFF
+  #f9f9f9
+  #f0f0f0
+  #e8e8e8
+  #dfdfdf
+  #d7d7d7
+  #cecece
+  #c6c6c6
+  #bdbdbd
+  #b4b4b4
+  #acacac
+  #a3a3a3
+  #9b9b9b
+  #939393
+  #8a8a8a
+  #828282
+  #797979
+
+
+  /* AF ADMIN */
+  base: #d199ff
+  shade: #c988ff
+  shade: #c277ff
+  shade: #ba66ff
+  shade: #b255ff
+
+  #9F34F7
+  #793BAB
+  #9F34F7
+  #793BAB
+  #793BAB
+  #9F34F7
+
+  /* 3 Main colors */
+  /* 60% */ #d199FF hsl(273, 100%, 80%)
+  /* 30% */ #FF92DE hsl(318, 100%, 79%)
+  /* 30% */ #AEA0FF hsl(249, 100%, 81%)
+
+  
+#+end_src

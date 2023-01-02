@@ -1,0 +1,158 @@
+:root {
+  --purple-color-h: 273;
+  --purple-color-s: 80%;
+  --purple-color-l: 50%;
+
+  --pink-color-h: 318;
+  --pink-color-s: 80%;
+  --pink-color-l: 50%;
+
+  --blue-color-h: 249;
+  --blue-color-s: 80%;
+  --blue-color-l: 50%;
+
+  --purple-color: hsl(var(--purple-color-h), var(--purple-color-s), var(--purple-color-l));
+  --purple-color-10: hsl(var(--purple-color-h), var(--purple-color-s), calc(var(--purple-color-l) + 5%));
+  --purple-color-20: hsl(var(--purple-color-h), var(--purple-color-s), calc(var(--purple-color-l) + 10%));
+  --purple-color-30: hsl(var(--purple-color-h), var(--purple-color-s), calc(var(--purple-color-l) + 15%));
+  --purple-color-40: hsl(var(--purple-color-h), var(--purple-color-s), calc(var(--purple-color-l) + 20%));
+  --purple-color-50: hsl(var(--purple-color-h), var(--purple-color-s), calc(var(--purple-color-l) + 25%));
+  --purple-color-60: hsl(var(--purple-color-h), var(--purple-color-s), calc(var(--purple-color-l) + 30%));
+  --purple-color-70: hsl(var(--purple-color-h), var(--purple-color-s), calc(var(--purple-color-l) + 35%));
+  --purple-color-80: hsl(var(--purple-color-h), var(--purple-color-s), calc(var(--purple-color-l) + 40%));
+
+  --pink-color: hsl(var(--pink-color-h), var(--pink-color-s), var(--pink-color-l));
+  --pink-color-10: hsl(var(--pink-color-h), var(--pink-color-s), calc(var(--pink-color-l) + 5%));
+  --pink-color-20: hsl(var(--pink-color-h), var(--pink-color-s), calc(var(--pink-color-l) + 10%));
+  --pink-color-30: hsl(var(--pink-color-h), var(--pink-color-s), calc(var(--pink-color-l) + 15%));
+  --pink-color-40: hsl(var(--pink-color-h), var(--pink-color-s), calc(var(--pink-color-l) + 20%));
+  --pink-color-50: hsl(var(--pink-color-h), var(--pink-color-s), calc(var(--pink-color-l) + 25%));
+  --pink-color-60: hsl(var(--pink-color-h), var(--pink-color-s), calc(var(--pink-color-l) + 30%));
+  --pink-color-70: hsl(var(--pink-color-h), var(--pink-color-s), calc(var(--pink-color-l) + 35%));
+  --pink-color-80: hsl(var(--pink-color-h), var(--pink-color-s), calc(var(--pink-color-l) + 40%));
+
+  --blue-color: hsl(var(--blue-color-h), var(--blue-color-s), var(--blue-color-l));
+  --blue-color-10: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 5%));
+  --blue-color-20: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 10%));
+  --blue-color-30: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 15%));
+  --blue-color-40: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 20%));
+  --blue-color-50: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 25%));
+  --blue-color-60: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 30%));
+  --blue-color-70: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 35%));
+  --blue-color-80: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 40%));
+}
+
+.purple {
+  background: var(--purple-color);
+}
+
+.purple-10 {
+  background: var(--purple-color-10);
+}
+
+.purple-20 {
+  background: var(--purple-color-20);
+}
+
+.purple-30 {
+  background: var(--purple-color-30);
+}
+
+.purple-40 {
+  background: var(--purple-color-40);
+}
+
+.purple-50 {
+  background: var(--purple-color-50);
+}
+
+.purple-60 {
+  background: var(--purple-color-60);
+}
+
+.purple-70 {
+  background: var(--purple-color-70);
+}
+
+.purple-80 {
+  background: var(--purple-color-80);
+}
+
+.pink {
+  background: var(--pink-color);
+}
+
+.pink-10 {
+  background: var(--pink-color-10);
+}
+
+.pink-20 {
+  background: var(--pink-color-20);
+}
+
+.pink-30 {
+  background: var(--pink-color-30);
+}
+
+.pink-40 {
+  background: var(--pink-color-40);
+}
+
+.pink-50 {
+  background: var(--pink-color-50);
+}
+
+.pink-60 {
+  background: var(--pink-color-60);
+}
+
+.pink-70 {
+  background: var(--pink-color-70);
+}
+
+.pink-80 {
+  background: var(--pink-color-80);
+}
+
+.blue {
+  background: var(--blue-color);
+}
+
+.blue-10 {
+  background: var(--blue-color-10);
+}
+
+.blue-20 {
+  background: var(--blue-color-20);
+}
+
+.blue-30 {
+  background: var(--blue-color-30);
+}
+
+.blue-40 {
+  background: var(--blue-color-40);
+}
+
+.blue-50 {
+  background: var(--blue-color-50);
+}
+
+.blue-60 {
+  background: var(--blue-color-60);
+}
+
+.blue-70 {
+  background: var(--blue-color-70);
+}
+
+.blue-80 {
+  background: var(--blue-color-80);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(9, 100px);
+  grid-template-rows: repeat(3, 40px);
+  grid-gap: 4px
+}
