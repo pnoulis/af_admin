@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { language } from '/src/misc';
-import GlobalStore from '/src/stores/app.js';
+import {GlobalStore} from '/src/stores';
 
 const Container = styled.div`
     flex: 0 0 100px;
@@ -38,6 +38,9 @@ const Container = styled.div`
 
 export default function LangWidget() {
     const { state, dispatch } = GlobalStore.use();
+    console.log('from the lang widgeht');
+    console.log(state);
+    console.log(dispatch);
     return (
         <Container>
             <ul>

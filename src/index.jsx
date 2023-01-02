@@ -5,7 +5,7 @@ import "@fontsource/roboto";
 import App from './components/App/App.jsx';
 import Test from './Test.jsx';
 import Login from './components/Auth/Login.jsx';
-import GlobalStore from '/src/stores/app.js';
+import {GlobalStore} from '/src/stores';
 import Registration from './pages/Registration.jsx';
 import AddPlayer from './pages/AddPlayer.jsx';
 import MQTT_START from '/src/mqtt';
@@ -64,7 +64,6 @@ const router = createBrowserRouter([
 
 function GlobalState({ children }) {
   const [state, dispatch] = GlobalStore.init();
-
   return (
     <GlobalStore.Provide value={{ state, dispatch }}>
       {children}

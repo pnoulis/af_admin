@@ -1,27 +1,39 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import GlobalStore from '/src/stores/app.js';
+import { GlobalStore, FormStore } from '/src/stores';
+import { TextField_0 } from '/src/components/Fields';
 import Client from '/src/mqtt';
 
-const {useMqtt, client} = Client(false, 'msq', 'msq');
-client.on('connect', () => {
-  console.log('CONNECTED');
-  client.publish('test/one', 'pavlos');
-})
+
+
+function NewTeamForm() {
+  const [team, setTeam] = FormStore.init({
+    fields: {
+      teamName: '',
+    }
+  });
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
+  console.log(team);
+  return (
+    <FormStore.Provide value={{ ...team, setForm: setTeam }}>
+      <form onSubmit={(e) => handleSubmit(e)}>
+        <TextField_0
+          type='text'
+          name='teamName'
+        />
+      </form>
+    </FormStore.Provide>
+  )
+}
 
 export default function Test() {
-  const {message} = useMqtt('test/one');
-
-  useEffect(() => {
-    if (message) {
-      console.log('MESSAGE ARRIVED');
-      console.log(message);
-    }
-  }, [message]);
 
   return (
     <React.Fragment>
       <h1>Hi this is a test</h1>
+      <NewTeamForm />
     </React.Fragment>
   );
 }
