@@ -40,6 +40,46 @@
   --blue-color-60: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 30%));
   --blue-color-70: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 35%));
   --blue-color-80: hsl(var(--blue-color-h), var(--blue-color-s), calc(var(--blue-color-l) + 40%));
+
+
+  /* feedback */
+  --color-success: green;
+  --color-error: red;
+  --color-warning: purple;
+
+  /* themes */
+
+  /* typography */
+  --text-on-dark-color: white;
+  --text-ratio: 1.2;
+  --text-nl: 0.875em;
+  --text-xs: calc(var(--text-nl) / var(--text-ratio));
+  --text-sm: calc(var(--text-xs) * var(--text-ratio));
+  --text-md: calc(var(--text-sm) * var(--text-ratio));
+  --text-lg: calc(var(--text-md) * var(--text-ratio));
+  --text-xl: calc(var(--text-lg) * var(--text-ratio));
+  --text-xxl: calc(var(--text-xl) * var(--text-ratio));
+  --text-xxxl: calc(var(--text-xxl) * var(--text-ratio));
+
+  /* spacing system */
+  --space: 1em;
+  --space-xxxxs: calc(0.125 * var(--space));
+  --space-xxxs: calc(0.25 * var(--space));
+  --space-xxs: calc(0.375 * var(--space));
+  --space-xs: calc(0.5 * var(--space));
+  --space-sm: calc(0.75 * var(--space));
+  --space-md: calc(1.25 * var(--space));
+  --space-lg: calc(2 * var(--space));
+  --space-xl: calc(3.25 * var(--space));
+  --space-xxl: calc(5.25 * var(--space));
+  --space-xxxl: calc(8.5 * var(--space));
+  --space-xxxxl: calc(13.75 * var(--space));
+
+  /* layer system */
+  /* common */
+  --border-radius-0: 4px;
+  --border-radius-1: 8px;
+  --border-radius-2: 16px;
 }
 
 .purple {

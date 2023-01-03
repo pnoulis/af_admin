@@ -172,6 +172,35 @@ this.server._publish -> asynchronous
   #828282
   #797979
 
+  pearl bush: hsl(30, 25%, 91%)
+  athens gray: hsl(240, 3%, 94%)
+  white smoke: hsl(0, 0%, 93%)
+  lynch: hsl(211, 12%, 48%)
+  pumice: hsl(132, 6%, 83%)
+  gallery: hsl(0, 0%, 93%)
+  silver sand: hsl(204, 8%, 76%)
+  porcelain: hsl(192, 15%, 94%)
+  cascade: hsl(184, 9%, 62%)
+  iron: hsl(197, 10%, 87%);
+  edward: hsl(180, 8%, 69%);
+  cararra: hsl(40, 10%, 94%);
+  silver: hsl(0, 0, 75%)
+  solitude: hsl(207, 20%, 91%)
+  pampas: hsl(30, 14%, 95%);
+  mystic: hsl(213, 24%, 93%)
+  mercury: hsl(0, 0%, 91%)
+
+
+REDS:
+https://cssgradient.io/shades-of-red/
+airbnb #fd5c63 // saturated, rugged, light
+alabama crimson: #9e1b32 // bold, saturated, heavy
+american rose: #FF033E // saturated, pastel, full, bright
+
+
+GREENS:
+https://cssgradient.io/shades-of-green/
+
 
   /* AF ADMIN */
   base: #d199ff
@@ -194,3 +223,127 @@ this.server._publish -> asynchronous
 
   
 #+end_src
+** functional colors
+The purpose of the color in terms of where it is to be used defines the name of the variable.
+
+--primary-color: var(--some-color-10);
+--primary-border-color: var(--green-color-10);
+--primary-hover-color: var(--gren-color);
+** Links color
+primary
+primary-hover
+primary-active
+primary-visited
+text-font-color
+** Buttons
+primary
+primary-hover
+primary-active
+primary-focus
+primary-shadow
+CTA -> call to action
+border
+shadow?
+
+** splitting colors
+fills
+strokes
+text
+
+
+basic-strong
+basic-medium
+basic-base
+basic-light
+basic-subtle
+
+contrast-strong
+contrast-medium
+contrast-base
+contrast-light
+contrast-subtle
+
+accent-strong
+accent-medium
+accent-base
+accent-light
+accent-subtle
+
+text-strong
+text-medium
+text-base
+text-light
+text-subtle
+
+generic-strong
+generic-medium
+generic-base
+generic-light
+generic-subtle
+
+
+ /* forms */
+    --form-element-border: var(--color-border);
+    --form-element-border-focus: var(--color-primary);
+    --form-element-border-error: var(--color-error);
+    --form-element-bg: var(--white);
+    --form-text-placeholder: var(--gray-4);
+
+    /* buttons */
+    --btn-primary-bg: var(--color-primary);
+    --btn-primary-hover: var(--color-primary-light);
+    --btn-primary-active: var(--color-primary-dark);
+    --btn-primary-label: var(--white);
+
+
+    color-text: var(--gray-10);
+    --color-text-heading: var(--black);
+    --color-text-subtle: var(--gray-6);
+    --color-link: var(--color-primary);
+    --color-link-visited: var(--color-primary-dark);
+    --color-mark: var(--color-accent-bg);
+    --color-blockquote-border: var(--gray-2);
+
+--maximeheckel-form-input-active': 'var(--maximeheckel-colors-brand)',
+    '--maximeheckel-form-input-background': 'hsl(var(--palette-gray-00))',
+    '--maximeheckel-form-input-disabled': 'hsl(var(--palette-gray-09))',
+    '--maximeheckel-form-input-border': 'hsl(var(--palette-blue-10))',
+    '--maximeheckel-form-input-focus': 'hsla(var(--palette-blue-40), 0.55
+
+    --button-text-shadow-color: rgba(0, 0, 0, 0.15);
+    --button-shadow-color: rgba(0, 0, 0, 0.2);
+    --button-primary-color: var(--blumine-color);
+    --button-success-color: var(--emerald-color);
+    --button-primary-hov-color: var(--bali-hai-color);
+    --button-success-hov-color: var(--algae-green-color);
+    --button-hover-color: var(--jelly-bean-color);
+    --coin-button-border-color: var(--calypso-color);
+    --coin-button-bg-color: var(--dark-blumine-color);
+    --coin-button-shadow-color: var(--transparent-geyser-color);
+
+    --option-link-color: var(--tower-gray-color);
+    --option-link-hov-color: var(--hit-gray-color);
+    --option-link-border-color: var(--geyser-color);
+    --option-link-bg-color: var(--mystic-color);
+    --option-link-hov-bg-color: var(--darker-mystic-color);
+
+
+    --link-color: var(--bali-hai-color);
+    --navigation-bg-color: var(--blumine-color);
+    --active-item-color: var(--scooter-color);
+    --hover-icon-color: var(--emerald-color);
+
+ --error-text-color: var(--sunglo-color);
+    --error-border-light-color: var(--azalea-color);
+    --error-border-dark-color: var(--mandys-pink-color);
+
+     --serif-fonts: Lora,'Times New Roman', serif;
+    --sans-serif-fonts: Montserrat, Helvetica, sans-serif;
+
+    --welcome-head-text: 1.75em;
+    --welcome-text: 1.125em;
+    --head-1-text: 3.5rem;
+    --head-2-text: 1.5rem;
+    --head-3-text: 1.2rem;
+    --date-text: 1.75rem;
+    --normal-text: 0.875rem;
