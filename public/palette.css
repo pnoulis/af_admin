@@ -142,7 +142,7 @@
   --primary-subtle: var(--purple-15);
   --primary-light: var(--purple-14);
   --primary-base: var(--purple-12);
-  --primary-medium: var(--purple-10);
+  --primary-medium: var(--purple-9);
   --primary-strong: var(--purple-6);
 
   --secondary-subtle: var(--pink-15);
@@ -778,7 +778,8 @@
 }
 
 .link-site.hover {
-  opacity: 60%;
+  opacity: 80%;
+  box-shadow: -1px 1px 15px 2px var(--primary-medium) inset;
 }
 
 .link-site.active {
@@ -797,11 +798,11 @@
   border-radius: var(--border-radius-0);
   border: 2px solid transparent;
   background-color: var(--generic-strong);
-  background-image: url(/assets/icons/svg_test_filled.svg);
+  background-image: url('/assets/icons/twitter_black_filled.png');
   background-size: 50%;
   background-position: top center;
   background-repeat: no-repeat;
-
+  box-shadow: var(--primary-subtle) 0px 6px 24px 0px, var(--primary-subtle) 0px 0px 0px 1px;
   font-family: 'Roboto';
   font-size: var(--text-xs);
   font-weight: normal;
@@ -809,21 +810,36 @@
   text-decoration: none;
   letter-spacing: 1px;
   overflow-wrap: break-word;
+  transition: width 1.5s, height: 1.5s;
   cursor: pointer;
 }
 
 .link-panel.hover {
-  opacity: 60%;
-  border: 2px solid var(--primary-strong);
+  opacity: 50%;
 }
 
 .link-panel.active {
-  background-image: url(/assets/icons/svg_test_filled.svg);
+  background-image: url('/assets/icons/twitter_white_filled.png');
   background-color: var(--primary-medium);
   color: var(--generic-base);
   letter-spacing: 1px;
   font-weight: bold;
 }
+
+.link-panel.try:hover {
+  opacity: 50%;
+}
+
+.link-panel.try:active {
+  background-image: url('/assets/icons/twitter_white_filled.png');
+  background-color: var(--primary-medium);
+  color: var(--generic-base);
+  letter-spacing: 1px;
+  font-weight: bold;
+  opacity: 100%; !important;
+}
+
+
 
 .button-text {
   display: flex;
@@ -832,7 +848,7 @@
   width: 100%;
   height: var(--space-xl);
 
-  background-color: var(--secondary-strong);
+  /* background-color: var(--secondary-strong); */
   color: var(--generic-base);
   border-radius: var(--border-radius-0);
 
@@ -844,11 +860,206 @@
   letter-spacing: 1px;
   overflow-wrap: break-word;
   cursor: pointer;
+  transition: 0.5s;
+  background-size: 200% auto;
+
+  background-image: linear-gradient(to right, var(--secondary-strong) 0%, var(--primary-strong) 51%, var(--secondary-strong) 100%);
+}
+
+.button-text.active {
+  background: var(--secondary-strong);
 }
 
 .button-text.hover {
-  padding: var(--space-xxxs);
+  background-position: right center;
+}
+
+.button-text.try:active {
+  transition: initial;
+  background: var(--secondary-strong);
+}
+
+.button-text.try:hover {
+  background-position: right center;
+}
+
+.text-input {
+  box-sizing: border-box;
+  border-radius: 6px;
   position: relative;
+  width: 200px;
+  height: 55px;
+  cursor: pointer;
+}
+
+.text-input label {
+  padding: 0 5px;
+  border-radius: var(--border-radius-0);
+  letter-spacing: 1.5px;
+  position: absolute;
   top: 50%;
-  transform: translateY(-58%);
+  transform: translate(20%, -50%);
+  transition-property: top, font-size;
+  transition-duration: 0.3s;
+  color: hsl(180, 8%, 50%);
+}
+
+.text-input input {
+  width: 100%;
+  height: 100%;
+  padding: 0 6px;
+  border-radius: var(--border-radius-0);
+  border: 1.5px solid var(--generic-strong);
+  font-family: 'Roboto';
+  font-size: var(--text-md);
+  text-align: center;
+  letter-spacing: 1.5px;
+  outline: none;
+  color: hsl(180, 8%, 50%);
+}
+
+.text-input.hover input {
+  border: 1.5px solid black;
+}
+.text-input.hover label {
+  color: black;
+}
+
+.text-input.active label{
+  top: 0px;
+  transition-property: top;
+  transition-duration: 0.3s;
+  font-size: 0.8em;
+  letter-spacing: 0.2px;
+  background-color: white;
+  color: var(--primary-strong);
+}
+
+.text-input.active input {
+  border: 1.5px solid var(--primary-strong);
+}
+
+.text-input.error input {
+  border: 1.5px solid var(--error-light);
+}
+
+.text-input.error label {
+  top: 0px;
+  transition-property: top;
+  transition-duration: 0.3s;
+  font-size: 0.8em;
+  letter-spacing: 0.2px;
+  background-color: white;
+  color: var(--error-strong);
+}
+
+.text-input.success input {
+  border: 1.5px solid var(--success-light);
+}
+
+.text-input.success label {
+  top: 0px;
+  transition-property: top;
+  transition-duration: 0.3s;
+  font-size: 0.8em;
+  letter-spacing: 0.2px;
+  background-color: white;
+  color: var(--success-strong);
+}
+
+.text-input-try {
+  pointer-events: none;
+  box-sizing: border-box;
+  border-radius: 6px;
+  position: relative;
+  width: 200px;
+  height: 55px;
+  cursor: pointer;
+}
+
+.text-input-try input {
+  pointer-events: auto;
+  width: 100%;
+  height: 100%;
+  padding: 0 6px;
+  border-radius: var(--border-radius-0);
+  border: 1.5px solid var(--generic-strong);
+  font-family: 'Roboto';
+  font-size: var(--text-md);
+  text-align: center;
+  letter-spacing: 1.5px;
+  outline: none;
+  color: hsl(180, 8%, 50%);
+}
+
+.text-input-try label {
+  padding: 0 5px;
+  border-radius: var(--border-radius-0);
+  letter-spacing: 1.5px;
+  position: absolute;
+  top: 50%;
+  transform: translate(20%, -50%);
+  transition-property: top, font-size;
+  transition-duration: 0.3s;
+  color: hsl(180, 8%, 50%);
+  pointer-events: none;
+}
+
+.text-input-try:hover label {
+  color: black;
+}
+
+.text-input-try:hover input {
+  border: 1.5px solid black;
+}
+
+.text-input-try:active input, .text-input-try:focus-within input {
+  border: 1.5px solid var(--primary-strong);
+}
+
+.text-input-try:active label, .text-input-try:focus-within label {
+  color: var(--primary-strong);
+}
+
+
+.text-input-try input:focus, .text-input-try input:not(:placeholder-shown) {
+  border: 1.5px solid var(--primary-strong);
+}
+
+.text-input-try input:focus ~ label, .text-input-try input:not(:placeholder-shown) ~ label {
+  top: 0px;
+  transition-property: top;
+  transition-duration: 0.3s;
+  font-size: 0.8em;
+  background-color: white;
+  color: var(--primary-strong);
+
+}
+
+#textInput.error {
+  border: 1.5px solid var(--error-light); !important;
+}
+
+#textInput.error ~ label {
+  top: 0px;
+  transition-property: top;
+  transition-duration: 0.3s;
+  font-size: 0.8em;
+  letter-spacing: 0.2px;
+  background-color: white;
+  color: var(--error-strong); !important;
+}
+
+#textInput.success {
+  border: 1.5px solid var(--success-light); !important;
+}
+
+#textInput.success ~ label {
+  top: 0px;
+  transition-property: top;
+  transition-duration: 0.3s;
+  font-size: 0.8em;
+  letter-spacing: 0.2px;
+  background-color: white;
+  color: var(--success-strong); !important;
 }
