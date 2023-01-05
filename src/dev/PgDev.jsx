@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -55,15 +55,15 @@ export default function Dev() {
     <Container>
       <header className="dev-header">
         <nav>
-          <a className="link" href="/dev/palette">
+          <NavLink className="link" to="/dev/palette">
             Palette
-          </a>
-          <a className="link" href="/dev/components">
+          </NavLink>
+          <NavLink className="link" to="/dev/components">
             Components
-          </a>
-          <a className="link" href="/">
+          </NavLink>
+          <NavLink className="link" to="/">
             App
-          </a>
+          </NavLink>
           <a className="link" href="#">
             Debug
           </a>
