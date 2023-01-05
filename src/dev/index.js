@@ -1,1 +1,3 @@
-export {default} from './Dev.jsx';
+export { default } from "./PgDev";
+export * from "./components";
+export * from "./palette";

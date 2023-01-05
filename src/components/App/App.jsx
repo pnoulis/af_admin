@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
-import CssBaseline from '@mui/material/CssBaseline';
-import styled from 'styled-components';
-import Sidebar from '/src/components/Sidebar/index.jsx';
-import Header from '/src/components/Header/index.jsx';
-import GlobalStore from '/src/stores/app.js';
-
+import React, { useEffect } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
+import CssBaseline from "@mui/material/CssBaseline";
+import styled from "styled-components";
+import Sidebar from "/src/components/Sidebar/index.jsx";
+import Header from "/src/components/Header/index.jsx";
+import GlobalStore from "/src/stores/app.js";
 
 const Container = styled.div`
   width: 100%;
@@ -18,7 +17,7 @@ const Container = styled.div`
   grid-template-columns: 250px 1fr;
   grid-template-areas:
     "Sidebar Header"
-    "Sidebar Main"
+    "Sidebar Main";
 `;
 
 const Page = styled.main`
@@ -32,21 +31,20 @@ const Page = styled.main`
   grid-template-rows: 130px 1fr;
   grid-template-columns: 1fr;
   grid-template-areas:
-     "Header"
-     "Content";
+    "Header"
+    "Content";
 `;
-
 
 export default function App() {
   return (
     <React.Fragment>
-      <CssBaseline/>
       <Container>
-        <Header/>
-        <Sidebar/>
-        <Page>
-          <Outlet/>
-        </Page>
+        <p>helol</p>
+        {/* <Header/> */}
+        {/* <Sidebar/> */}
+        {/* <Page> */}
+        {/*   <Outlet/> */}
+        {/* </Page> */}
       </Container>
     </React.Fragment>
   );

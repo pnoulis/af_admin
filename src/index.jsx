@@ -1,24 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "@fontsource/roboto";
-import App from './components/App/App.jsx';
-import Test from './Test.jsx';
-import Login from './components/Auth/Login.jsx';
-import {GlobalStore} from '/src/stores';
-import Registration from './pages/Registration.jsx';
-import AddPlayer from './pages/AddPlayer.jsx';
-import MQTT_START from '/src/mqtt';
-import DEV from './dev';
+import App from "./components/App/App.jsx";
+import Test from "./Test.jsx";
+import Login from "./components/Auth/Login.jsx";
+import { GlobalStore } from "/src/stores";
+import Registration from "./pages/Registration.jsx";
+import AddPlayer from "./pages/AddPlayer.jsx";
+import MQTT_START from "/src/mqtt";
+import routes from "./routes";
 
 // MQTT_START();
 
-const router = createBrowserRouter([
-  {
-    path: '*',
-    element: <DEV/>,
-  }
-]);
+// const router = createBrowserRouter([
+//   {
+//     path: '*',
+//     element: <DEV/>,
+//   }
+// ]);
 // const router = createBrowserRouter([
 //   {
 //     path: "/",
@@ -71,17 +71,17 @@ const router = createBrowserRouter([
 //   },
 // ]);
 
-function GlobalState({ children }) {
-  const [state, dispatch] = GlobalStore.init();
-  return (
-    <GlobalStore.Provide value={{ state, dispatch }}>
-      {children}
-    </GlobalStore.Provide>
-  );
-}
+// function GlobalState({ children }) {
+//   const [state, dispatch] = GlobalStore.init();
+//   return (
+//     <GlobalStore.Provide value={{ state, dispatch }}>
+//       {children}
+//     </GlobalStore.Provide>
+//   );
+// }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-      <RouterProvider router={router} />
+    <RouterProvider router={routes} />
   </React.StrictMode>
 );
