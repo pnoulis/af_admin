@@ -9,58 +9,67 @@ import {GlobalStore} from '/src/stores';
 import Registration from './pages/Registration.jsx';
 import AddPlayer from './pages/AddPlayer.jsx';
 import MQTT_START from '/src/mqtt';
+import DEV from './dev';
 
-MQTT_START();
+// MQTT_START();
+
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: import.meta.env.VITE_TEST ? <Test /> : <App />,
-    children: [
-      {
-        path: 'registration',
-        element: <Registration />,
-        children: [
-          {
-            path: 'team/player/add',
-            element: <AddPlayer />
-          },
-          {
-            path: 'team/create',
-            element: <div>create team</div>
-          },
-          {
-            path: 'team/package/create',
-            element: <div>create package</div>
-          },
-          {
-            path: 'team/package/add',
-            element: <div>submit</div>
-          }
-        ]
-      },
-      {
-        path: 'manager',
-        element: <div>manager</div>
-      },
-      {
-        path: 'scoreboard',
-        element: <div>scoreboard</div>,
-      },
-      {
-        path: 'statistics',
-        element: <div>statistics</div>,
-      },
-      {
-        path: 'cashier',
-        element: <div>cashier</div>
-      }
-    ],
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
+    path: '*',
+    element: <DEV/>,
+  }
 ]);
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     // element: import.meta.env.VITE_TEST ? <Test /> : <App />,
+//     element: <DEV/>,
+//     children: [
+//       {
+//         path: 'registration',
+//         element: <Registration />,
+//         children: [
+//           {
+//             path: 'team/player/add',
+//             element: <AddPlayer />
+//           },
+//           {
+//             path: 'team/create',
+//             element: <div>create team</div>
+//           },
+//           {
+//             path: 'team/package/create',
+//             element: <div>create package</div>
+//           },
+//           {
+//             path: 'team/package/add',
+//             element: <div>submit</div>
+//           }
+//         ]
+//       },
+//       {
+//         path: 'manager',
+//         element: <div>manager</div>
+//       },
+//       {
+//         path: 'scoreboard',
+//         element: <div>scoreboard</div>,
+//       },
+//       {
+//         path: 'statistics',
+//         element: <div>statistics</div>,
+//       },
+//       {
+//         path: 'cashier',
+//         element: <div>cashier</div>
+//       }
+//     ],
+//   },
+//   {
+//     path: '/login',
+//     element: <Login />,
+//   },
+// ]);
 
 function GlobalState({ children }) {
   const [state, dispatch] = GlobalStore.init();
@@ -73,10 +82,6 @@ function GlobalState({ children }) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <GlobalState>
       <RouterProvider router={router} />
-    </GlobalState>
   </React.StrictMode>
 );
-
-
