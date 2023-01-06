@@ -8,11 +8,17 @@ import PgDev, {
   PgLayouts,
   PgLinks,
   PgTextInputs,
+  PgMisc,
   PgPalette,
   PgGreys,
   PgBlues,
   PgPinks,
   PgPurples,
+  PgWhites,
+  PgOranges,
+  PgReds,
+  PgBlacks,
+  PgGreens,
 } from "./dev";
 import App from "./components/App/App.jsx";
 
@@ -45,6 +51,10 @@ const devRoutes = [
         path: "textinputs",
         element: <PgTextInputs />,
       },
+      {
+        path: "misc",
+        element: <PgMisc />,
+      },
     ],
   },
   {
@@ -66,6 +76,26 @@ const devRoutes = [
       {
         path: "blues",
         element: <PgBlues />,
+      },
+      {
+        path: "whites",
+        element: <PgWhites />,
+      },
+      {
+        path: "oranges",
+        element: <PgOranges />,
+      },
+      {
+        path: "reds",
+        element: <PgReds />,
+      },
+      {
+        path: "greens",
+        element: <PgGreens />,
+      },
+      {
+        path: "blacks",
+        element: <PgBlacks />,
       },
     ],
   },

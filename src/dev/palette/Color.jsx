@@ -34,6 +34,7 @@ const ColorCard = styled.div`
     padding: 20px;
     display: flex;
     flex-flow: row wrap;
+row-gap: 25px;
   }
 `;
 
@@ -45,31 +46,74 @@ const Variant = styled.span.attrs((props) => ({
   display: block;
   width: 50px;
   height: 50px;
+position: relative;
+cursor: pointer;
+
+&:hover:after {
+box-sizing: content-box;
+position: absolute;
+background: white;
+border: 2px solid black;
+top: -50px;
+left: 50%;
+white-space: nowrap;
+padding: 5px 10px;
+content: '${props => props.bg}';
+transform: translateX(-50%);
+}
+
+&:before {
+content: '${props => props.target && '\u25B2'}';
+font-size: 3em;
+position: absolute;
+bottom: -150%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
 `;
 
 function mkDeviations(offset, step) {
-  const deviations = [offset];
+  const deviations = [0, offset];
+  offset = 0;
   do {
     deviations.push(offset + step);
     offset += step;
   } while (offset <= 100);
-  return deviations;
+  return deviations.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a > b);
 }
 
-export default function Color({ name, hue, saturation, lightness }) {
-  const [distribution, setColor] = useState(3);
+export default function Color({ hsl, name, hue, saturation, lightness }) {
+  const [distribution, setDistribution] = useState(3);
 
   return (
     <ColorCard>
       <header className="toolbar">
-        <h1>{name}</h1>
-        <section className="controls">some content</section>
+        <h1>{name}:{hsl}</h1>
+        <section className="controls">
+          <div>
+            <input onChange={(e) => {
+              setDistribution(Math.floor(e.target.value));
+            }}
+                   type='range' name='distribution' min='1' max='100'/>
+            <label htmlFor='distribution'>Variabilty: {distribution}</label>
+          </div>
+        </section>
       </header>
       <div className="main">
         {mkDeviations(lightness, distribution).map((deviation, i) => (
           <Variant
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(
+                  `hsl(${hue}, ${saturation}%, ${lightness + deviation}%)`
+                );
+              } catch (err) {
+                alert('Failed to copy');
+              }
+            }}
             key={i}
-            bg={`hsl(${hue}, ${saturation}%, ${lightness + deviation}%)`}
+            target={deviation === lightness ? name : ''}
+            bg={`hsl(${hue}, ${saturation}%, ${deviation}%)`}
           />
         ))}
       </div>

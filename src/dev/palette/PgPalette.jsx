@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Outlet, NavLink } from "react-router-dom";
 
+// https://htmlcolorcodes.com/color-names/
 const Page = styled.div`
   min-width: 100%;
   min-height: 100%;
@@ -55,10 +56,15 @@ export default function PgPalette() {
     <Page>
       <aside className="sidebar">
         <nav className="navigation">
+          <NavLink to='blacks'>Blacks</NavLink>
           <NavLink to="greys">Greys</NavLink>
+          <NavLink to='whites'>Whites</NavLink>
           <NavLink to="purples">Purples</NavLink>
           <NavLink to="pinks">Pinks</NavLink>
-          <NavLink to="Blues">Blues</NavLink>
+          <NavLink to="blues">Blues</NavLink>
+          <NavLink to='oranges'>Oranges</NavLink>
+          <NavLink to='reds'>Reds</NavLink>
+          <NavLink to='greens'>Greens</NavLink>
         </nav>
       </aside>
       <header className="toolbar">

@@ -6,8 +6,123 @@
   -webkit-text-size-adjust: 100%;
 }
 
-:root, body, #root {
+html, body, #root {
   min-height: 100vh;
   min-width: 100vw;
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans;
 }
+
+/* Pallete */
+:root {
+  /*purple 15*/
+  --purple-subtle
+  /*purple 14*/
+  --purple-light
+  /*purple 12*/
+  --purple
+  /*purple 9*/
+  --purple-medium
+  /*purple 6*/
+  --purple-strong
+
+  /*pink 15*/
+  --pink-subtle
+  /*pink 14*/
+  --pink-light
+  /*pink 12*/
+  --pink
+  /*pink 10*/
+  --pink-medium
+  /*pnik 6*/
+  --pink-strong
+
+  /*red 12*/
+  --red-subtle
+  /*red 8*/
+  --red-light
+  /*red 5*/
+  --red
+  /*red 3*/
+  --red-medium
+  /*red*/
+  --red-strong
+
+  /*green 12*/
+  --green-subtle
+  /*green 8*/
+  --green-light
+  /*green 5*/
+  --green
+  /*green 3*/
+  --green-medium
+  /*green*/
+  --green-strong
+
+  --orange-subtle
+  --orange-light
+  --orange
+  --orange-medium
+  --orange-strong
+
+  --grey-subtle
+  --grey-light
+  --grey
+  --grey-medium
+  --grey-strong
+
+  --black-subtle
+  --black-light
+  --black
+  --black-medium
+  --black-strong
+
+
+  --beige-subtle
+  --beige-light
+  --beige
+  --beige-medium
+  --beige-strong
+}
+
+:root {
+/*   --primary-subtle */
+/*   --primary-light */
+/*   --primary */
+/*   --primary-medium */
+/*   --primary-strong */
+/*   --secondary-subtle */
+/*   --secondary-light */
+/*   --secondary-base */
+/*   --secondary-medium */
+/*   --secondary-strong */
+/*   --text-subtle */
+/*   --text-light */
+/*   --text-base */
+/*   --text-medium */
+/*   --text-strong */
+/*   --fill-subtle */
+/*   --fill-light */
+/*   --fill-base */
+/*   --fill-medium */
+/*   --fill-strong */
+/*   --success-subtle */
+/*   --success-light */
+/*   --success-base */
+/*   --success-medium */
+/*   --success-strong */
+/*   --error-subtle */
+/*   --error-light */
+/*   --error-base */
+/*   --error-medium */
+/*   --error-strong */
+/*   --warning-subtle */
+/*   --warning-light */
+/*   --warning-base */
+/*   --warning-medium */
+/*   --warning-strong */
+/* } */
+
+
+/* [data-theme='dark'] { */
+
+/* } */

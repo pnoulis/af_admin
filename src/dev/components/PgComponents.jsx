@@ -62,6 +62,7 @@ export default function PgComponents() {
           <NavLink to="textinputs">Text Inputs</NavLink>
           <NavLink to="icons">Icons</NavLink>
           <NavLink to="dropdowns">Dropdowns</NavLink>
+          <NavLink to="misc">Misc</NavLink>
         </nav>
       </aside>
       <header className="toolbar">

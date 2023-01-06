@@ -21,6 +21,9 @@
   --grey-15: hsl(var(--grey-h), var(--grey-s), calc(var(--grey-l) + 39%));
   --grey-16: hsl(var(--grey-h), var(--grey-s), calc(var(--grey-l) + 40%));
 
+  /* Blue violet */
+  /* Dark violet */
+  /* Dark Orchid */
   /* Purple scale */
   --purple-h: 273;
   --purple-s: 80%;
