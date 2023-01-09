@@ -2,20 +2,23 @@ import { useEffect, useState } from 'react';
 
 export default function setupHooks(client) {
   function useMqtt(alias, defer = false) {
-    const [subscription, setSubscription] = useState({});
-    useEffect(() => {
-      const [unsubscribe, publish, subscribe] = client.subscribe(alias)
+    const [subscription, setSubscription] = useState(() => client.subscribe(alias));
 
-      if (defer) {
-        setSubscription({ publish, subscribe });
-      } else {
-        subscribe((message) => {
-          setSubscription({ message, ...subscription })
+    useEffect(() => {
+      if (!defer) {
+        subscription.subscribe((message) => {
+          setSubscription({ ...subscription, message })
         })
       }
-      return () => unsubscribe();
+      return () => subscription.unsubscribe();
     }, [alias])
 
+    /*
+    @returns:
+    {
+      message, publish, subscribe
+    }
+    */
     return { ...subscription };
   }
 

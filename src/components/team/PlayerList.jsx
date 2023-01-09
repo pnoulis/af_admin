@@ -1,61 +1,66 @@
-import React from 'react';
-import styled from 'styled-components';
-import { ReactComponent as WristbandIcon } from '/assets/icons/wristband_image.svg';
+import React from "react";
+import styled from "styled-components";
+import { ReactComponent as WristbandIcon } from "/assets/icons/wristband_image-cropped.svg";
 
 const players = [
   {
-    name: 'pavlos'
+    name: "pavlos",
   },
   {
-    name: 'grigoris',
-  }
+    name: "grigoris",
+  },
 ];
 
-
 const Container = styled.ul`
-display: flex;
-flex-flow: row wrap;
-gap: 10px;
+  display: grid;
+
+  // Dimensions
+  min-width: 100%;
+  min-height: 100%;
+
+  // Contents
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 70px;
+  gap: 15px;
 `;
 
 const PlayerContainer = styled.li`
-flex: 1;
-display: flex;
-flex-flow: row nowrap;
-justify-content: space-between;
-align-items: center;
-border-radius: var(--border-radius-0);
-background: white;
-padding: 5px 10px;
-width: 100%;
-gap: 20px;
-max-width: 180px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: var(--border-radius-0);
+  padding: 5px 10px;
+  gap: 20px;
+  position: relative;
+  box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.3); /*black with 30% opacity*/
+  cursor: pointer;
 
-.text {
-align-items: center;
-font-size: var(--text-md);
-letter-spacing: 0.2px;
-word-spacing: 1px;
-white-space: nowrap;
-font-weight: bold;
+  .text {
+    font-size: var(--text-md);
+    letter-spacing: 0.2px;
+    word-spacing: 1px;
+    white-space: nowrap;
+    font-weight: bold;
+  }
 
-}
+  .icon {
+    width: 35%;
+    line-height: 1;
+  }
 
-.icon {
-flex: 1;
-line-height: 1;
-min-width: 70px;
-}
+  &:hover {
+    background-image: var(--btn-primary-color);
+    color: white;
+  }
 `;
 
-function Player({children}) {
+function Player({ children }) {
   return (
     <PlayerContainer>
-      <section className='text'>
-        {children}
-      </section>
-      <section className='icon'>
-        <WristbandIcon/>
+      <section className="text">{children}</section>
+      <section className="icon">
+        <WristbandIcon />
       </section>
     </PlayerContainer>
   );
@@ -64,12 +69,10 @@ function Player({children}) {
 export function PlayerList() {
   return (
     <Container>
-      <Player assigned={true}>
-        pavlos
-      </Player>
-      <Player assigned={false}>
-        grigoris
-      </Player>
+      <Player assigned={true}>pavlos</Player>
+      <Player assigned={false}>grigoris</Player>
+      <Player assigned={false}>grigoris</Player>
+      <Player assigned={false}>grigoris</Player>
     </Container>
   );
 }

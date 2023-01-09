@@ -2,10 +2,16 @@ import validator from 'validator';
 
 const fields = {
   username(name, value, reduce) {
+    if (reduce) {
+      return value;
+    } else {
+
     if (!value) return 'Username required, example: John';
     if (value.length > 30) return 'Username too long!';
     if (!validator.isAlphanumeric(value, ["en-US"])) return 'Username wrong format';
     return null;
+    }
+
   }
 }
 

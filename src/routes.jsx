@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { Home, Register, AddPlayer, AddPackage } from './routes/index';
+import { Home, Register, AddPlayer, AddPackage } from "./routes/index";
 import PgDev, {
   PgComponents,
   PgDropdowns,
@@ -101,10 +101,7 @@ const devRoutes = [
   },
 ];
 
-const ProdRoutes = [
-  {
-  },
-];
+const ProdRoutes = [{}];
 
 const router = createBrowserRouter([
   {
@@ -113,31 +110,43 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Home/>,
+        element: <Home />,
         children: [
           {
-            path: 'register',
-            element: <Register/>,
+            path: "register",
+            element: <Register />,
             children: [
               {
-                path: 'team/create',
+                path: "team/create",
                 element: <p>team create</p>,
               },
               {
-                path: 'team/player/add',
-                element: <AddPlayer/>,
+                path: "team/player/add",
+                element: <AddPlayer />,
               },
               {
-                path: 'team/package/add',
-                element: <AddPackage/>,
+                path: "team/package/add",
+                element: <AddPackage />,
               },
               {
-                path: 'team/package/submit',
-                element: <p>package submit</p>
-              }
-            ]
-          }
-        ]
+                path: "team/package/submit",
+                element: <p>package submit</p>,
+              },
+            ],
+          },
+          {
+            path: "manager",
+            element: <p>manager</p>,
+          },
+          {
+            path: "scoreboard",
+            element: <p>scoreboard</p>,
+          },
+          {
+            path: "cashier",
+            element: <p>cashier</p>,
+          },
+        ],
       },
       ...devRoutes,
     ],

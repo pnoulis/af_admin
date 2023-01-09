@@ -183,11 +183,11 @@ Proxy.prototype.subscribe = function(alias, client, cb) {
     var defer = (client) => clients[clientId] = client;
   }
 
-  return [
-    () => clients.splice(clientId, 1),
-    (payload, options, cb) => this._publish(pub, payload, options, cb),
-    defer,
-  ];
+  return {
+    unsubscribe: () => clients.splice(clientId, 1),
+    publish: (payload, options, cb) => this._publish(pub, payload, options, cb),
+    subscribe: defer
+  }
 }
 
 Proxy.prototype._subscribe = function(sub, options, cb) {
@@ -217,6 +217,7 @@ Proxy.prototype._publish = function(pub, payload, options, cb) {
     cb = options;
     options = {};
   }
+  payload.timestamp = new Date().getTime();
   this.server.publish(pub, this.encode(payload), options, (err) => {
     cb && cb(err);
     if (err) {

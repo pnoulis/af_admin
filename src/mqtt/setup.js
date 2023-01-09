@@ -53,7 +53,8 @@ const serverPresets = [
     options: {
       username: 'pavlos',
       password: 'mindtr@p',
-    }
+    },
+      //dd
   },
   { // MSQ
     host: 'ws://test.mosquitto.org:8080',
@@ -173,7 +174,7 @@ function testClient(client, loadInterval = 5000) {
     });
 }
 
-export default function setupClient(test = false, name, type, config = {}) {
+export default function setupClient(test = false, name = 'dev', type, config = {}) {
   let conf = {};
   conf.name = name || import.meta.env.MODE;
   let client = CLIENTS.get(conf.name);
@@ -189,14 +190,17 @@ export default function setupClient(test = false, name, type, config = {}) {
     case 'development':
       console.log('MQTT CLIENT RUNNING ON DEV MODE');
       conf = configureConf(DEV, DEV, DEV, DEV, config);
+  conf.name = name || import.meta.env.MODE;
       break;
     case 'production':
       console.log('MQTT CLIENT RUNNING ON PRODUCTION MODE');
       conf = configureConf(PROD, PROD, PROD, PROD, config);
+  conf.name = name || import.meta.env.MODE;
       break;
     case 'msq':
       console.log('MQTT CLIENT RUNNING ON MSQ MODE');
       conf = configureConf(MSQ, MSQ, MSQ, MSQ, config);
+  conf.name = name || import.meta.env.MODE;
       break;
     default:
       throw new Error(`Undefined client type:${type || import.meta.env.MODE}`);
@@ -204,6 +208,11 @@ export default function setupClient(test = false, name, type, config = {}) {
 
   client = new Client(conf);
   CLIENTS.set(conf.name, client);
+
+  client.registry.params = {
+    clientId: client.id
+  };
+
   client.start();
   if (test) {
     testClient(client);
