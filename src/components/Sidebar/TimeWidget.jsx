@@ -25,7 +25,7 @@ const getTime = (() => {
         });
         return Object.fromEntries(time);
     }
-})()
+})();
 
 
 const Container = styled.article`
@@ -49,7 +49,7 @@ const Container = styled.article`
         font-size: 0.8em;
         letter-spacing: 0.5px;
         position: relative;
-        top: -10px;
+        top: -8px;
         transform: translateX(-50%, 50%);
         left: -1px;
 
@@ -58,16 +58,16 @@ const Container = styled.article`
             font-weight: light;
         }
     }
-`
+`;
 
 export default function TimeWidget() {
     const {state, dispatch} = GlobalState.use();
-    const [time, setTime] = useState(() => getTime(state.lang));
+    const [time, setTime] = useState(() => getTime(state?.lang));
 
     useEffect(() => {
-        const event = setInterval(() => setTime(getTime(state.lang)), 1000);
+        const event = setInterval(() => setTime(getTime(state?.lang)), 1000);
         return () => clearInterval(event);
-    }, [state.lang]);
+    }, [state?.lang]);
 
     return (
         <Container>
@@ -76,4 +76,3 @@ export default function TimeWidget() {
         </Container>
     );
 }
-

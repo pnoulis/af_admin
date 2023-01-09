@@ -4,8 +4,9 @@ import {ReactComponent as Crescent } from '/assets/icons/moon3-cropped.svg';
 
 
 const DarkModeToggle = styled.div`
+background-color: hsl(204, 19%, 26%);
 border-radius: 50px;
-box-shadow: -.5px 0 .2px .5px hsl(40, 10%, 70%), .5px -.5px .5px .5px hsl(40, 10%, 80%);
+// box-shadow: -.5px 0 .2px .5px hsl(40, 10%, 70%), .5px -.5px .5px .5px hsl(40, 10%, 80%);
 cursor: pointer;
 aspect-ratio: 2.25 / 1;
 padding: 0.15em;
@@ -23,7 +24,7 @@ position: relative;
 
 .ball {
 position: absolute;
-background-color: black;
+background-color: white;
 border-radius: 50%;
 top: 50%;
 z-index: 2;
@@ -53,7 +54,7 @@ fill: #F5AF19;
 `;
 
 
-function DarkMode({size}) {
+export function DarkMode({size}) {
   let Container;
   switch (size) {
   case 'sm':

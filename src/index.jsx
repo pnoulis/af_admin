@@ -2,12 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "@fontsource/roboto";
-import App from "./components/App/App.jsx";
-import Test from "./Test.jsx";
+// import Test from "./Test.jsx";
 import Login from "./components/Auth/Login.jsx";
 import { GlobalStore } from "/src/stores";
-import Registration from "./pages/Registration.jsx";
-import AddPlayer from "./pages/AddPlayer.jsx";
 import MQTT_START from "/src/mqtt";
 import routes from "./routes";
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
+import { Home, Register, AddPlayer, AddPackage } from './routes/index';
 import PgDev, {
   PgComponents,
   PgDropdowns,
@@ -20,7 +21,6 @@ import PgDev, {
   PgBlacks,
   PgGreens,
 } from "./dev";
-import App from "./components/App/App.jsx";
 
 const devRoutes = [
   {
@@ -101,6 +101,11 @@ const devRoutes = [
   },
 ];
 
+const ProdRoutes = [
+  {
+  },
+];
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -108,7 +113,31 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <App />,
+        element: <Home/>,
+        children: [
+          {
+            path: 'register',
+            element: <Register/>,
+            children: [
+              {
+                path: 'team/create',
+                element: <p>team create</p>,
+              },
+              {
+                path: 'team/player/add',
+                element: <AddPlayer/>,
+              },
+              {
+                path: 'team/package/add',
+                element: <AddPackage/>,
+              },
+              {
+                path: 'team/package/submit',
+                element: <p>package submit</p>
+              }
+            ]
+          }
+        ]
       },
       ...devRoutes,
     ],

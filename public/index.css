@@ -9,120 +9,94 @@
 html, body, #root {
   min-height: 100vh;
   min-width: 100vw;
+  font-size: 1rem;
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans;
 }
 
 /* Pallete */
 :root {
-  /*purple 15*/
-  --purple-subtle
-  /*purple 14*/
-  --purple-light
-  /*purple 12*/
-  --purple
-  /*purple 9*/
-  --purple-medium
-  /*purple 6*/
-  --purple-strong
+  /* White smoke */
+  --base-grey: 0, 0%;
+  /* Charcoal */
+  --base-black: 250, 10%;
+  /* Blue Violet */
+  --base-primary: 273, 80%;
+  /* Fuchsia */
+  --base-secondary: 318, 80%;
+  /* Midnight Blue */
+  --base-tertiary: 240, 64%;
+  /* Spring Green */
+  --base-success: 150, 100%;
+  /* Airbnb */
+  --base-error: 357, 98%;
+  /* Tomatoe */
+  --base-warn: 33, 100%;
 
-  /*pink 15*/
-  --pink-subtle
-  /*pink 14*/
-  --pink-light
-  /*pink 12*/
-  --pink
-  /*pink 10*/
-  --pink-medium
-  /*pnik 6*/
-  --pink-strong
+  --grey-0: hsl(var(--base-grey), 97%);
 
-  /*red 12*/
-  --red-subtle
-  /*red 8*/
-  --red-light
-  /*red 5*/
-  --red
-  /*red 3*/
-  --red-medium
-  /*red*/
-  --red-strong
+  --primary-subtle: hsl(var(--base-primary), 95%);
+  --primary-light: hsl(var(--base-primary), 88%);
+  --primary-base: hsl(var(--base-primary), 78%);
+  --primary-medium: hsl(var(--base-primary), 68%);
+  --primary-strong: hsl(var(--base-primary), 58%);
 
-  /*green 12*/
-  --green-subtle
-  /*green 8*/
-  --green-light
-  /*green 5*/
-  --green
-  /*green 3*/
-  --green-medium
-  /*green*/
-  --green-strong
+  --secondary-subtle: hsl(var(--base-secondary), 95%);
+  --secondary-light: hsl(var(--base-secondary), 88%);
+  --secondary-base: hsl(var(--base-secondary), 78%);
+  --secondary-medium: hsl(var(--base-secondary), 68%);
+  --secondary-strong: hsl(var(--base-secondary), 58%);
 
-  --orange-subtle
-  --orange-light
-  --orange
-  --orange-medium
-  --orange-strong
+  --success: hsl(var(--base-success), 50%);
+  --success-strong: hsl(var(--base-success), 38%);
+  --error: hsl(var(--base-error), 68%);
+  --warn: hsl(var(--base-warn), 50%);
+  --background: hsl(var(--base-grey), 96%);
+  --background-contrast: hsl(var(--base-primary), 98%);
+  --text: hsl(var(--base-black), 13%);
+  --text-on-dark-basic: white;
+  --text-on-dark-accent: var(--primary-subtle);
 
-  --grey-subtle
-  --grey-light
-  --grey
-  --grey-medium
-  --grey-strong
+  --btn-primary-color: linear-gradient(to right,
+                                       var(--secondary-strong) 0%,
+                                       var(--primary-strong) 51%,
+                                       var(--secondary-strong) 100%);
+  --btn-accent-color: var(--primary-medium);
+  --link-icon-color: hsl(var(--base-black), 25%);
+  --link-icon-active-color: var(--primary-base);
+  --input-text-color: hsl(var(--base-black), 25%);
 
-  --black-subtle
-  --black-light
-  --black
-  --black-medium
-  --black-strong
-
-
-  --beige-subtle
-  --beige-light
-  --beige
-  --beige-medium
-  --beige-strong
+  --border-radius-0: 4px;
+  --border-radius-1: 8px;
+  --border-radius-2: 16px;
+  --text-ratio: 1.2;
+  --text-nl: 0.875em;
+  --text-xs: calc(var(--text-nl) / var(--text-ratio));
+  --text-sm: calc(var(--text-xs) * var(--text-ratio));
+  --text-md: calc(var(--text-sm) * var(--text-ratio));
+  --text-lg: calc(var(--text-md) * var(--text-ratio));
+  --text-xl: calc(var(--text-lg) * var(--text-ratio));
+  --text-xxl: calc(var(--text-xl) * var(--text-ratio));
+  --text-xxxl: calc(var(--text-xxl) * var(--text-ratio));
 }
 
-:root {
-/*   --primary-subtle */
-/*   --primary-light */
-/*   --primary */
-/*   --primary-medium */
-/*   --primary-strong */
-/*   --secondary-subtle */
-/*   --secondary-light */
-/*   --secondary-base */
-/*   --secondary-medium */
-/*   --secondary-strong */
-/*   --text-subtle */
-/*   --text-light */
-/*   --text-base */
-/*   --text-medium */
-/*   --text-strong */
-/*   --fill-subtle */
-/*   --fill-light */
-/*   --fill-base */
-/*   --fill-medium */
-/*   --fill-strong */
-/*   --success-subtle */
-/*   --success-light */
-/*   --success-base */
-/*   --success-medium */
-/*   --success-strong */
-/*   --error-subtle */
-/*   --error-light */
-/*   --error-base */
-/*   --error-medium */
-/*   --error-strong */
-/*   --warning-subtle */
-/*   --warning-light */
-/*   --warning-base */
-/*   --warning-medium */
-/*   --warning-strong */
-/* } */
+[data-theme='dark'] {
+  --background: hsl(var(--base-grey), 15%);
+  --background-contrast: hsl(var(--base-grey), 30%);
+  --text: hsl(var(--base-primary), 95%);
+}
 
 
-/* [data-theme='dark'] { */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  background-color: rgba(255, 255, 255, 0.7);
+}
 
-/* } */
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}

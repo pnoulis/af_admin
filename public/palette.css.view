@@ -1,0 +1,13 @@
+--success: hsl(150, 100%, 50%);
+--error: hsl(357, 98%, 68%);
+--warn: hsl(33, 100%, 50%);
+--background: hsl(0, 0%, 96%);
+--background-contrast: hsl(271, 76%, 90%);
+--text: hsl(204, 19%, 13%);
+--button-primary-color: hsl(271, 76%, 53%);
+--button-secondary-color: hsl(300, 100%, 50%);
+
+/* Dark mode */
+--background: hsl(204, 19%, 15%);
+--background-contrast: hsl(204, 19%, 30%);
+--text: hsl(271, 76%, 95%);

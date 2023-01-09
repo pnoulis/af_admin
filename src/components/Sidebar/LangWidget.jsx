@@ -7,11 +7,10 @@ const Container = styled.div`
     flex: 0 0 100px;
     display: flex;
     align-items: center;
-    color: white;
     font-size: 1em;
     line-height: 0.9;
     letter-spacing: 1.5px;
-    color: grey;
+color: grey;
     > ul {
         display: flex;
         flex-flow: row nowrap;
@@ -34,28 +33,25 @@ const Container = styled.div`
     .lang.onDisplay > em {
         color: white;
     }
-`
+`;
 
 export default function LangWidget() {
-    const { state, dispatch } = GlobalStore.use();
-    console.log('from the lang widgeht');
-    console.log(state);
-    console.log(dispatch);
-    return (
-        <Container>
-            <ul>
-                {
-                    language.langs.map((lang, i) => (
-                        <li key={i} className={`lang ${state.lang === lang.bcp47 ? 'onDisplay' : undefined}`}>
-                            <em
-                                onClick={() => dispatch('switchLanguage', lang.bcp47)}
-                            >
-                                {lang.iso639_1}
-                            </em>
-                        </li>
-                    ))
-                }
-            </ul>
-        </Container>
-    )
+  const { state, dispatch } = GlobalStore.use();
+  return (
+    <Container>
+      <ul>
+        {
+          language.langs.map((lang, i) => (
+            <li key={i} className={`lang ${state?.lang === lang.bcp47 ? 'onDisplay' : undefined}`}>
+              <em
+                onClick={() => dispatch('switchLanguage', lang.bcp47)}
+              >
+                {lang.iso639_1}
+              </em>
+            </li>
+          ))
+        }
+      </ul>
+    </Container>
+  );
 }

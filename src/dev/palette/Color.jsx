@@ -105,7 +105,7 @@ export default function Color({ hsl, name, hue, saturation, lightness }) {
             onClick={async () => {
               try {
                 await navigator.clipboard.writeText(
-                  `hsl(${hue}, ${saturation}%, ${lightness + deviation}%)`
+                  `hsl(${hue}, ${saturation}%, ${deviation}%)`
                 );
               } catch (err) {
                 alert('Failed to copy');

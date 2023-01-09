@@ -5,6 +5,7 @@ const ComponentCard = styled.div`
   background-color: white;
   border-radius: 6px;
   max-width: 100%;
+margin-top: 20px;
 
   & > .toolbar {
     height: 50px;
@@ -32,6 +33,7 @@ const ComponentCard = styled.div`
   .main {
     padding: 20px;
     display: flex;
+flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
 gap: 20px;

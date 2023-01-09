@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import styled from "styled-components";
+import {DarkMode} from './components';
 
 const Container = styled.div`
   min-width: inherit;
@@ -9,17 +10,21 @@ const Container = styled.div`
   grid-template-rows: 80px 1fr;
   grid-template-columns: 1fr;
   grid-template-areas: "dev-header" "workarea";
-  gap: 20px 0;
-  background-color: #c6c6c6;
+  gap: 20px;
+background-color: grey;
 
   .dev-header {
+background-color: white;
     grid-area: dev-header;
-    background-color: white;
+display: flex;
+align-items: center;
+padding: 0 50px;
+border-bottom: 1px solid var(--text-light);
+color: var(--text-dark);
   }
 
   .dev-header nav {
     width: min-content;
-    height: 100%;
     margin: auto;
     display: flex;
     flex-flow: row nowrap;
@@ -68,6 +73,8 @@ export default function Dev() {
             Debug
           </a>
         </nav>
+        <div className='toolbar'>
+        </div>
       </header>
       <section className="workarea">
         <Outlet />

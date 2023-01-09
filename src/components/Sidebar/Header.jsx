@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import logo from '/src/assets/maze_logo.svg';
+import logo from '/assets/logo/maze_logo.svg';
 import {NavLink} from 'react-router-dom';
 
 const Container = styled.header`
