@@ -347,3 +347,19 @@ generic-subtle
     --head-3-text: 1.2rem;
     --date-text: 1.75rem;
     --normal-text: 0.875rem;
+
+* hand bracelent
+** My hand bracelet
+*** cls-6 ( the bracelet ornament )
+cls-6 -> the bracelet ornament
+fill: var(--primary-medium);
+
+*** cls-5 ( the bracelet wristband )
+
+*** cls-2 ( the big background circle)
+light-mode.bracelet-idle .cls-2
+fill: #cacbcc;
+
+*** cls-4 ( the hand outline )
+*** cls-3 ( the hand shadow )
+*** cls-1 (generic wrapper ) 

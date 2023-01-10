@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import AuthorizationPanel from "./LoginPanel";
-import WristbandPanel from "./WristbandPanel";
+import LoginSection from "./LoginSection";
+import WristbandSection from "./WristbandSection";
 
 const Container = styled.div`
   all: unset;
@@ -56,8 +56,8 @@ const Container = styled.div`
 export default function AddPlayer() {
   return (
     <Container>
-      <AuthorizationPanel />
-      <WristbandPanel />
+      <LoginSection />
+      <WristbandSection />
     </Container>
   );
 }

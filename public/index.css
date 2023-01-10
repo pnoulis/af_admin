@@ -33,6 +33,7 @@ html, body, #root {
   --base-warn: 33, 100%;
 
   --grey-0: hsl(var(--base-grey), 97%);
+  --grey-1: hsl(var(--base-black), 80%);
 
   --primary-subtle: hsl(var(--base-primary), 95%);
   --primary-light: hsl(var(--base-primary), 88%);
@@ -48,8 +49,10 @@ html, body, #root {
 
   --success: hsl(var(--base-success), 50%);
   --success-strong: hsl(var(--base-success), 38%);
+  --success-light: hsl(var(--base-success), 70%);
   --error: hsl(var(--base-error), 68%);
   --warn: hsl(var(--base-warn), 50%);
+  --warn-1: hsl(var(--base-warn), 65%);
   --background: hsl(var(--base-grey), 96%);
   --background-contrast: hsl(var(--base-primary), 98%);
   --text: hsl(var(--base-black), 13%);
@@ -92,6 +95,7 @@ html, body, #root {
   transform: scale(0);
   animation: ripple 600ms linear;
   background-color: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
 }
 
 @keyframes ripple {
