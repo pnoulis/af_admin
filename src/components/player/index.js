@@ -1,2 +1,2 @@
-export * from './LoginPlayer.jsx';
-export * from './RegisterPlayer.jsx';
+export * from "./LoginPlayerForm.jsx";
+export * from "./RegisterPlayerForm.jsx";

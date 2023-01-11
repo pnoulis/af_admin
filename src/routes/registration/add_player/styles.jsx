@@ -1,10 +1,38 @@
 import styled from "styled-components";
+import { ButtonText } from "/src/components/buttons";
+
+const PlayerSelectionSectionStyle = styled.section`
+  grid-area: PlayerSelection;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "Header" "Workarea";
+  gap: 30px;
+
+  & > .grid-workarea {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+const RegisterPlayerStyle = styled.div`
+  width: 350px;
+`;
+const SelectPlayerStyle = styled.div`
+  width: 350px;
+`;
+const PlayerSelectionToggleButton = styled(ButtonText)`
+  width: 200px;
+  height: 50px;
+  align-self: flex-start;
+`;
 
 const WristbandSectionStyle = styled.section`
   grid-area: Wristband;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 20px;
 
   .players-status {
@@ -107,6 +135,10 @@ const PlayerStyle = styled.div`
     background-color: var(--grey-1);
     fill: white;
   }
+
+  .icon1.assigned {
+    background-color: var(--success);
+  }
   .icon2 {
     padding: 8px;
     height: 40px;
@@ -138,4 +170,12 @@ const PlayerStyle = styled.div`
   }
 `;
 
-export { WristbandSectionStyle, PlayersListStyle, PlayerStyle };
+export {
+  WristbandSectionStyle,
+  PlayersListStyle,
+  PlayerStyle,
+  PlayerSelectionSectionStyle,
+  RegisterPlayerStyle,
+  SelectPlayerStyle,
+  PlayerSelectionToggleButton,
+};

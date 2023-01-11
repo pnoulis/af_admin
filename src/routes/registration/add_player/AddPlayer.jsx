@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import LoginSection from "./LoginSection";
+import PlayerSelectionSection from "./PlayerSelectionSection";
 import WristbandSection from "./WristbandSection";
 
 const Container = styled.div`
@@ -11,11 +11,12 @@ const Container = styled.div`
   // Dimensions
   min-width: 100%;
   min-height: 100%;
+  padding-top: 50px;
 
   // Contents
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas: "Login Wristband";
+  grid-template-areas: "PlayerSelection Wristband";
 
   .player-wristband {
     width: 100%;
@@ -56,7 +57,7 @@ const Container = styled.div`
 export default function AddPlayer() {
   return (
     <Container>
-      <LoginSection />
+      <PlayerSelectionSection />
       <WristbandSection />
     </Container>
   );

@@ -1,7 +1,22 @@
 import React from "react";
-import styled from "styled-components";
-import { TextInput_0 as TextInput } from "/src/components/textInputs";
+import styled, { css } from "styled-components";
+import { TextInput_0 } from "/src/components/textInputs";
 import { ButtonText } from "/src/components/buttons";
+
+const TextInput = styled(TextInput_0)`
+  height: 45px;
+  font-size: var(--text-sm);
+  .input {
+    border: none;
+    background-color: white;
+    border-radius: var(--border-radius-1);
+  }
+
+  .input:focus ~ label,
+  input:not(:placeholder-shown) ~ label {
+    background-color: white;
+  }
+`;
 
 const Form = styled.form`
   position: relative;
@@ -10,11 +25,10 @@ const Form = styled.form`
   display: flex;
   flex-flow: column nowrap;
   box-sizing: border-box;
-  width: 600px;
-  padding: 40px 100px;
-  background: white;
+  width: 100%;
+  // background: white;
   border-radius: var(--border-radius-1);
-  gap: 15px;
+  gap: 10px;
 
   & > legend {
     display: none;
@@ -22,6 +36,7 @@ const Form = styled.form`
 
   & > button {
     flex: 0 0 50px;
+    border-radius: var(--border-radius-1);
   }
 `;
 

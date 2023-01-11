@@ -25,8 +25,8 @@ import PgDev, {
 
 const devRoutes = [
   {
-    path: 'dev/mqtt',
-    element: <PgMqtt/>,
+    path: "dev/mqtt",
+    element: <PgMqtt />,
   },
   {
     path: "dev/components",
@@ -106,12 +106,10 @@ const devRoutes = [
   },
 ];
 
-const ProdRoutes = [{}];
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PgDev />,
+    // element: <PgDev />,
     children: [
       {
         path: "",

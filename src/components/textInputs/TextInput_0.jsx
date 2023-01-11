@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { FormStore } from "/src/stores";
 
 const StyledTextInput = styled.div`
@@ -40,7 +40,7 @@ const StyledTextInput = styled.div`
     position: absolute;
     top: 50%;
     left: 0;
-    transform: translate(20%, -50%);
+    transform: translate(20px, -50%);
     transition-property: top, font-size;
     transition-duration: 0.3s;
     color: var(--text);
@@ -77,16 +77,16 @@ const StyledTextInput = styled.div`
   }
 `;
 
-export function TextInput_0({ type, name, placeholder, ...props }) {
+function TextInput_0({ className, type, name, placeholder, ...props }) {
   const { fields, errors, setForm } = FormStore.use();
   const onChange = useCallback(
     (e) => {
-      setForm('setInput', name, e.target.value)
+      setForm("setInput", name, e.target.value);
     },
     [name]
   );
   return (
-    <StyledTextInput>
+    <StyledTextInput className={className}>
       <input
         className="input"
         type={type || "text"}
@@ -102,3 +102,11 @@ export function TextInput_0({ type, name, placeholder, ...props }) {
     </StyledTextInput>
   );
 }
+
+function createTextInput(Style) {
+  return styled(TextInput_0)`
+    ${Style}
+  `;
+}
+
+export { StyledTextInput, TextInput_0 };

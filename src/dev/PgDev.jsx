@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import styled from "styled-components";
-import {DarkMode} from './components';
+import { DarkMode } from "./components";
 
 const Container = styled.div`
   min-width: inherit;
@@ -11,16 +11,16 @@ const Container = styled.div`
   grid-template-columns: 1fr;
   grid-template-areas: "dev-header" "workarea";
   gap: 20px;
-background-color: grey;
+  background-color: grey;
 
   .dev-header {
-background-color: white;
+    background-color: white;
     grid-area: dev-header;
-display: flex;
-align-items: center;
-padding: 0 50px;
-border-bottom: 1px solid var(--text-light);
-color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+    border-bottom: 1px solid var(--text-light);
+    color: var(--text-dark);
   }
 
   .dev-header nav {
@@ -51,10 +51,6 @@ color: var(--text-dark);
   }
 `;
 
-function App() {
-  return <p>App</p>;
-}
-
 export default function Dev() {
   return (
     <Container>
@@ -76,8 +72,7 @@ export default function Dev() {
             Debug
           </a>
         </nav>
-        <div className='toolbar'>
-        </div>
+        <div className="toolbar"></div>
       </header>
       <section className="workarea">
         <Outlet />

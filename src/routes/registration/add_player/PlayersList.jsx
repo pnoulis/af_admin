@@ -8,6 +8,7 @@ function Player({
   id,
   username,
   isPairing,
+  wristbandColorCode,
   handleWristbandPairing,
   handlePlayerRemoval,
 }) {
@@ -33,7 +34,7 @@ function Player({
       onClick={(e) => onWristbandPairing(e)}
     >
       <span className="text">{username}</span>
-      <span className="icon1">
+      <span className={"icon1" + `${wristbandColorCode ? " assigned" : ""}`}>
         <Signal />
       </span>
       <span className="icon2" onClick={onPlayerRemoval}>
@@ -56,6 +57,7 @@ export function PlayersList({
             id={player.id}
             username={player.username}
             isPairing={player?.wristband?.status === "pairing" ? true : false}
+            wristbandColorCode={player?.wristband?.colorCode}
             handleWristbandPairing={handleWristbandPairing}
             handlePlayerRemoval={handlePlayerRemoval}
           ></Player>
