@@ -31,7 +31,7 @@ function handleSubmit(e, form, setForm, publish) {
   publish({
     username: form.fields.username,
     password: form.fields.password,
-  })
+  });
 }
 
 export function LoginPlayerForm() {

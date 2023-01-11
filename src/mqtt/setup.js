@@ -1,5 +1,6 @@
 import Client from './client.js';
 import setupHooks from './useMqtt.js';
+import Server from '/dummy_backend/mqttRoutes.js';
 
 const CLIENTS = new Map();
 
@@ -36,7 +37,41 @@ const prodTopics = [
   }
 ];
 
-const clientPresets = [
+const msqTopics = Server.routesToClient();
+// const msqTopics = [
+//   {
+//     alias: 'boot',
+//     pub: '/themaze/booted',
+//     sub: '/themaze/booted'
+//   },
+//   {
+//     alias: 'wristband/scan',
+//     pub: '/themaze/${clientId}/gui/player/wristbandScan',
+//     sub: '/themaze/${clientId}/gui/player/wristbandScan'
+//   },
+//   {
+//     alias: 'player/login',
+//     pub: '/themaze/${clientId}/gui/player/login',
+//     sub: '/themaze/${clientId}/gui/player/login',
+//   },
+//   {
+//     alias: 'player/register',
+//     pub: '/themaze/${clientId}/gui/player/register',
+//     sub: '/themaze/${clientId}/gui/player/register',
+//   },
+//   {
+//     alias: 'team/create',
+//     pub: '/themaze/${clientId}/gui/team/merge',
+//     sub: '/themaze/${clientId}/gui/team/merge',
+//   },
+//   {
+//     alias: 'team/package/add',
+//     pub: '/themaze/${clientId}/gui/team/package/add',
+//     sub: '/themaze/${clientId}/gui/team/package/add',
+//   }
+// ];
+
+const proxyPresets = [
 ]
 const serverPresets = [
   { // PROD
@@ -54,7 +89,7 @@ const serverPresets = [
       username: 'pavlos',
       password: 'mindtr@p',
     },
-      //dd
+    //dd
   },
   { // MSQ
     host: 'ws://test.mosquitto.org:8080',
@@ -78,28 +113,21 @@ const registryPresets = [
   { // MSQ
     strict: false,
     topics: [
-      {
-        alias: '/test/one',
-        pub: '/${clientId}/test/one',
-        sub: '/${clientId}/test/one'
-      }
-    ],
-    params: {
-      clientId: "one"
-    }
+      ...msqTopics
+    ]
   }
 ]
 const loggerPresets = [
 ]
 
-function configureConf(clientPreset, serverPreset,
-  registryPreset, loggerPreset, adhocConf) {
+function configureConf(proxyPreset, serverPreset,
+                       registryPreset, loggerPreset, adhocConf) {
   return {
-    proxy: { ...clientPresets[clientPreset], ...adhocConf?.client },
+    proxy: { ...proxyPresets[proxyPreset], ...adhocConf?.proxy },
     server: { ...serverPresets[serverPreset], ...adhocConf?.server },
     registry: { ...registryPresets[registryPreset], ...adhocConf?.registry },
     logger: { ...loggerPresets[loggerPreset], ...adhocConf?.logger },
-  }
+  };
 }
 
 function emulateLoad(client, interval = 3000) {
@@ -123,7 +151,7 @@ function emulateLoad(client, interval = 3000) {
   }
 
   const loop = setInterval(() => {
-    startLoad()
+    startLoad();
   }, interval);
 
   window.addEventListener('beforeunload', (e) => {
@@ -147,14 +175,14 @@ function subscribeAll(client) {
         console.log(`SUBSCRIPTION ERROR AT:${topic}`);
         console.log(err);
       }
-    })
+    });
   }
 }
 
 function testClient(client, loadInterval = 5000) {
-  client.start().on('connect', () => {
+  client.on('connect', () => {
     console.log(`client:${client.id} CONNECTED`);
-    emulateLoad(client, loadInterval);
+    // emulateLoad(client, loadInterval);
     subscribeAll(client);
   })
     .on('error', (err) => {
@@ -174,7 +202,7 @@ function testClient(client, loadInterval = 5000) {
     });
 }
 
-export default function setupClient(test = false, name = 'dev', type, config = {}) {
+export default function setupClient(test = false, name = 'msq', type, config = {}) {
   let conf = {};
   conf.name = name || import.meta.env.MODE;
   let client = CLIENTS.get(conf.name);
@@ -187,23 +215,26 @@ export default function setupClient(test = false, name = 'dev', type, config = {
 
   const DEV = 0, PROD = 1, MSQ = 2;
   switch (type || import.meta.env.MODE) {
-    case 'development':
-      console.log('MQTT CLIENT RUNNING ON DEV MODE');
-      conf = configureConf(DEV, DEV, DEV, DEV, config);
-  conf.name = name || import.meta.env.MODE;
-      break;
-    case 'production':
-      console.log('MQTT CLIENT RUNNING ON PRODUCTION MODE');
-      conf = configureConf(PROD, PROD, PROD, PROD, config);
-  conf.name = name || import.meta.env.MODE;
-      break;
-    case 'msq':
-      console.log('MQTT CLIENT RUNNING ON MSQ MODE');
-      conf = configureConf(MSQ, MSQ, MSQ, MSQ, config);
-  conf.name = name || import.meta.env.MODE;
-      break;
-    default:
-      throw new Error(`Undefined client type:${type || import.meta.env.MODE}`);
+  case 'development':
+    console.log('MQTT CLIENT RUNNING ON MSQ MODE');
+    conf = configureConf(MSQ, MSQ, MSQ, MSQ, config);
+    conf.name = name || import.meta.env.MODE;
+    // console.log('MQTT CLIENT RUNNING ON DEV MODE');
+    // conf = configureConf(DEV, DEV, DEV, DEV, config);
+    // conf.name = name || import.meta.env.MODE;
+    break;
+  case 'production':
+    console.log('MQTT CLIENT RUNNING ON PRODUCTION MODE');
+    conf = configureConf(PROD, PROD, PROD, PROD, config);
+    conf.name = name || import.meta.env.MODE;
+    break;
+  case 'msq':
+    console.log('MQTT CLIENT RUNNING ON MSQ MODE');
+    conf = configureConf(MSQ, MSQ, MSQ, MSQ, config);
+    conf.name = name || import.meta.env.MODE;
+    break;
+  default:
+    throw new Error(`Undefined client type:${type || import.meta.env.MODE}`);
   }
 
   client = new Client(conf);

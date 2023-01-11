@@ -9,20 +9,21 @@ function Registry(config) {
       pub: this.canonicalize(topic.pub || topic.alias),
       sub: this.canonicalize(topic.sub || topic.alias),
     }
-  ]))
+  ]));
   return this;
 }
 
 Registry.prototype.canonicalize = function(...topics) {
   // must conform to the syntax: /[a-zA-Z0-9]/[a-zA-Z0-9]
   topics = topics.map(topic => {
+    if (!topic) return null;
     if (!topic.startsWith('/')) topic = '/' + topic;
     if (topic.endsWith('/')) topic = topic.slice(0, -1);
     return topic;
   });
 
   return topics.length > 1 ? topics : topics.pop();
-}
+};
 
 Registry.prototype.resolve = function(alias) {
   let adhocParams = {};
@@ -40,8 +41,8 @@ Registry.prototype.resolve = function(alias) {
   return [
     topic,
     ...this.canonicalize(...this.replaceParams(pub, sub, adhocParams)),
-  ]
-}
+  ];
+};
 
 Registry.prototype.replaceParams = function(...topics) {
   const params = (typeof topics[topics.length - 1] === 'object')
@@ -55,7 +56,7 @@ Registry.prototype.replaceParams = function(...topics) {
     return car + param + '/';
   }));
   return topics.length > 1 ? topics : topics.pop();
-}
+};
 
 export default function Proxy(config = {}) {
   const { proxy, server, registry, logger } = this.parseConfig(config);
@@ -102,8 +103,8 @@ Proxy.prototype.parseConfig = function(config) {
     logger: {
       ...config.logger
     }
-  }
-}
+  };
+};
 
 Proxy.prototype.decode = function(payload) {
   try {
@@ -113,7 +114,7 @@ Proxy.prototype.decode = function(payload) {
     throw err;
   }
   return payload;
-}
+};
 
 Proxy.prototype.encode = function(payload) {
   try {
@@ -122,30 +123,40 @@ Proxy.prototype.encode = function(payload) {
     throw err;
   }
   return payload;
-}
+};
 
 Proxy.prototype.start = function() {
   this.server = MqttServer(this.server.host, this.server.options)
     .on('connect', () => {
       this.events.get('connect')?.forEach(listener => listener && listener());
+      this.events.set('connect', []);
     })
     .on('error', (err) => {
-      this.events.get('error')?.forEach(listener => listener && listener(err))
+      this.events.get('error')?.forEach(listener => listener && listener(err));
+
+      this.events.set('error', []);
     })
     .on('close', () => {
-      this.events.get('close')?.forEach(listener => listener && listener())
+      this.events.get('close')?.forEach(listener => listener && listener());
+
+      this.events.set('close', []);
     })
     .on('reconnect', () => {
-      this.events.get('reconnect')?.forEach(listener => listener && listener())
+      this.events.get('reconnect')?.forEach(listener => listener && listener());
+
+      this.events.set('reconnect', []);
     })
     .on('offline', () => {
-      this.events.get('offline')?.forEach(listener => listener && listener())
+      this.events.get('offline')?.forEach(listener => listener && listener());
+
+      this.events.set('offline', []);
     })
     .on('disconnect', () => {
-      this.events.get('disconnect')?.forEach(listener => listener && listener())
+      this.events.get('disconnect')?.forEach(listener => listener && listener());
+      this.events.set('disconnect', []);
     });
   return this;
-}
+};
 
 Proxy.prototype.stop = function(force = false, options = {}, cb) {
   if (typeof force === 'function') {
@@ -157,12 +168,12 @@ Proxy.prototype.stop = function(force = false, options = {}, cb) {
   }
   this.server.end(force, options, cb);
   return this;
-}
+};
 
 Proxy.prototype.on = function(event, listener) {
   this.events.get(event).push(listener);
   return this;
-}
+};
 
 Proxy.prototype.subscribe = function(alias, client, cb) {
   const [ topic, pub, sub ] = this.registry.resolve(alias);
@@ -172,7 +183,7 @@ Proxy.prototype.subscribe = function(alias, client, cb) {
     this.subscriptions.set(topic, clients);
     this.server.on('message', (topic, payload) => {
       if (topic === sub) {
-        clients.forEach((client) => client && client(this.decode(payload)))
+        clients.forEach((client) => client && client(this.decode(payload)));
       }
     });
   }
@@ -187,8 +198,8 @@ Proxy.prototype.subscribe = function(alias, client, cb) {
     unsubscribe: () => clients.splice(clientId, 1),
     publish: (payload, options, cb) => this._publish(pub, payload, options, cb),
     subscribe: defer
-  }
-}
+  };
+};
 
 Proxy.prototype._subscribe = function(sub, options, cb) {
   if (options instanceof Function) {
@@ -200,8 +211,8 @@ Proxy.prototype._subscribe = function(sub, options, cb) {
     if (err) {
       throw new Error(err);
     }
-  })
-}
+  });
+};
 
 Proxy.prototype.publish = function(alias, payload, options, cb) {
   const [ topic, pub, sub ] = this.registry.resolve(alias);
@@ -210,12 +221,15 @@ Proxy.prototype.publish = function(alias, payload, options, cb) {
     options = {};
   }
   this._publish(pub, payload, options, cb);
-}
+};
 
 Proxy.prototype._publish = function(pub, payload, options, cb) {
   if (options instanceof Function) {
     cb = options;
     options = {};
+  }
+  if (!pub) {
+    throw new Error('Server does not accept requests for that topic');
   }
   payload.timestamp = new Date().getTime();
   this.server.publish(pub, this.encode(payload), options, (err) => {
@@ -224,4 +238,4 @@ Proxy.prototype._publish = function(pub, payload, options, cb) {
       throw new Error(err);
     }
   });
-}
+};

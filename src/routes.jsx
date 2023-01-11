@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { Home, Register, AddPlayer, AddPackage } from "./routes/index";
 import PgDev, {
+  PgMqtt,
   PgComponents,
   PgDropdowns,
   PgButtons,
@@ -23,6 +24,10 @@ import PgDev, {
 } from "./dev";
 
 const devRoutes = [
+  {
+    path: 'dev/mqtt',
+    element: <PgMqtt/>,
+  },
   {
     path: "dev/components",
     element: <PgComponents />,

@@ -4,7 +4,7 @@ const WristbandSectionStyle = styled.section`
   grid-area: Wristband;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 20px;
 
   .players-status {

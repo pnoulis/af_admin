@@ -69,6 +69,9 @@ export default function Dev() {
           <NavLink className="link" to="/">
             App
           </NavLink>
+          <NavLink className="link" to="dev/mqtt">
+            mqtt
+          </NavLink>
           <a className="link" href="#">
             Debug
           </a>

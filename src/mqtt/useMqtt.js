@@ -7,11 +7,11 @@ export default function setupHooks(client) {
     useEffect(() => {
       if (!defer) {
         subscription.subscribe((message) => {
-          setSubscription({ ...subscription, message })
-        })
+          setSubscription({ ...subscription, message });
+        });
       }
       return () => subscription.unsubscribe();
-    }, [alias])
+    }, [alias]);
 
     /*
     @returns:

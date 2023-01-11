@@ -363,3 +363,5 @@ fill: #cacbcc;
 *** cls-4 ( the hand outline )
 *** cls-3 ( the hand shadow )
 *** cls-1 (generic wrapper ) 
+* json editor
+https://github.com/josdejong/jsoneditor
