@@ -174,6 +174,7 @@ function emulateLoad(client, interval = 3000) {
 function subscribeAll(client) {
   const topics = client.registry.registry;
   for (const topic of topics.keys()) {
+    console.log(`will subscirbe at:${topic}`);
     client.subscribe(
       topic,
       (payload) => {
@@ -235,13 +236,13 @@ export default function setupClient(
     MSQ = 2;
   switch (type || import.meta.env.MODE) {
     case "development":
-      // console.log('MQTT CLIENT RUNNING ON MSQ MODE');
-      // conf = configureConf(MSQ, MSQ, MSQ, MSQ, config);
-      // conf.name = name || import.meta.env.MODE;
-      console.log("MQTT CLIENT RUNNING ON DEV MODE");
-      conf = configureConf(DEV, DEV, DEV, DEV, config);
-      console.log(conf);
+      console.log('MQTT CLIENT RUNNING ON MSQ MODE');
+      conf = configureConf(MSQ, MSQ, MSQ, MSQ, config);
       conf.name = name || import.meta.env.MODE;
+      // console.log("MQTT CLIENT RUNNING ON DEV MODE");
+      // conf = configureConf(DEV, DEV, DEV, DEV, config);
+      // console.log(conf);
+      // conf.name = name || import.meta.env.MODE;
       break;
     case "production":
       console.log("MQTT CLIENT RUNNING ON PRODUCTION MODE");

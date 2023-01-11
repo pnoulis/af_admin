@@ -6,7 +6,7 @@ import Client from "/src/mqtt";
 import Server from "/dummy_backend/mqttRoutes.js";
 import { ButtonText } from "/src/components/buttons";
 
-const { useMqtt, client } = Client();
+const { useMqtt, client } = Client(true);
 
 const server = {
   useMqtt,
@@ -211,8 +211,10 @@ function PublishSection(props) {
   );
 
   function handlePublish() {
-    alert("will publish");
-    // server.client.publish(topics)
+    console.log(`publish at: ${topics[0]}`);
+    server.client.publish(topics[0], {
+      name: 'pavlos'
+    });
   }
 
   return (

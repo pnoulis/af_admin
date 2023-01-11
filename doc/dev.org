@@ -96,12 +96,29 @@ A client to the broker, who has registered an interest in collecting published
 payloads.
 
 
-
-
 ** My Client
 this.server._subscibe -> asynchronous
 this.server._publish -> asynchronous
 
+** tasks
+*** Parameters
+--verbose
+--topics
+--subscribe-all
+--emulate-load
+*** verbose mode
+In verbose mode the proxy shall log every important action such as:
+
+a client has stated an intent to subscribe to a channel
+a client has stated an intent to publish to a channel
+A client successfully subscribed to a channel
+A message was successfully forwarded to its destination
+A destination could not be located
+A destination only accepts one way communication
+*** Logging agent
+If no logging agent has been provided the client shall default to writting to
+the console.
+*** adhoc configuration
 * Color pallete
 ** purple
 #+begin_src css

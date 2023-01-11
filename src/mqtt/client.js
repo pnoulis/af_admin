@@ -66,7 +66,9 @@ Registry.prototype.replaceParams = function (...topics) {
 
 export default function Proxy(config = {}) {
   const { proxy, server, registry, logger } = this.parseConfig(config);
-  (this.name = proxy.name), (this.id = proxy.id), (this.server = server);
+  this.name = proxy.name;
+  this.id = proxy.id;
+  this.server = server;
   this.logger = logger;
   this.registry = new Registry(registry);
   this.events = new Map([
@@ -202,7 +204,6 @@ Proxy.prototype.subscribe = function (alias, client, cb) {
     });
   }
 
-  console.log(clients);
   const clientId = clients.push(client || null) - 1;
 
   if (!client) {

@@ -2,7 +2,7 @@ const routes = [
   {
     // one way communication, server publishes
     summary: 'wristband scan',
-    alias: 'wristband/scan',
+    alias: '/wristband/scan',
     pub: {
       topic: '/themaze/${clientId}/gui/player/wristbandScan',
       payloads: [
@@ -20,7 +20,7 @@ const routes = [
   },
   {
     summary: 'wristband register',
-    alias: 'wristband/validate',
+    alias: '/wristband/validate',
     pub: {
       topic: '/themaze/${clientId}/gui/player/registerWristband',
       payloads: [
@@ -74,3 +74,6 @@ const server = {
 };
 
 export default server;
+export {
+  routes
+}
