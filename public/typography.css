@@ -1,0 +1,19 @@
+@font-face {
+  font-family: NoirPro-Bold;
+  src: url('../assets/fonts/NoirPro-Bold.ttf');
+}
+
+@font-face {
+  font-family: NoirPro-Light;
+  src: url('../assets/fonts/NoirPro-Light.ttf');
+}
+
+@font-face {
+  font-family: NoirPro-Medium;
+  src: url('../assets/fonts/NoirPro-Medium.ttf');
+}
+
+@font-face {
+  font-family: AgencyFBold;
+  src: url('../assets/fonts/AgencyFBBold.ttf');
+}

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { LayoutPanel } from "/src/components/layouts";
+import { LayoutPanel, StylePanelMain } from "/src/components/layouts";
 import { Header } from "./registration";
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -11,9 +11,9 @@ export function Register() {
   return (
     <LayoutPanel>
       <Header />
-      <section className="panel--main">
+      <StylePanelMain>
         <Outlet />
-      </section>
+      </StylePanelMain>
     </LayoutPanel>
   );
 }

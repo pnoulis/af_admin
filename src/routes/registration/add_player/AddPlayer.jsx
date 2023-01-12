@@ -11,7 +11,6 @@ const Container = styled.div`
   // Dimensions
   min-width: 100%;
   min-height: 100%;
-  padding-top: 50px;
 
   // Contents
   grid-template-rows: 1fr;
