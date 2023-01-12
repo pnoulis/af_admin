@@ -14,6 +14,7 @@ const LayoutPanel = styled.div`
   grid-template-rows: minmax(130px, max-content) 1fr;
   grid-template-columns: 1fr;
   grid-template-areas: "Header" "Main";
+  gap: 50px;
 
   // Appearance
   background-color: var(--background-contrast);
@@ -24,10 +25,13 @@ const LayoutPanel = styled.div`
   .panel--header {
     grid-area: Header;
   }
-
-  .panel--main {
-    grid-area: Main;
-  }
 `;
 
-export { LayoutPanel };
+const StylePanelMain = styled.section`
+  grid-area: Main;
+  box-sizing: border-box;
+  min-width: 100%;
+  min-height: 100%;
+`;
+
+export { LayoutPanel, StylePanelMain };

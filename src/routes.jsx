@@ -109,7 +109,7 @@ const devRoutes = [
 const router = createBrowserRouter([
   {
     path: "/",
-    // element: <PgDev />,
+    element: <PgDev />,
     children: [
       {
         path: "",

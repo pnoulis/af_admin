@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { DarkMode } from "./components";
 
 const Container = styled.div`
-  min-width: inherit;
-  min-height: inherit;
+  min-width: 100%;
+  min-height: 100%;
   display: grid;
   grid-template-rows: 80px 1fr;
   grid-template-columns: 1fr;

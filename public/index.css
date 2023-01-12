@@ -38,6 +38,7 @@ html, body, #root {
 
   --grey-0: hsl(var(--base-grey), 97%);
   --grey-1: hsl(var(--base-black), 80%);
+  --grey-2: hsl(var(--base-black), 93%);
 
   --primary-subtle: hsl(var(--base-primary), 95%);
   --primary-light: hsl(var(--base-primary), 88%);
@@ -59,6 +60,11 @@ html, body, #root {
   --warn-1: hsl(var(--base-warn), 65%);
   --background: hsl(var(--base-grey), 96%);
   --background-contrast: hsl(var(--base-primary), 98%);
+  --card-basic-color: white;
+  /* --card-basic-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.3); /\*black with 30% opacity*\/ */
+  --card-basic-shadow: 0 0 0.1rem 0.1rem var(--grey-2);
+  --card-hover-basic-shadow: 0 0 0.3rem 0.2rem var(--primary-strong);
+  --input-basic-border-box: 0 0 0.3rem rgba(0,0,0,0.3);
   --text: hsl(var(--base-black), 13%);
   --text-on-dark-basic: white;
   --text-on-dark-accent: var(--primary-subtle);
