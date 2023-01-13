@@ -4,7 +4,6 @@ import { ReactComponent as Arrow } from "/assets/icons/arrow6-cropped.svg";
 
 const StyleDropdownBase = styled.form`
   position: relative;
-  // border-radius: var(--border-radius-1);
   .filter {
     position: relative;
   }
@@ -149,7 +148,13 @@ function Dropdown_3({ className, children, name }) {
       </div>
       <ul className="list">
         {Children.toArray(children).map((children, i) => (
-          <li key={i} onClick={handleSelection} className="item">
+          <li
+            key={i}
+            onClick={(e) => {
+              setValue(e.target?.value || e.target.innerHTML);
+            }}
+            className="item"
+          >
             {children}
           </li>
         ))}

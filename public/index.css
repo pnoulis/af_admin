@@ -68,6 +68,7 @@ html, body, #root {
   --text: hsl(var(--base-black), 13%);
   --text-on-dark-basic: white;
   --text-on-dark-accent: var(--primary-subtle);
+  --text-on-white: hsl(var(--base-black), 5%);
 
   --btn-primary-color: linear-gradient(to right,
                                        var(--secondary-strong) 0%,

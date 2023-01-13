@@ -241,3 +241,58 @@ Add a paid package to the team.
         message: "Failed to receive payment"
     }
 ```
+
+# Packages
+## Example package dataset schema
+### Packages table
+<table>
+<thead><tr>
+<th>index</th>
+<th>ID</th>
+<th>Name</th>
+<th>Type</th>
+</tr></thead>
+<tbody>
+<tr><td>1</td><td>[ "missions" | 1 ]</td><td>missions</td><td>linear</td></tr>
+<tr><td>2</td><td>[ "elements" | 2 ]</td><td>elements</td><td>nonlinear</td></tr>
+<tr><td>3</td><td>[ "time" | 3 ]</td><td>time</td><td>linear</td></tr>
+</tbody>
+</table>
+
+### Linear Package permutations table
+<table>
+<thead><tr>
+<th>index</th>
+<th>package_id</th>
+<th>permutation_name</th>
+<th>package_unit</th>
+<th>price_unit_id</th>
+<th>constant_cost</th>
+<th>player_coefficient</th>
+</tr></thead>
+<tbody>
+<tr><td>1</td><td>[ "missions" | 1 ]</td><td>"per mission"</td><td>"missions"</td><td>[ "euro" | n ]<td>1.5</td><td>1.05</td></tr>
+<tr><td>2</td><td>[ "time" | 2 ]</td><td>"per time"</td><td>"minutes"</td><td>[ "euro" | n ]<td>2.0</td><td>1.15</td></tr>
+</tbody>
+</table>
+
+### Non-Linear Package permutations table
+<table>
+<thead><tr>
+<th>index</th>
+<th>package_id</th>
+<th>permutation_name</th>
+<th>package_unit</th>
+<th>price_unit_id</th>
+<th>constant_cost</th>
+<th>player_coefficient</th>
+</tr></thead>
+<tbody>
+<tr><td>1</td><td>[ "elements" | 1 ]</td><td>"earth"</td><td>NULL</td><td>[ "euro" | n ]</td><td>40</td><td>1.5</td></tr>
+<tr><td>2</td><td>[ "elements" | 2 ]</td><td>"fire"</td><td>NULL</td><td>[ "euro" | n ]</td><td>55</td><td>1.02</td></tr>
+<tr><td>3</td><td>[ "elements" | 3 ]</td><td>"water"</td><td>NULL</td><td>[ "euro" | n ]</td><td>60.5</td><td>1.5</td></tr>
+<tr><td>4</td><td>[ "elements" | 4 ]</td><td>"wind"</td><td>NULL</td><td>[ "euro" | n ]</td><td>33.999</td><td>1.5</td></tr>
+</tbody>
+</table>
+
+

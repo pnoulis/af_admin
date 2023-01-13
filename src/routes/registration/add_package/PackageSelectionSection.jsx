@@ -1,20 +1,36 @@
-import { StylePackageSelectionSection, StylePackageCard } from "./styles";
+import React, { useState, useEffect } from "react";
+import { StylePackageSelectionSection } from "./styles";
+import PackageConfiguratorCard from "./PackageConfiguratorCard";
+
+const dummyItems = ["one", "two", "three", "four"];
 
 function PackageSelectionSection() {
+  const [_package, setPackage] = useState({
+    name: "",
+    config: "",
+  });
+
+  function handlePackageSelection(name, config) {
+    setPackage({
+      name,
+      config,
+    });
+  }
+
   return (
     <StylePackageSelectionSection>
-      <StylePackageCard>
-        <h1 className="package-card-title">mission</h1>
-        <section className="package-card-configurator">configurator</section>
-      </StylePackageCard>
-      <StylePackageCard>
-        <h1 className="package-card-title">category</h1>
-        <section className="package-card-configurator">configurator</section>
-      </StylePackageCard>
-      <StylePackageCard>
-        <h1 className="package-card-title">time</h1>
-        <section className="package-card-configurator">configurator</section>
-      </StylePackageCard>
+      <PackageConfiguratorCard
+        afPackage={{
+          options: ["one", "two", "three"],
+        }}
+        onPackageConfigured={() => {}}
+      />
+      <PackageConfiguratorCard
+        afPackage={{
+          options: ["one", "two", "three"],
+        }}
+        onPackageConfigured={() => {}}
+      />
     </StylePackageSelectionSection>
   );
 }
