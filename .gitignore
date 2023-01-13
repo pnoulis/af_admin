@@ -1,4 +1,6 @@
 package-lock.json
+# Windows Subsystem for Linux
+*:Zone.Identifier
 # Logs
 logs
 *.log
