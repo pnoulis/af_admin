@@ -13,19 +13,27 @@ const Dropdown = styled(Dropdown_0)`
   }
 `;
 
-function PackageConfiguratorCard({ afPackage, onPackageConfigured }) {
+function PackageConfiguratorCard({
+  title,
+  subtitle,
+  catalogue,
+  placeholder,
+  dropdownVariant,
+  onPackageConfigured,
+}) {
   return (
     <StylePackageConfiguratorCard>
       <span className="package-selected-indicator">
         <Checkbox />
       </span>
-      <h1 className="package-title">mission</h1>
+      <h1 className="package-title">{title}</h1>
       <section className="package-configurator">
-        <h3 className="package-configurator-title">number of missions</h3>
+        <h3 className="package-configurator-title">{subtitle}</h3>
         <Dropdown
-          items={afPackage?.options || []}
-          placeholder={"custom"}
-          onSelected={(mission) => onPackageConfigured("mission", mission)}
+          items={catalogue.map((afPackage) => afPackage.label) || []}
+          placeholder={placeholder || "custom"}
+          variant={dropdownVariant}
+          onSelected={onPackageConfigured}
         />
       </section>
     </StylePackageConfiguratorCard>

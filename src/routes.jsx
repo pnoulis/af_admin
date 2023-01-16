@@ -11,6 +11,7 @@ import PgDev, {
   PgLinks,
   PgTextInputs,
   PgMisc,
+  PgModals,
   PgPalette,
   PgGreys,
   PgBlues,
@@ -59,6 +60,10 @@ const devRoutes = [
       {
         path: "misc",
         element: <PgMisc />,
+      },
+      {
+        path: "modals",
+        element: <PgModals />,
       },
     ],
   },

@@ -1,8 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import "@fontsource/roboto";
-import { GlobalStore } from "/src/stores";
 import MQTT_START from "/src/mqtt";
 import routes from "./routes";
 

@@ -5,5 +5,6 @@ export { default as PgLayouts } from "./PgLayouts";
 export { default as PgLinks } from "./PgLinks";
 export { default as PgButtons } from "./PgButtons";
 export { default as PgTextInputs } from "./PgTextInputs";
-export { default as PgMisc } from './PgMisc';
-export * from './misc';
+export { default as PgMisc } from "./PgMisc";
+export { default as PgModals } from "./PgModals";
+export * from "./misc";

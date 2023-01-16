@@ -1,0 +1,68 @@
+[
+  {
+    "package_id": 1,
+    "package_name": "missions",
+    "package_type": "linear",
+    "variant_id": "",
+    "variant_name": "",
+    "package_unit": "missions",
+    "price_unit": "euro",
+    "constant_unit_cost": 1.5,
+    "player_coefficient": 1.05
+  },
+  {
+    "package_id": 2,
+    "package_name": "time",
+    "package_type": "linear",
+    "variant_id": "",
+    "variant_name": "",
+    "package_unit": "minutes",
+    "price_unit": "euro",
+    "constant_unit_cost": 1.5,
+    "player_coefficient": 1.05
+  },
+  {
+    "package_id": 3,
+    "package_name": "elements",
+    "package_type": "nonlinear",
+    "variant_id": 1,
+    "variant_name": "earth",
+    "package_unit": "",
+    "price_unit": "euro",
+    "constant_unit_cost": 40,
+    "player_coefficient": 1.05
+  },
+  {
+    "package_id": 4,
+    "package_name": "elements",
+    "package_type": "nonlinear",
+    "variant_id": 2,
+    "variant_name": "water",
+    "package_unit": "",
+    "price_unit": "euro",
+    "constant_unit_cost": 45,
+    "player_coefficient": 1.05
+  },
+  {
+    "package_id": 5,
+    "package_name": "elements",
+    "package_type": "nonlinear",
+    "variant_id": 3,
+    "variant_name": "fire",
+    "package_unit": "",
+    "price_unit": "euro",
+    "constant_unit_cost": 55.999,
+    "player_coefficient": 1.05
+  },
+  {
+    "package_id": 6,
+    "package_name": "elements",
+    "package_type": "nonlinear",
+    "variant_id": 4,
+    "variant_name": "wind",
+    "package_unit": "",
+    "price_unit": "euro",
+    "constant_unit_cost": 55.999,
+    "player_coefficient": 1.05
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "family",
+    "id": "366143fd-dde4-469e-bf90-b74e73edb297",
+    "code": "db297",
+    "individual": "",
+    "startDate": "16-01-2023",
+    "endDate": "",
+    "price": 50
+  },
+  {
+    "name": "promoNewYear",
+    "id": "609a49f3-9f4a-4b8c-96d0-4fd15ae15481",
+    "code": "15481",
+    "individual": "true",
+    "startDate": "01-01-2023",
+    "endDate": "01-02-2023",
+    "price": 25
+  }
+]

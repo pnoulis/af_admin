@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { StylePackageSelectionSection } from "./styles";
-import PackageConfiguratorCard from "./PackageConfiguratorCard";
+import {
+  MissionsConfigurator,
+  TimeConfigurator,
+  ElementsConfigurator,
+} from "./Packages";
 
-const dummyItems = ["one", "two", "three", "four"];
-
-function PackageSelectionSection() {
+function PackageSelectionSection({ afPackages }) {
   const [_package, setPackage] = useState({
     name: "",
     config: "",
@@ -19,17 +21,12 @@ function PackageSelectionSection() {
 
   return (
     <StylePackageSelectionSection>
-      <PackageConfiguratorCard
-        afPackage={{
-          options: ["one", "two", "three"],
-        }}
-        onPackageConfigured={() => {}}
+      <MissionsConfigurator
+        afPackage={afPackages.find((p) => p.name === "missions")}
       />
-      <PackageConfiguratorCard
-        afPackage={{
-          options: ["one", "two", "three"],
-        }}
-        onPackageConfigured={() => {}}
+      <TimeConfigurator afPackage={afPackages.find((p) => p.name === "time")} />
+      <ElementsConfigurator
+        afPackage={afPackages.find((p) => p.name === "elements")}
       />
     </StylePackageSelectionSection>
   );
