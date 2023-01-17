@@ -1,6 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
-import appRoutes from "./routes";
+import appRoutes from "./app";
+import devRoutes from './routes.dev.jsx';
 
-const router = createBrowserRouter([...appRoutes]);
+let router;
+if (import.meta.env.DEV) {
+  router = createBrowserRouter([...appRoutes, ...devRoutes]);
+} else {
+  router = createBrowserRouter([...appRoutes]);
+}
 
 export default router;
