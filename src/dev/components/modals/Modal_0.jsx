@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { ReactComponent as Cancel } from "/assets/icons/cancel_1-cropped.svg";
 
@@ -36,48 +37,65 @@ const StyleReplacedDialog = styled(DialogStyled)`
 
 const StylePositionedDialog = styled(DialogStyled).attrs((props) => {
   switch (props.position) {
-    case "bottom left":
+    case "left bottom":
       props.left = 0;
       props.bottom = 0;
       props.translate = "translate(-100%, 100%)";
       break;
-    case "bottom center":
+    case "center bottom":
       props.left = "50%";
       props.bottom = 0;
       props.translate = "translate(-50%, 100%)";
       break;
-    case "bottom right":
+    case "right bottom":
       props.right = 0;
       props.bottom = 0;
       props.translate = "translate(100%, 100%)";
       break;
-    case "top left":
+    case "left top":
       props.top = 0;
       props.left = 0;
       props.translate = "translate(-100%, -100%)";
       break;
-    case "top center":
+    case "center top":
       props.top = 0;
       props.left = "50%";
       props.translate = "translate(-50%, -100%)";
       break;
-    case "top right":
+    case "right top":
       props.top = 0;
       props.right = 0;
       props.translate = "translate(100%, -100%)";
       break;
+    case "replace":
+      props.top = 0;
+      props.left = 0;
+      props.width = "100%";
+      props.height = "100%";
+      break;
+    case "center":
+      props.top = "50%";
+      props.left = "50%";
+      props.translate = "translate(-50%, -50%)";
     default:
+      const [top, right, bottom, left, translate] = props.position.split(" ");
+      props.top = top;
+      props.right = right;
+      props.bottom = bottom;
+      props.left = left;
+      props.translate = translate;
       break;
   }
   return props;
 })`
-  background-color: red;
   position: absolute;
   top: ${(props) => props.top};
   left: ${(props) => props.left};
   right: ${(props) => props.right};
   bottom: ${(props) => props.bottom};
   transform: ${(props) => props.translate};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
 `;
 
 const StyleFakeModal = styled.div`
@@ -85,7 +103,7 @@ const StyleFakeModal = styled.div`
   padding: 20px;
   border-radius: var(--border-radius-2);
   border: 4px solid var(--primary-medium);
-  position: relative;
+  position: absolute;
 
   .modal-close-icon {
     box-sizing: content-box;
@@ -164,25 +182,33 @@ const Container = styled.div`
   }
 `;
 
-function FakeModal({ open, position, children }) {
+function FakeModal({ open, onClose, block, position, children }) {
   const modalRef = useRef(null);
+
   const handleClose = useCallback(
     (e) => {
       modalRef.current?.close();
     },
-    [modalRef.current]
+    [onClose]
   );
 
   useEffect(() => {
     if (open) {
-      console.log("should open");
-      modalRef.current.show();
+      if (block) {
+        modalRef?.current.showModal();
+      } else {
+        modalRef?.current.show();
+      }
     }
-    return () => modalRef.current.close();
+    return () => modalRef?.current.close();
   }, [open]);
 
   return (
-    <StylePositionedDialog ref={modalRef} position="top center">
+    <StylePositionedDialog
+      ref={modalRef}
+      onClose={onClose}
+      position="50px 100px"
+    >
       {children}
       <span className="modal-close-icon" onClick={handleClose}>
         <Cancel />
@@ -191,8 +217,6 @@ function FakeModal({ open, position, children }) {
   );
 }
 
-function Modal({ open, position, children }) {}
-
 export function displayModal_0() {
   const [open, setOpen] = useState(false);
   return (
@@ -200,13 +224,21 @@ export function displayModal_0() {
       <div style={{ position: "relative", background: "yellow" }}>
         <p
           style={{ position: "relative" }}
-          onClick={() => {
+          onClick={(e) => {
+            console.log("being clicked");
+
             setOpen((prev) => !prev);
           }}
         >
           click me
         </p>
-        <FakeModal open={open}>
+        <FakeModal
+          open={open}
+          onClose={() => {
+            console.log("closing");
+            setOpen(false);
+          }}
+        >
           <p>one</p>
           <p>one</p>
           <p>one</p>

@@ -1,5 +1,4 @@
 import React, { useRef, useCallback, useEffect } from "react";
-import { ReactComponent as Cancel } from "/assets/icons/cancel_1-cropped.svg";
 import styled from "styled-components";
 
 const StyleDialogBase = styled("dialog").attrs((props) => {
@@ -55,6 +54,7 @@ const StyleDialogBase = styled("dialog").attrs((props) => {
   }
   return props;
 })`
+  position: absolute;
   top: ${(props) => props.top};
   left: ${(props) => props.left};
   right: ${(props) => props.right};
@@ -64,32 +64,7 @@ const StyleDialogBase = styled("dialog").attrs((props) => {
   height: ${(props) => props.height};
 `;
 
-const StylePositionedDialog = styled(StyleDialogBase)`
-  background-color: white;
-  padding: 20px;
-  border-radius: var(--border-radius-2);
-  border: 4px solid var(--primary-medium);
-  position: absolute;
-  z-index: 20;
-
-  .modal-close-icon {
-    box-sizing: content-box;
-    padding: 5px;
-    display: block;
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    right: 0;
-    top: 0;
-    transform: translate(50%, -50%);
-    fill: var(--primary-medium);
-    stroke-width: 1.5;
-    stroke: white;
-    cursor: pointer;
-  }
-`;
-
-function Modal_0({ open, onClose, block, position, children }) {
+function Modal_1({ open, onClose, block, position, children }) {
   const modalRef = useRef(null);
 
   const handleClose = useCallback(
@@ -106,18 +81,17 @@ function Modal_0({ open, onClose, block, position, children }) {
       } else {
         modalRef.current?.show();
       }
+    } else {
+      modalRef.current?.close();
     }
     return () => modalRef.current?.close();
   }, [open]);
 
   return (
-    <StylePositionedDialog ref={modalRef} onClose={onClose} position={position}>
+    <StyleDialogBase ref={modalRef} position={position}>
       {children}
-      <span className="modal-close-icon" onClick={handleClose}>
-        <Cancel />
-      </span>
-    </StylePositionedDialog>
+    </StyleDialogBase>
   );
 }
 
-export { Modal_0 };
+export { Modal_1 };

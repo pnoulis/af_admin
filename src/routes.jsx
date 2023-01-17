@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { Home, Register, AddPlayer, AddPackage } from "./routes/index";
+import { Home, Register, AddPlayer, AddPackage, Summary } from "./routes/index";
 import PgDev, {
   PgMqtt,
   PgComponents,
@@ -114,7 +114,7 @@ const devRoutes = [
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PgDev />,
+    // element: <PgDev />,
     children: [
       {
         path: "",
@@ -138,7 +138,7 @@ const router = createBrowserRouter([
               },
               {
                 path: "team/package/submit",
-                element: <p>package submit</p>,
+                element: <Summary />,
               },
             ],
           },

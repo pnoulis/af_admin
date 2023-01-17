@@ -4,16 +4,17 @@ import { StylePanelMain } from "/src/components/layouts";
 const StyleAddPackage = styled(StylePanelMain)`
   display: grid;
   // Contents
-  grid-template-rows: 1fr 200px;
+  grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr;
   grid-template-areas: "Packages" "toolbar";
+  row-gap: 30px;
 `;
 
 const StylePackageSelectionSection = styled.section`
   display: grid;
   // Contents
-  grid-template-rows: 250px;
-  grid-template-columns: repeat(3, 400px);
+  grid-template-rows: 225px;
+  grid-template-columns: repeat(3, 350px);
   grid-template-areas: "Missions Category Time";
   justify-content: space-around;
   justify-items: center;
@@ -22,7 +23,16 @@ const StylePackageSelectionSection = styled.section`
   margin-top: 30px;
 `;
 
-const StyleToolbarSection = styled.section``;
+const StyleToolbarSection = styled.section`
+  display: grid;
+  // Contents
+  grid-template-rows: 225px;
+  grid-template-columns: repeat(2, 350px);
+  grid-template-areas: "Discount PlayerInfo";
+  justify-items: center;
+  align-items: center;
+  padding-left: 50px;
+`;
 
 const StylePackageConfiguratorCard = styled.div`
   display: flex;

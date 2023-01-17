@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { ReactComponent as Arrow } from "/assets/icons/arrow6-cropped.svg";
 
 const StyleDropdown_0 = styled.div`
@@ -99,9 +99,31 @@ const StyleDropdown_0 = styled.div`
       fill: white;
     }
   }
+
+  ${({ upside }) => css`
+    .list {
+      bottom: 5rem;
+      top: revert;
+    }
+
+    .selected-icon {
+      transform: translateY(-50%) rotate(-90deg);
+    }
+
+    &.open .selected-icon {
+      transform: translateY(-50%) rotate(90deg);
+    }
+  `}
 `;
 
-function Dropdown_0({ className, name, items, placeholder, onSelected }) {
+function Dropdown_0({
+  className,
+  upside,
+  name,
+  items,
+  placeholder,
+  onSelected,
+}) {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
