@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import appRoutes from "./app";
-import devRoutes from './routes.dev.jsx';
+import devRoutes from '../dev';
 
 let router;
 if (import.meta.env.DEV) {
