@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import "@fontsource/roboto";
 import MQTT_START from "/src/mqtt";
-import routes from "./routes";
+import routes from "./routes.all";
 
 const { client } = MQTT_START();
 client.on("connect", () => {

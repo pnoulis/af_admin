@@ -1,6 +1,3 @@
-import React from "react";
-import { createBrowserRouter } from "react-router-dom";
-import { Home, Register, AddPlayer, AddPackage, Summary } from "./routes/index";
 import PgDev, {
   PgMqtt,
   PgComponents,
@@ -24,7 +21,7 @@ import PgDev, {
   PgGreens,
 } from "./dev";
 
-const devRoutes = [
+const routes = [
   {
     path: "dev/mqtt",
     element: <PgMqtt />,
@@ -111,54 +108,4 @@ const devRoutes = [
   },
 ];
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    // element: <PgDev />,
-    children: [
-      {
-        path: "",
-        element: <Home />,
-        children: [
-          {
-            path: "register",
-            element: <Register />,
-            children: [
-              {
-                path: "team/create",
-                element: <p>team create</p>,
-              },
-              {
-                path: "team/player/add",
-                element: <AddPlayer />,
-              },
-              {
-                path: "team/package/add",
-                element: <AddPackage />,
-              },
-              {
-                path: "team/package/submit",
-                element: <Summary />,
-              },
-            ],
-          },
-          {
-            path: "manager",
-            element: <p>manager</p>,
-          },
-          {
-            path: "scoreboard",
-            element: <p>scoreboard</p>,
-          },
-          {
-            path: "cashier",
-            element: <p>cashier</p>,
-          },
-        ],
-      },
-      ...devRoutes,
-    ],
-  },
-]);
-
-export default router;
+export default routes;

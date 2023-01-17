@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const LayoutPanel = styled.div`
+const StylePanel = styled.div`
   all: unset;
   box-sizing: border-box;
   display: grid;
@@ -34,4 +34,4 @@ const StylePanelMain = styled.section`
   min-height: 100%;
 `;
 
-export { LayoutPanel, StylePanelMain };
+export { StylePanel, StylePanelMain };

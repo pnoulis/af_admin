@@ -1,30 +1,30 @@
-import React, { useReducer, useContext, useCallback } from 'react';
-import Field from '/src/lib/fields.js';
+import React, { useReducer, useContext, useCallback } from "react";
+import Field from "/src/lib/fields.js";
 
 const actions = {
   setErrors(errors) {
-    return { type: 'ERRORS', errors };
+    return { type: "ERRORS", errors };
   },
   setInput(name, value) {
-    return { type: 'INPUT', name, value };
+    return { type: "INPUT", name, value };
   },
-}
+};
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'ERRORS':
+    case "ERRORS":
       return { ...state, errors: action.errors };
-    case 'INPUT':
+    case "INPUT":
       return {
         ...state,
         fields: {
           ...state.fields,
-          [action.name]: Field.reduce(action.name, action.value)
+          [action.name]: Field.reduce(action.name, action.value),
         },
         errors: {
           ...state.errors,
-          [action.name]: Field.validate(action.name, action.value)
-        }
+          [action.name]: Field.validate(action.name, action.value),
+        },
       };
     default:
       return state;
@@ -33,15 +33,18 @@ function reducer(state, action) {
 
 const FORM_SCHEMA = {
   fields: {},
-  errors: {}
+  errors: {},
 };
 const formContext = React.createContext(FORM_SCHEMA);
 const useFormContext = () => useContext(formContext);
 function useForm(initialState = {}) {
-  const [state, dispatch] = useReducer(reducer, { ...FORM_SCHEMA, ...initialState });
+  const [state, dispatch] = useReducer(reducer, {
+    ...FORM_SCHEMA,
+    ...initialState,
+  });
   const proxy = useCallback(
-    (action, ...payload) => dispatch(actions[action](...payload))
-    , [initialState]
+    (action, ...payload) => dispatch(actions[action](...payload)),
+    [initialState]
   );
 
   return [state, proxy];
