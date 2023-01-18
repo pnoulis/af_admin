@@ -382,3 +382,38 @@ fill: #cacbcc;
 *** cls-1 (generic wrapper ) 
 * json editor
 https://github.com/josdejong/jsoneditor
+
+* Dialog, Dropdown, Tooltip, Menu
+** Dialog
+A dialog is a floating element that displays information that requires
+immediate attention, appearing over the page content and blocking interactions
+with the page until it is dismissed.
+
+It is centered on the viewport, not anchored to any particular reference
+element.
+
+It is modal and renders a backdrop behind the dialog that dims the content
+behind it, making the rest of the page inaccessible.
+
+A dialog must:
+
+Allow the user to close the dialog by pressing escape.
+
+capture focus within the dialog.
+** Dropdown
+** Tooltip
+A tooltip is a floating element that displays information related to an anchor
+element when it receives keyboard focus or the mouse hovers over.
+
+A tooltip must:
+
+remain attached to its reference element and remain in view for the user
+regardless of where it is positioned on the screen
+
+must open when the mouse hovers of focus is within the referenced element.
+
+If the user presses esc while the tooltip is open it should close.
+
+
+* FLoating Ui (used in making dialogs etc)
+https://floating-ui.com/docs/getting-started
