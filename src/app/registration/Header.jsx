@@ -151,13 +151,13 @@ export function Header() {
   return (
     <PanelHeader className="panel--header">
       <nav className="header--nav">
-        <PanelLink to="team/player/add" Icon={AddPlayerIcon}>
+        <PanelLink to="team/players" Icon={AddPlayerIcon}>
           players
         </PanelLink>
-        <PanelLink to="team/package/add" Icon={addPackageIcon}>
+        <PanelLink to="team/package" Icon={addPackageIcon}>
           package
         </PanelLink>
-        <PanelLink to="team/package/submit" Icon={SubmitTeamIcon}>
+        <PanelLink to="team/summary" Icon={SubmitTeamIcon}>
           summary
         </PanelLink>
       </nav>

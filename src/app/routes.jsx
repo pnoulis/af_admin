@@ -8,8 +8,10 @@ const routes = [
       {
         path: "",
         element: <Home />,
+        children: [
+          ...registrationRoutes,
+        ]
       },
-      ...registrationRoutes,
     ],
   },
 ];
