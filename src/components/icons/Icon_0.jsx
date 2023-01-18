@@ -1,18 +1,23 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  Children,
+  forwardRef,
+  useMemo,
+} from "react";
+import styled from "styled-components";
 
 const Icon_0 = styled.span`
-display: flex;
-justify-content: center;
-align-items: center;
-height: ${(props) => props.size ? props.size + 'em' : '1em' };
-width: ${(props) => props.size ? props.size + 'em' : '1em' };
-
-
-> * {
-width: 70%;
-height: 70%;
-}
+  svg {
+    display: inline-block;
+    box-sizing: border-box;
+    height: ${(props) => (props.size ? props.size + "em" : "1em")};
+    width: ${(props) => (props.size ? props.size + "em" : "1em")};
+    padding: calc(1%);
+    background-color: var(--grey-1);
+    border-radius: 50%;
+  }
 `;
 
 export { Icon_0 };
