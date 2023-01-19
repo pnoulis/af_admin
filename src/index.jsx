@@ -7,10 +7,7 @@ import routes from "./routes";
 
 const { client } = MQTT_START();
 client.on("connect", () => {
-  client.subscribe("boot", (payload) => {
-    console.log(`PAYLOAD ARRIVED`);
-    console.log(payload);
-  });
+  client.subscribe("boot", (payload) => {});
 
   client.publish("boot", {
     deviceId: client.id,

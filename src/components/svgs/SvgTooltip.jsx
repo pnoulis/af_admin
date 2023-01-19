@@ -1,12 +1,19 @@
 import { SvgButton } from "./SvgButton";
-import { Tooltip } from "@mui/material";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "/src/components/tooltips";
 
-function SvgTooltip({ className, size, children }) {
+function SvgTooltip({ className, title, placement, size, children }) {
   return (
-    <Tooltip title="add" arrow>
-      <SvgButton className={className} size={size}>
-        {children}
-      </SvgButton>
+    <Tooltip>
+      <TooltipTrigger>
+        <SvgButton className={className} size={size}>
+          {children}
+        </SvgButton>
+      </TooltipTrigger>
+      <TooltipContent>{title}</TooltipContent>
     </Tooltip>
   );
 }

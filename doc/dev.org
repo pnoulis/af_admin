@@ -384,6 +384,19 @@ fill: #cacbcc;
 https://github.com/josdejong/jsoneditor
 
 * Dialog, Dropdown, Tooltip, Menu
+** Interface shared by all these components
+*** position
+All of these 'modal' components should allow the user to direct the placement
+of the modal through a prop called 'position'.
+
+The following positions should be offered.
+
+top-start top top-end
+left-start left left-end
+bottom-start  bottom bottom-end
+right-start right right-end
+*** offset
+
 ** Dialog
 A dialog is a floating element that displays information that requires
 immediate attention, appearing over the page content and blocking interactions
@@ -402,6 +415,7 @@ Allow the user to close the dialog by pressing escape.
 capture focus within the dialog.
 ** Dropdown
 ** Tooltip
+*** About
 A tooltip is a floating element that displays information related to an anchor
 element when it receives keyboard focus or the mouse hovers over.
 
@@ -414,6 +428,53 @@ must open when the mouse hovers of focus is within the referenced element.
 
 If the user presses esc while the tooltip is open it should close.
 
-
 * FLoating Ui (used in making dialogs etc)
 https://floating-ui.com/docs/getting-started
+* React
+** Refs
+*** resources
+https://blog.logrocket.com/complete-guide-react-refs/
+https://www.geeksforgeeks.org/reactjs-refs/
+https://dmitripavlutin.com/react-useref-guide/
+https://redd.gitbook.io/react-advanced-form/architecture/referencing
+https://medium.com/dovetail-engineering/react-hooks-stable-references-and-performance-f5d876033a5c
+https://www.smashingmagazine.com/2020/11/react-useref-hook/
+https://felixgerschau.com/react-forwardref-explained/
+https://dev.to/carlosrafael22/using-refs-in-react-functional-components-part-1-useref-callback-ref-2j5i
+*** howtos
+**** how does one create a reference in a functional component
+#+begin_src javascript
+  const actionButton = ({action, children}) => {
+      const buttonRef = useRef(null);
+
+      return (
+              <button onClick={action} ref={buttonRef}>
+              {children}
+              </button>
+      );
+  }
+#+end_src
+*** callback references
+A callback reference is an alternate method by which react allows
+users to get a reference to a DOM element.
+
+Normally one creates a reference variable using:
+
+const reference = useRef(null);
+
+Then, if the user chooses to link the reference to a DOM element it is done by
+assigning the reference to the ref attribute:
+
+<button ref={reference}/>
+
+The linking is done by react. The user has no control over the linking of the
+refrence variable to the DOM element.
+
+A callback function transfers control over the linking of the DOM element to the
+reference variable  to the user by passing the DOM element to the callback
+function at which point the user may use it any way the want.
+
+
+<button ref={(DOM_ELEMENT) => do_something...}
+
+

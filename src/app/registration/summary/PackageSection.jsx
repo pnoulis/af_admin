@@ -9,14 +9,31 @@ import { ReactComponent as AddPlayerIcon } from "/assets/icons/add_player-croppe
 import { ReactComponent as CreateTeamIcon } from "/assets/icons/merge_team.svg";
 import { ReactComponent as AddPackageIcon } from "/assets/icons/add_package.svg";
 import AddPackage from "/assets/icons/add_package.svg";
-import { Tooltip_0 as Tooltip } from "/src/components/tooltips";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownContent,
+} from "/src/components/dropdowns";
+
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "/src/components/tooltips";
+
+import { Menu, MenuItem } from "/src/components/menus";
+
+import { useHover } from "/src/hooks";
 
 function PackageSection() {
   const aRef = useRef(null);
+  const [hover, bindHover] = useHover();
+
   return (
     <Card>
       <div>this is the package section</div>
-      <Tooltip></Tooltip>
+      <MenuItem label="yolo">broah</MenuItem>
+      <p {...bindHover}>{hover ? "yolo" : "drone"}</p>
     </Card>
   );
 }
