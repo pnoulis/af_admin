@@ -430,6 +430,102 @@ If the user presses esc while the tooltip is open it should close.
 
 * FLoating Ui (used in making dialogs etc)
 https://floating-ui.com/docs/getting-started
+** Simplest positioning behavior using defaults
+#+begin_src javascript
+  function App() {
+
+      // The hook providing the positioning functionality
+      const {x, y, strategy, refs } = useFloating();
+
+      return (
+              <React.Fragment>
+
+          // useFloating requires 2 things in order to performs its
+          // functions. It needs a reference element which provides
+          // anchoring. The element to be positioned will be positined
+          // relative to the reference element, the anchor element.
+
+
+          // The reference element
+              <button ref={refs.setReference}>Button</button>
+
+
+          // The floating element
+              <tooltip
+          ref={refs.setFloating}
+          style={{
+              position: strategy,
+              top: y ?? 0,
+              left: x ?? 0,
+              width: 'max-content'
+          }}
+              >
+              tooltip
+              </tooltip>
+
+
+              </React.Fragment>
+      );
+  }
+#+end_src
+** Use floating options
+placement
+middleware
+open
+onOpenStart
+** Middleware
+*** offset
+modifies the placement to add distance or margin between the reference and
+floating elements
+*** inline
+positions the floating element relative to individual client rects rather than
+the bounding box for better precision
+*** shift
+prevents the floating element from overflowingc a clipping container by shifting
+it to stay in view
+*** flip
+prevents the floating element from overflowing a clipping ocntainer by flipping
+it to the opposite placement to stay in view
+*** autoPlacement
+automatically chooses a placement for you using a most space strategy
+*** size
+resiezs the floating element, for example so it will not overflow a clipping
+container, or to match the width of the reference element.
+*** arrow
+provides data to position an inner element of the floating element such that it
+is centered to its reference element.
+*** hide
+provides data to hide the floating element in applicable situations when it no
+longer appears attached to its reference element due to different clipping
+contexts.
+
+** useFloating
+*** What is it?
+It is a hook that encapsulates most of the logic that allows the creation of
+floating elements relative to a reference element.
+*** List its uses
+- The ability to declare a reference element
+  const { refs } = useFloating();
+  <button ref={refs.setReference}/>
+- The ability to declare a floating element
+  const { refs } = useFloating();
+  <button ref={refs.setFloating}/>
+- Position coordinates
+  const { x, y, strategy } = useFloating();
+  <refelement style={{x, y, position: strategy}}/>
+- Ability to adjust and completent the behavior of the floating element using middleware
+- Get the references to the DOM elements
+- const { refs } = useFloating();
+  refs.reference.current
+  refs.floating.current
+- Get the DOM element
+  const { elements } = useFloating();
+  elements.reference
+  elements.floating
+- Interactivity
+  useFloating({open, onOpenChange});
+  
+
 * React
 ** Refs
 *** resources
@@ -478,3 +574,14 @@ function at which point the user may use it any way the want.
 <button ref={(DOM_ELEMENT) => do_something...}
 
 
+
+** UseLayoutEffect
+*** resources
+https://beta.reactjs.org/reference/react/useLayoutEffect
+** Code - reusability, sharing state, composition
+*** resources
+https://medium.com/@mjackson/use-a-render-prop-50de598f11ce
+*** Mixins
+*** High order components
+*** Render prop
+** useCallback, useMemo, Referential equality, computationally expensive calculations

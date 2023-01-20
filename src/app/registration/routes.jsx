@@ -5,7 +5,7 @@ import Summary from "./summary";
 
 const routes = [
   {
-    path: "/register",
+    path: "register",
     element: <Register />,
     children: [
       {

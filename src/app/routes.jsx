@@ -3,14 +3,12 @@ import registrationRoutes from "./registration";
 
 const routes = [
   {
-    path: "/",
+    path: "/app",
     children: [
       {
         path: "",
         element: <Home />,
-        children: [
-          ...registrationRoutes,
-        ]
+        children: [...registrationRoutes],
       },
     ],
   },
