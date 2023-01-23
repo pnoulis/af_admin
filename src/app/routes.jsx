@@ -1,4 +1,4 @@
-import Home from "./Home";
+import App from "./App";
 import registrationRoutes from "./registration";
 
 const routes = [
@@ -7,7 +7,7 @@ const routes = [
     children: [
       {
         path: "",
-        element: <Home />,
+        element: <App />,
         children: [...registrationRoutes],
       },
     ],

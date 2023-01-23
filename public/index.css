@@ -56,8 +56,10 @@ html, body, #root {
   --success-strong: hsl(var(--base-success), 38%);
   --success-light: hsl(var(--base-success), 70%);
   --error: hsl(var(--base-error), 68%);
+  --error-2: hsl(var(--base-error), 52%);
   --warn: hsl(var(--base-warn), 50%);
   --warn-1: hsl(var(--base-warn), 65%);
+  --info: hsl(var(--base-tertiary), 50%);
   --background: hsl(var(--base-grey), 96%);
   --background-contrast: hsl(var(--base-primary), 98%);
   --card-basic-color: white;
