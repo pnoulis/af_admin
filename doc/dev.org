@@ -525,7 +525,6 @@ floating elements relative to a reference element.
 - Interactivity
   useFloating({open, onOpenChange});
   
-
 * React
 ** Refs
 *** resources
@@ -585,3 +584,22 @@ https://medium.com/@mjackson/use-a-render-prop-50de598f11ce
 *** High order components
 *** Render prop
 ** useCallback, useMemo, Referential equality, computationally expensive calculations
+* UI Lists
+A list is any sequence of components that should be treated as such.
+
+What do people expect of lists?
+
+Lists should be navigable using the keyboard arrow keys.
+Lists should be navigable using the tab key.
+The element currently receiving focus should indicate it.
+The element where the pointer resides if any should indicate it, but it should
+not switch to a focused state.
+If a user tabs away from the widget and returns, focus should return to the
+element which last had focus.
+
+
+
+
+
+
+

@@ -9,6 +9,8 @@ import {
   FloatingFocusManager,
 } from "@floating-ui/react";
 
+import { BasicDialog } from "/src/components/dialogs";
+
 const MyButton = styled(MenuItem)`
   display: flex;
   justify-content: space-between;
@@ -60,7 +62,6 @@ function SomeList() {
     activeIndex,
     onNavigate: setActiveIndex,
     loop: true,
-    virtual: true,
   });
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
@@ -103,31 +104,21 @@ function SomeList() {
 }
 
 function Test() {
+  const [open, setOpen] = React.useState(true);
+  console.log(`isOPen:${open}`);
   return (
-    <React.Fragment>
+    <div>
       <p>iam testing</p>
-      <Menu label="edit">
-        <MyButton label="undo" />
-        <MyButton label="edit" />
-        <MyButton label="delete" />
-        <MyButton label="add" />
-        <Menu label="copy as">
-          <MyButton label="text" />
-          <MyButton label="image" />
-        </Menu>
-      </Menu>
-
-      <h1>Different tree</h1>
-      <ul>
-        <ListItem tabIndex="0">one</ListItem>
-        <ListItem tabIndex="0">one</ListItem>
-        <ListItem tabIndex="0">one</ListItem>
-        <ListItem tabIndex="0">one</ListItem>
-        <ListItem tabIndex="0">one</ListItem>
-      </ul>
-      <h2>Another list</h2>
-      <SomeList />
-    </React.Fragment>
+      <button onClick={() => setOpen((prev) => !prev)}>open dialog</button>
+      {/* <MyDialog open={open} onOpenChange={setOpen}> */}
+      {/*   <p>one to three</p> */}
+      {/*   <button onClick={() => setOpen(false)}>cancel</button> */}
+      {/* </MyDialog> */}
+      <BasicDialog open={open} onOpenChange={setOpen}>
+        <p>one to three</p>
+        <button onClick={() => setOpen(false)}>cancel</button>
+      </BasicDialog>
+    </div>
   );
 }
 

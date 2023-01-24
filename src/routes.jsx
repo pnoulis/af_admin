@@ -7,7 +7,7 @@ let router;
 if (import.meta.env.DEV) {
   router = createBrowserRouter([...testRoutes, ...appRoutes, ...devRoutes]);
 } else {
-  router = createBrowserRouter([...appRoutes]);
+  router = createBrowserRouter([...testRoutes, ...appRoutes]);
 }
 
 export default router;
