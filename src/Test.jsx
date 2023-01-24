@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useFl } from "/src/hooks";
-import { Menu, MenuItem } from "/src/components/menus";
+import { Menu, MenuItem, BasicMenu } from "/src/components/menus";
 import styled from "styled-components";
 import {
   useInteractions,
@@ -114,10 +114,7 @@ function Test() {
       {/*   <p>one to three</p> */}
       {/*   <button onClick={() => setOpen(false)}>cancel</button> */}
       {/* </MyDialog> */}
-      <BasicDialog open={open} onOpenChange={setOpen}>
-        <p>one to three</p>
-        <button onClick={() => setOpen(false)}>cancel</button>
-      </BasicDialog>
+      <BasicMenu />
     </div>
   );
 }

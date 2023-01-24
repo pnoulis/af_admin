@@ -23,14 +23,6 @@ import {
   FloatingFocusManager,
 } from "@floating-ui/react";
 
-const MenuItem = React.forwardRef(({ label, disabled, ...props }, ref) => {
-  return (
-    <button {...props} ref={ref} role="menuitem" disabled={disabled}>
-      {label}
-    </button>
-  );
-});
-
 const MenuComponent = React.forwardRef(
   ({ children, label, ...props }, forwardedRef) => {
     const [open, setOpen] = React.useState(false);
@@ -55,7 +47,7 @@ const MenuComponent = React.forwardRef(
       onOpenChange: setOpen,
       placement: nested ? "right-start" : "bottom-start",
       middleware: [
-        offset({ mainAxis: 4, alignmentAxis: nested ? -5 : 0 }),
+        offset({ mainAxis: 1, alignmentAxis: nested ? -5 : 0 }),
         flip(),
         shift(),
       ],
@@ -66,10 +58,11 @@ const MenuComponent = React.forwardRef(
       useInteractions([
         useHover(context, {
           handleClose: safePolygon({ restMs: 25 }),
-          enabled: nested && allowHover,
+          enabled: nested || !allowHover,
           delay: { open: 75 },
         }),
         useClick(context, {
+          enabled: true,
           toggle: !nested || !allowHover,
           event: "mousedown",
           ignoreMouse: nested,
@@ -156,9 +149,9 @@ const MenuComponent = React.forwardRef(
           ref={referenceRef}
           {...getReferenceProps({
             ...props,
-            className: `${nested ? "MenuItem" : "RootMenu"}${
-              open ? " open" : ""
-            }`,
+            className:
+              props.className +
+              ` ${nested ? "MenuItem" : "RootMenu"}${open ? " open" : ""}`,
             onClick(event) {
               event.stopPropagation();
             },
@@ -257,4 +250,4 @@ const Menu = React.forwardRef((props, ref) => {
 });
 
 export default Menu;
-export { Menu, MenuItem };
+export { Menu };
