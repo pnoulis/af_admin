@@ -7,6 +7,7 @@ import {
   useListNavigation,
   useHover,
   useInteractions,
+  useFocus,
   useRole,
   useTypeahead,
   useClick,
@@ -26,36 +27,65 @@ import {
 function MenuComponent2({ children }) {
   return (
     <FloatingNode>
-      <li>
-        <span></span>
-        <ul>
-          {React.Children.map(
-            children,
-            (child, index) =>
-              React.isValidElement(child) &&
-              React.cloneElement(
-                child,
-                getItemProps({
-                  tabIndex: activeIndex === index ? 0 : -1,
-                  role: "menuitem",
-                  className: "MenuItem",
-                  ref(node) {
-                    listItemsRef.current[index] = node;
-                  },
-                  onClick(event) {
-                    child.props.onClick?.(event);
-                    tree?.events.emit("click");
-                  },
-                  onMouseEnter() {
-                    if (allowHover && open) {
-                      setActiveIndex(index);
-                    }
-                  },
-                })
-              )
-          )}
-        </ul>
-      </li>
+      <ul>
+        <li></li>
+        <li>
+          <ul>
+          </ul>
+        </li>
+      </ul>
     </FloatingNode>
   );
+}
+
+function MenuItem() {
+}
+
+function useMenu({
+  initialOpen = false,
+  open: controlledOpen,
+  onOpenChange: setControlledOpen,
+}) {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
+  const open = controlledOpen ?? uncontrolledOpen;
+  const setOpen = setControlledOpen ?? setUncontrolledOpen;
+
+  const [activeIndex, setActiveIndex] = React.useState(null);
+  const listItemsRef = React.useRef([]);
+
+  const data = useFloating({
+    placement: 'bottom-start',
+    open,
+    onOpenChange: setOpen,
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset({mainAxis: 1, alignmentAxis: 0}),
+      flip(),
+      shift(),
+    ],
+  });
+
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
+    useHover(context, {
+      enabled: true,
+    }),
+    useRole(context, {role: 'menu'}),
+    useDismiss(context),
+    useListNavigation(context, {
+      listRef: listItemsRef,
+      activeIndex,
+      onNavigate: setActiveIndex,
+    }),
+  ]);
+
+  const context = data.context;
+  const hover = useHover(context, {
+    handleClose: safePolygon({restMs: 25}),
+    enabled: controlledOpen == null,
+    delay: { open: 75 },
+  });
+  const focus = useFocus(context, {
+    enabled: controlledOpen == null,
+  });
+  const dismiss = useDismiss(context);
 }

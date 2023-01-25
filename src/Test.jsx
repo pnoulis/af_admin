@@ -10,6 +10,7 @@ import {
 } from "@floating-ui/react";
 
 import { BasicDialog } from "/src/components/dialogs";
+import { List as MyList, ListItem } from '/src/components/lists';
 
 const MyButton = styled(MenuItem)`
   display: flex;
@@ -30,15 +31,6 @@ const MyButton = styled(MenuItem)`
   }
 `;
 
-const ListItem = styled("span")`
-  &:hover {
-    background-color: green;
-  }
-
-  &:focus {
-    background-color: red;
-  }
-`;
 const One = styled("p")`
   &:hover {
     background-color: green;
@@ -110,11 +102,11 @@ function Test() {
     <div>
       <p>iam testing</p>
       <button onClick={() => setOpen((prev) => !prev)}>open dialog</button>
-      {/* <MyDialog open={open} onOpenChange={setOpen}> */}
-      {/*   <p>one to three</p> */}
-      {/*   <button onClick={() => setOpen(false)}>cancel</button> */}
-      {/* </MyDialog> */}
-      <BasicMenu />
+      <MyList>
+        <ListItem index={0}>one</ListItem>
+        <ListItem index={1}>two</ListItem>
+        <ListItem index={2}>three</ListItem>
+      </MyList>
     </div>
   );
 }
