@@ -1,33 +1,47 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   useListNavigation,
   useInteractions,
   useFloating,
-  useFocus,
-} from '@floating-ui/react';
+  useRole,
+} from "@floating-ui/react";
 
+/*
+  _What is a List?_
+
+  A List represents a sequence of navigable items.
+
+  _Interactivity_
+
+  Lists should be navigable using the keyboard arrow keys.
+  If a list consists of link elements they should also be navigable
+  using the <TAB> key.
+  The element currently receiving focus should indicate it.
+  The element upon which the cursor resides if any should indicate it.
+
+ */
 
 const ListContext = React.createContext();
 const useListContext = () => {
   const context = React.useContext(ListContext);
   if (context == null) {
-    throw new Error('ListItem components must be wrapped in <List/>');
+    throw new Error("ListItem components must be wrapped in <List/>");
   }
   return context;
 };
 
 function useList() {
   const [activeIndex, setActiveIndex] = React.useState(null);
-  const {refs, context} = useFloating({open: true});
+  const { refs, context } = useFloating({ open: true });
   const listRef = React.useRef([]);
-  const {getFloatingProps, getItemProps} = useInteractions([
+  const { getFloatingProps, getItemProps } = useInteractions([
     useListNavigation(context, {
       listRef,
       activeIndex,
       onNavigate: setActiveIndex,
       loop: true,
     }),
-    useFocus(context)
+    useRole(context, { role: "menu" }),
   ]);
   return {
     listRef: listRef.current,
@@ -38,31 +52,29 @@ function useList() {
   };
 }
 
-function ListItem({index, children, ...props}) {
-  const {activeIndex, listRef, getItemProps} = useListContext();
+function ListItem({ index, children, ...props }) {
+  const { activeIndex, listRef, getItemProps } = useListContext();
   return (
     <li
-      ref={(node) => listRef[index] = node}
-      tabIndex={activeIndex === index ? 0 : -1}
       {...getItemProps({
-        ...props
+        ref(node) {
+          listRef[index] = node;
+        },
+        tabIndex: activeIndex === index ? 0 : -1,
+        role: "menuitem",
+        ...props,
       })}
-      role='menuitem'
     >
       {children}
     </li>
   );
-};
+}
 
-function List({children, ...props}) {
-  const {refs, getFloatingProps, ...listItems } = useList();
+function List({ children, ...props }) {
+  const { refs, getFloatingProps, ...listItems } = useList();
   return (
     <ListContext.Provider value={listItems}>
-      <ul
-        ref={refs.setFloating}
-        {...getFloatingProps({tabIndex: 0, ...props})}
-        role='menu'
-      >
+      <ul ref={refs.setFloating} {...getFloatingProps({ ...props })}>
         {children}
       </ul>
     </ListContext.Provider>

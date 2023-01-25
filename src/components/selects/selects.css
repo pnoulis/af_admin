@@ -1,0 +1,15 @@
+select {
+  appearance: none;
+}
+
+label {
+  appearance: none;
+}
+
+option {
+  appearance: none;
+}
+
+optgroup {
+  appearance: none;
+}

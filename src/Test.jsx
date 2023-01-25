@@ -1,6 +1,12 @@
 import * as React from "react";
 import { useFl } from "/src/hooks";
-import { Menu, MenuItem, BasicMenu } from "/src/components/menus";
+import {
+  Menu,
+  MenuItem,
+  BasicMenu,
+  Menu2,
+  MenuItem2,
+} from "/src/components/menus";
 import styled from "styled-components";
 import {
   useInteractions,
@@ -8,9 +14,15 @@ import {
   useListNavigation,
   FloatingFocusManager,
 } from "@floating-ui/react";
+import {
+  BasicSelect,
+  BasicSelectTrigger,
+  BasicSelectOptionList,
+  BasicSelectOption,
+} from "/src/components/selects";
 
 import { BasicDialog } from "/src/components/dialogs";
-import { List as MyList, ListItem } from '/src/components/lists';
+import { List as MyList, ListItem } from "/src/components/lists";
 
 const MyButton = styled(MenuItem)`
   display: flex;
@@ -95,18 +107,25 @@ function SomeList() {
   );
 }
 
+const options = ["one", "two", "three"];
+
 function Test() {
   const [open, setOpen] = React.useState(true);
   console.log(`isOPen:${open}`);
   return (
     <div>
       <p>iam testing</p>
-      <button onClick={() => setOpen((prev) => !prev)}>open dialog</button>
-      <MyList>
-        <ListItem index={0}>one</ListItem>
-        <ListItem index={1}>two</ListItem>
-        <ListItem index={2}>three</ListItem>
-      </MyList>
+      {/* <button onClick={() => setOpen((prev) => !prev)}>open dialog</button> */}
+      <BasicSelect name="country" placeholder="polo">
+        <BasicSelectTrigger />
+        <BasicSelectOptionList>
+          {options.map((option, i) => (
+            <BasicSelectOption key={option} index={i}>
+              {option}
+            </BasicSelectOption>
+          ))}
+        </BasicSelectOptionList>
+      </BasicSelect>
     </div>
   );
 }
