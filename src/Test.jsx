@@ -15,15 +15,23 @@ import {
   FloatingFocusManager,
 } from "@floating-ui/react";
 import {
-  BasicSelect,
-  BasicSelectTrigger,
-  BasicSelectOptionList,
-  BasicSelectOption,
+  Combobox,
+  ComboboxTrigger,
+  ComboboxList,
+  ComboboxOption,
+  EditableCombobox,
+  EditableComboboxTrigger,
+  EditableComboboxList,
+  EditableComboboxOption,
+  FuzzyCombobox,
+  FuzzyComboboxTrigger,
+  FuzzyComboboxList,
+  FuzzyComboboxOption,
 } from "/src/components/selects";
 
 import { BasicDialog } from "/src/components/dialogs";
 import { List as MyList, ListItem } from "/src/components/lists";
-import { useKeys } from '/src/hooks';
+import { useKeys } from "/src/hooks";
 
 const MyButton = styled(MenuItem)`
   display: flex;
@@ -112,25 +120,53 @@ const options = ["one", "two", "three"];
 
 function Test() {
   const [open, setOpen] = React.useState(true);
-  const bindKeys = useKeys((e) => {
-    console.log(e);
-    console.log('enter was pressed');
-  }, ['Enter']);
+  const bindKeys = useKeys(
+    (e) => {
+      console.log(e);
+      console.log("enter was pressed");
+    },
+    ["Enter"]
+  );
 
   return (
     <div>
       <p>iam testing</p>
       {/* <button onClick={() => setOpen((prev) => !prev)}>open dialog</button> */}
-      <BasicSelect>
-        <BasicSelectTrigger>country</BasicSelectTrigger>
-        <BasicSelectOptionList>
-          {options.map((option, i) => (
-            <BasicSelectOption key={option} index={i}>
-              {option}
-            </BasicSelectOption>
-          ))}
-        </BasicSelectOptionList>
-      </BasicSelect>
+      {/* <Combobox name="country" placeholder="select a country"> */}
+      {/*   <ComboboxTrigger /> */}
+      {/*   <ComboboxList> */}
+      {/*     {options.map((option, i) => ( */}
+      {/*       <ComboboxOption key={option} index={i}> */}
+      {/*         {option} */}
+      {/*       </ComboboxOption> */}
+      {/*     ))} */}
+      {/*   </ComboboxList> */}
+      {/* </Combobox> */}
+
+      {/* <EditableCombobox name="country" placeholder="select a country"> */}
+      {/*   <EditableComboboxTrigger /> */}
+      {/*   <EditableComboboxList> */}
+      {/*     {options.map((option, i) => ( */}
+      {/*       <EditableComboboxOption key={option} index={i} label={option}> */}
+      {/*         {option} */}
+      {/*       </EditableComboboxOption> */}
+      {/*     ))} */}
+      {/*   </EditableComboboxList> */}
+      {/* </EditableCombobox> */}
+
+      <FuzzyCombobox items={options}>
+        <FuzzyComboboxTrigger name="country" label="select country" />
+        <FuzzyComboboxList
+          renderItem={(option, context, i) => (
+            <FuzzyComboboxOption
+              key={i}
+              option={option}
+              context={context}
+              index={i}
+            />
+          )}
+        />
+      </FuzzyCombobox>
     </div>
   );
 }

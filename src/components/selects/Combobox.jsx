@@ -16,28 +16,26 @@ import {
   FloatingPortal,
   FloatingFocusManager,
 } from "@floating-ui/react";
-import { useKeys } from '/src/hooks';
-import './selects.css';
-
+import { useKeys } from "/src/hooks";
+import "./selects.css";
 
 /*
-  LISTBOX
-  https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
+  Combobox - not editable
+  https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
 */
 
-const SelectContext = React.createContext(null);
-const useSelectContext = () => {
-  const context = React.useContext(SelectContext);
+const ComboboxContext = React.createContext(null);
+const useComboboxContext = () => {
+  const context = React.useContext(ComboboxContext);
   if (context == null) {
-    throw new Error("Select children components must be wrapped in <Select/>");
+    throw new Error(
+      "Combobox children components must be wrapped in <Combobox/>"
+    );
   }
   return context;
 };
 
-function useSelect({
-  allowHover = false,
-  gutters = 0,
-} = {}) {
+function useCombobox({ allowHover = false, gutters = 0 } = {}) {
   const [open, setOpen] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(null);
@@ -49,21 +47,23 @@ function useSelect({
   const data = useFloating({
     open,
     onOpenChange: setOpen,
-    placement: 'bottom-start',
+    placement: "bottom-start",
     middleware: [
       flip(),
       shift(),
       offset(gutters),
-      size({apply({rects, elements}) {
-        elements.floating.style.width = `${rects.reference.width}px`;
-      }})
+      size({
+        apply({ rects, elements }) {
+          elements.floating.style.width = `${rects.reference.width}px`;
+        },
+      }),
     ],
     whileElementsMounted: autoUpdate,
   });
 
   const handleSelect = React.useCallback((index) => {
     setSelectedIndex(index);
-    selectedRef.current = index ? listRef.current[index] : null;
+    selectedRef.current = index >= 0 ? listRef.current[index] : null;
     setOpen(false);
   }, []);
 
@@ -72,9 +72,9 @@ function useSelect({
   const interactions = useInteractions([
     allowHover
       ? useHover(context, {
-        handleClose: safePolygon({ restMs: 25 }),
-        move: false
-      })
+          handleClose: safePolygon({ restMs: 25 }),
+          move: false,
+        })
       : useClick(context),
     useRole(context, { role: "listbox" }),
     useListNavigation(context, {
@@ -101,7 +101,6 @@ function useSelect({
       ...data,
       ...interactions,
       activeIndex,
-      setActiveIndex,
       setSelected: handleSelect,
       selectedRef: selectedRef.current,
       listRef: listRef.current,
@@ -111,35 +110,46 @@ function useSelect({
   );
 }
 
-function Select({ onSelected, children, ...options }) {
-  const select = useSelect(options);
+function Combobox({ name, placeholder, onSelected, children, ...options }) {
+  const combobox = useCombobox(options);
+  combobox.name = name;
+  combobox.placeholder = placeholder;
   return (
-    <SelectContext.Provider value={select}>
+    <ComboboxContext.Provider value={combobox}>
       {children}
-    </SelectContext.Provider>
+    </ComboboxContext.Provider>
   );
 }
 
-function SelectTrigger({ className,  children, ...props }) {
-  const { refs, selectedRef, setOpen, setSelected, getReferenceProps } = useSelectContext();
+function ComboboxTrigger({ className, children, ...props }) {
+  const { name, placeholder, refs, selectedRef, getReferenceProps } =
+    useComboboxContext();
 
   return (
-    <button
-      className={className}
+    <div
+      className={className || "" + " combobox-trigger"}
       ref={refs.setReference}
-      aria-autocomplete='none'
       {...getReferenceProps({
-        ...props
+        ...props,
       })}
     >
-      {selectedRef?.textContent || children}
-    </button>
+      <input
+        readOnly
+        type="text"
+        id={name}
+        name={name}
+        autoComplete="off"
+        placeholder={placeholder}
+        value={selectedRef?.textContent || ""}
+      />
+      <label htmlFor={name}>{name}</label>
+    </div>
   );
 }
 
-function SelectOptionList({ className, children, ...props }) {
+function ComboboxList({ className, children, ...props }) {
   const { y, x, open, strategy, context, refs, getFloatingProps } =
-    useSelectContext();
+    useComboboxContext();
 
   return (
     <FloatingPortal>
@@ -151,9 +161,9 @@ function SelectOptionList({ className, children, ...props }) {
           modal={false}
         >
           <ul
-            className={className}
+            className={className || "" + " combobox-list"}
             ref={refs.setFloating}
-            role='group'
+            role="group"
             style={{
               position: strategy,
               top: y ?? 0,
@@ -171,34 +181,29 @@ function SelectOptionList({ className, children, ...props }) {
   );
 }
 
-function SelectOption({ index, className, children, ...props }) {
-  const {
-    setSelected, activeIndex, setOpen, listRef,
-    listContentRef, getItemProps
-  } = useSelectContext();
-  const handleKeys = React.useCallback(
-    ({code}) => {
-      switch (code) {
-      case 'Enter':
+function ComboboxOption({ index, className, children, ...props }) {
+  const { setSelected, activeIndex, listRef, listContentRef, getItemProps } =
+    useComboboxContext();
+  const handleKeys = React.useCallback(({ code }) => {
+    switch (code) {
+      case "Enter":
         setSelected(index);
         break;
-      case 'Tab':
+      case "Tab":
         setSelected(null);
         break;
-      case 'Escape':
+      case "Escape":
         setSelected(null);
         break;
       default:
         break;
-      }
-    },
-    []
-  );
+    }
+  }, []);
   const bindKeys = useKeys(handleKeys);
 
   return (
     <li
-      className={className}
+      className={className || "" + " combobox-option"}
       ref={(node) => {
         listRef[index] = node;
         listContentRef[index] = node?.textContent ?? null;
@@ -218,9 +223,4 @@ function SelectOption({ index, className, children, ...props }) {
   );
 }
 
-export {
-  Select as BasicSelect,
-  SelectTrigger as BasicSelectTrigger,
-  SelectOptionList as BasicSelectOptionList,
-  SelectOption as BasicSelectOption,
-};
+export { Combobox, ComboboxTrigger, ComboboxList, ComboboxOption };

@@ -14,13 +14,27 @@ optgroup {
   appearance: none;
 }
 
+.combobox-trigger {
+  width: 100px;
+  height: 55px;
+  display: block;
+  box-sizing: border-box;
+}
 
+input {
+  width: 100%;
+  height: 100%;
+}
+
+input:focus {
+  border-color: red;
+}
 button {
   padding: 20px;
   border: 5px solid black;
 }
 
-button:focus {
+.combobox-trigger:focus {
   border-color: red;
 }
 

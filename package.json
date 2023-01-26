@@ -16,6 +16,7 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.1",
+    "fuse.js": "^6.6.2",
     "precompiled-mqtt": "^4.3.14-beta",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
