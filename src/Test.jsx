@@ -23,6 +23,7 @@ import {
 
 import { BasicDialog } from "/src/components/dialogs";
 import { List as MyList, ListItem } from "/src/components/lists";
+import { useKeys } from '/src/hooks';
 
 const MyButton = styled(MenuItem)`
   display: flex;
@@ -111,13 +112,17 @@ const options = ["one", "two", "three"];
 
 function Test() {
   const [open, setOpen] = React.useState(true);
-  console.log(`isOPen:${open}`);
+  const bindKeys = useKeys((e) => {
+    console.log(e);
+    console.log('enter was pressed');
+  }, ['Enter']);
+
   return (
     <div>
       <p>iam testing</p>
       {/* <button onClick={() => setOpen((prev) => !prev)}>open dialog</button> */}
-      <BasicSelect name="country" placeholder="polo">
-        <BasicSelectTrigger />
+      <BasicSelect>
+        <BasicSelectTrigger>country</BasicSelectTrigger>
         <BasicSelectOptionList>
           {options.map((option, i) => (
             <BasicSelectOption key={option} index={i}>

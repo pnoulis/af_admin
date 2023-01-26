@@ -13,3 +13,27 @@ option {
 optgroup {
   appearance: none;
 }
+
+
+button {
+  padding: 20px;
+  border: 5px solid black;
+}
+
+button:focus {
+  border-color: red;
+}
+
+ul {
+  background-color: green;
+  font-size: 2rem;
+}
+
+
+li:hover {
+  color: red;
+}
+
+li:focus {
+  background-color: yellow;
+}

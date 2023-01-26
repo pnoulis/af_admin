@@ -4,20 +4,26 @@ import {
   offset,
   flip,
   shift,
+  size,
   useListNavigation,
   useHover,
   useInteractions,
   useRole,
   useTypeahead,
   useClick,
-  useDismiss,
   autoUpdate,
   safePolygon,
   FloatingPortal,
-  useMergeRefs,
   FloatingFocusManager,
 } from "@floating-ui/react";
-import "./selects.css";
+import { useKeys } from '/src/hooks';
+import './selects.css';
+
+
+/*
+  LISTBOX
+  https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
+*/
 
 const SelectContext = React.createContext(null);
 const useSelectContext = () => {
@@ -28,7 +34,10 @@ const useSelectContext = () => {
   return context;
 };
 
-function useSelect() {
+function useSelect({
+  allowHover = false,
+  gutters = 0,
+} = {}) {
   const [open, setOpen] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(null);
@@ -40,27 +49,34 @@ function useSelect() {
   const data = useFloating({
     open,
     onOpenChange: setOpen,
-    placement: "bottom",
-    middleware: [offset({ mainAxis: 4, alignmentAxis: 0 }), flip(), shift()],
+    placement: 'bottom-start',
+    middleware: [
+      flip(),
+      shift(),
+      offset(gutters),
+      size({apply({rects, elements}) {
+        elements.floating.style.width = `${rects.reference.width}px`;
+      }})
+    ],
     whileElementsMounted: autoUpdate,
   });
 
   const handleSelect = React.useCallback((index) => {
     setSelectedIndex(index);
-    selectedRef.current = listRef.current[index];
+    selectedRef.current = index ? listRef.current[index] : null;
     setOpen(false);
   }, []);
 
   const { context } = data;
 
   const interactions = useInteractions([
-    // useHover(context, {
-    //   handleClose: safePolygon({ restMs: 25 }),
-    //   move: false,
-    // }),
-    useClick(context),
+    allowHover
+      ? useHover(context, {
+        handleClose: safePolygon({ restMs: 25 }),
+        move: false
+      })
+      : useClick(context),
     useRole(context, { role: "listbox" }),
-    useDismiss(context),
     useListNavigation(context, {
       listRef,
       activeIndex,
@@ -95,39 +111,29 @@ function useSelect() {
   );
 }
 
-function Select({ name, placeholder, onSelected, children, ...props }) {
-  const select = useSelect();
+function Select({ onSelected, children, ...options }) {
+  const select = useSelect(options);
   return (
-    <SelectContext.Provider value={{ name, placeholder, ...select }}>
+    <SelectContext.Provider value={select}>
       {children}
     </SelectContext.Provider>
   );
 }
 
-function SelectTrigger({ className, ...props }) {
-  const { name, placeholder, refs, getReferenceProps } = useSelectContext();
+function SelectTrigger({ className,  children, ...props }) {
+  const { refs, selectedRef, setOpen, setSelected, getReferenceProps } = useSelectContext();
 
   return (
-    <label
+    <button
       className={className}
       ref={refs.setReference}
-      aria-autocomplete="none"
-      style={{ display: "inline-block", width: "min-content" }}
+      aria-autocomplete='none'
       {...getReferenceProps({
-        ...props,
+        ...props
       })}
     >
-      <input
-        readOnly
-        type="text"
-        style={{ width: "100%", height: "100%" }}
-        value={placeholder ?? name}
-        name={name}
-        id={name}
-        autoComplete="off"
-      />
-      {name}
-    </label>
+      {selectedRef?.textContent || children}
+    </button>
   );
 }
 
@@ -147,6 +153,7 @@ function SelectOptionList({ className, children, ...props }) {
           <ul
             className={className}
             ref={refs.setFloating}
+            role='group'
             style={{
               position: strategy,
               top: y ?? 0,
@@ -165,8 +172,29 @@ function SelectOptionList({ className, children, ...props }) {
 }
 
 function SelectOption({ index, className, children, ...props }) {
-  const { setSelected, activeIndex, listRef, listContentRef, getItemProps } =
-    useSelectContext();
+  const {
+    setSelected, activeIndex, setOpen, listRef,
+    listContentRef, getItemProps
+  } = useSelectContext();
+  const handleKeys = React.useCallback(
+    ({code}) => {
+      switch (code) {
+      case 'Enter':
+        setSelected(index);
+        break;
+      case 'Tab':
+        setSelected(null);
+        break;
+      case 'Escape':
+        setSelected(null);
+        break;
+      default:
+        break;
+      }
+    },
+    []
+  );
+  const bindKeys = useKeys(handleKeys);
 
   return (
     <li
@@ -178,6 +206,10 @@ function SelectOption({ index, className, children, ...props }) {
       tabIndex={activeIndex === index ? 0 : -1}
       role="option"
       {...getItemProps({
+        ...bindKeys(),
+        onClick() {
+          setSelected(index);
+        },
         ...props,
       })}
     >
