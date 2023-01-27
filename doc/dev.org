@@ -603,3 +603,12 @@ element which last had focus.
 
 
 
+
+* Browser keyboard events
+** Codes
+*** Down arrow
+key: "ArrowDown"
+keyCode: 40
+*** Up arrow
+key: "ArrowUp"
+keyCode: 38

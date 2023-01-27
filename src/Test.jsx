@@ -19,10 +19,36 @@ import {
   FuzzyComboboxTrigger,
   FuzzyComboboxList,
   FuzzyComboboxOption,
+  ComboTest,
 } from "/src/components/selects";
 
+function useSomeHook() {
+  const [state, setState] = React.useState("");
+
+  React.useEffect(() => {
+    console.log("useSomeHook state");
+  }, [state]);
+
+  return {
+    onChange: ({ target }) => setState(target.value),
+  };
+}
 
 const options = ["one", "two", "three"];
+
+function SomeComponent() {
+  const props = useSomeHook();
+
+  React.useEffect(() => {
+    console.log("some component state");
+  }, [props]);
+
+  return (
+    <div>
+      <input type="text" {...props} />
+    </div>
+  );
+}
 
 function Test() {
   const [open, setOpen] = React.useState(true);
@@ -53,17 +79,15 @@ function Test() {
       {/*   </EditableComboboxList> */}
       {/* </EditableCombobox> */}
 
-      <FuzzyCombobox items={options}>
-        <FuzzyComboboxTrigger name="country" label="select country" />
-        <FuzzyComboboxList
-          renderItem={(props, i) => (
-            <FuzzyComboboxOption
-              key={i}
-              {...props}
-            />
-          )}
-        />
-      </FuzzyCombobox>
+      {/* <FuzzyCombobox items={options}> */}
+      {/*   <FuzzyComboboxTrigger name="country" label="select country" /> */}
+      {/*   <FuzzyComboboxList */}
+      {/*     renderItem={(props, i) => <FuzzyComboboxOption key={i} {...props} />} */}
+      {/*   /> */}
+      {/* </FuzzyCombobox> */}
+
+      <ComboTest />
+      <SomeComponent />
     </div>
   );
 }

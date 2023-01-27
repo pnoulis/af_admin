@@ -4,19 +4,19 @@
   border: 5px solid black;
 }
 
-.combobox:focus-within {
+.combobox:focus {
   background-color: yellow;
 }
 
 label {
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 input {
   width: 100%;
   height: 100%;
   display: block;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .combobox-list {
