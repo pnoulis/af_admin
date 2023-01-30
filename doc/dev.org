@@ -603,7 +603,6 @@ element which last had focus.
 
 
 
-
 * Browser keyboard events
 ** Codes
 *** Down arrow
@@ -612,3 +611,56 @@ keyCode: 40
 *** Up arrow
 key: "ArrowUp"
 keyCode: 38
+
+* combobox
+** Interactions
+*** DONE On tab
+CLOSED: [2023-01-30 Mon 10:13]
+combobox switches to open state.
+comboboxtrigger is focused.
+comboboxlist is revealed - opened.
+combobox state is resseted.
+*** DONE On escape
+CLOSED: [2023-01-30 Mon 10:14]
+combobox switches to close state.
+comboboxtrigger loses focus.
+comboboxlist is hidden - closed.
+combobox state is resseted.
+*** DONE On Enter
+CLOSED: [2023-01-30 Mon 10:44]
+combobox switches to close state.
+comboboxtrigger loses focus.
+comboboxlist is hidden - closed.
+
+If the combobox has an active option at
+the time of the closing event then that
+option shall be marked as the output of
+the combobox component.
+
+If an option has not been marked as active
+and the comboboxtrigger is an input tag
+then the value of the input tag is marked
+as the output of the combobox component.
+
+*** DONE On Click outside the boundaries of the combobox
+CLOSED: [2023-01-30 Mon 10:14]
+combobox switches to close state.
+comboboxtrigger loses focus
+comboboxList is hidden - closed.
+*** DONE On Click within one of the options
+CLOSED: [2023-01-30 Mon 10:44]
+combobox switches to close state.
+comboboxtrigger loses focus.
+comboboxlist is hidden - closed.
+
+The option from which the event originated is
+marked as selected and is therefore becomes the output
+of the combobox component.
+*** On Click within the combobox trigger
+combobox toggles its state.
+comboboxtrigger toggles focus.
+comboboxlist toggles state.
+
+The value of the comboboxtrigger is marked as selected
+and therefore becomes the output of the combobox component.
+

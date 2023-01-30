@@ -35,6 +35,7 @@ function useCombobox(items = [], config = {}) {
   const [input, setInput] = React.useState("");
   const optionsRef = React.useRef([]);
   const listRef = React.useRef([]);
+  const selected = React.useRef("");
 
   // @floating-ui
   const data = useFloating({
@@ -48,7 +49,7 @@ function useCombobox(items = [], config = {}) {
   const interactions = useInteractions([
     useClick(data.context, { keyboardHandlers: false }),
     useRole(data.context, { role: "listbox" }),
-    useFocus(data.context, { keyboardOnly: false }),
+    useFocus(data.context, { keyboardOnly: true }),
     useDismiss(data.context),
     useListNavigation(data.context, {
       listRef,
@@ -60,8 +61,9 @@ function useCombobox(items = [], config = {}) {
     }),
   ]);
 
-  const handleSelection = React.useCallback(() => {
-    console.log("handle selection yo");
+  const handleSelection = React.useCallback((option) => {
+    selected.current = option || input;
+    setOpen(false);
   }, []);
 
   const handleInput = React.useCallback(({ target }) => {
@@ -74,6 +76,7 @@ function useCombobox(items = [], config = {}) {
       return {
         label: item,
         id: `${i}-${item}`,
+        ref: (node) => (listRef.current[i] = node),
       };
     });
   }, [input, setInput]);
@@ -83,17 +86,6 @@ function useCombobox(items = [], config = {}) {
     listRef.current = [];
   }
 
-  React.useEffect(() => {
-    console.log("within usecombo");
-    if (!open) {
-      // data.refs.reference.current.blur();
-      console.log(`is Open: ${open}`);
-      console.log(`active index: ${activeIndex}`);
-      console.log(`input: ${input}`);
-      console.log(data);
-    }
-  }, [open]);
-
   return React.useMemo(
     () => ({
       open,
@@ -102,7 +94,6 @@ function useCombobox(items = [], config = {}) {
       handleInput,
       handleSelection,
       optionsRef: optionsRef.current,
-      listRef: listRef.current,
       activeIndex,
       ...data,
       ...interactions,
@@ -124,15 +115,9 @@ function ComboboxTrigger({ className, children, ...props }) {
   const context = useComboboxContext();
 
   React.useEffect(() => {
-    // console.log(`is Open: ${context.open}`);
-    // console.log(`active index: ${context.activeIndex}`);
-    // console.log(`input: ${context.input}`);
-    // console.log(context);
-    // if (!context.open) {
-    //   context.refs.reference.current.blur();
-    // }
-    console.log("after useCombobox");
-    console.log(context);
+    if (!context.open) {
+      context.refs.reference.current.blur();
+    }
   }, [context.open]);
 
   return (
@@ -141,21 +126,28 @@ function ComboboxTrigger({ className, children, ...props }) {
       ref={context.refs.setReference}
       tabIndex={0}
       {...context.getReferenceProps({
-        ...props,
         onKeyDown({ code }) {
           switch (code) {
             case "Enter":
-              context.handleSelection();
-              break;
-            case "Escape":
-              context.setOpen(false);
+              const selected =
+                context.activeIndex >= 0
+                  ? context.optionsRef[context.activeIndex].label
+                  : context.input;
+              context.handleSelection(selected);
               break;
             case "Tab":
               context.setOpen(false);
+              break;
             default:
               break;
           }
         },
+        onClick() {
+          if (context.open) {
+            context.handleSelection();
+          }
+        },
+        ...props,
       })}
     >
       {children}
@@ -165,10 +157,6 @@ function ComboboxTrigger({ className, children, ...props }) {
 
 function ComboboxList({ renderItem, className, ...props }) {
   const context = useComboboxContext();
-
-  React.useEffect(() => {
-    console.log("from within comomoblist");
-  }, [context.open]);
 
   return (
     <FloatingPortal>
@@ -210,10 +198,6 @@ function ComboboxOption({
 }) {
   const isActive = context.activeIndex === index;
 
-  React.useEffect(() => {
-    console.log("from within comboboxoption");
-  }, [context.open]);
-
   return (
     <li
       className={`${className || ""} ${
@@ -221,9 +205,12 @@ function ComboboxOption({
       } combobox-option`}
       role="option"
       id={option.id}
-      ref={(node) => (context.listRef[index] = node)}
+      ref={(node) => option.ref(node)}
       tabIndex={isActive ? 0 : -1}
       {...context.getItemProps({
+        onClick() {
+          context.handleSelection(option.label);
+        },
         ...props,
       })}
     >
@@ -237,7 +224,10 @@ function Test() {
   return (
     <div>
       <Combobox items={options}>
-        <ComboboxTrigger>zeroth</ComboboxTrigger>
+        <ComboboxTrigger>
+          <input type="text" name="country" id="country" tabIndex={-1} />
+          <label htmlFor="country">country</label>
+        </ComboboxTrigger>
         <ComboboxList
           renderItem={(props, i) => <ComboboxOption key={i} {...props} />}
         />

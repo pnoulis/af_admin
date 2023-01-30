@@ -296,3 +296,152 @@ Add a paid package to the team.
 </table>
 
 
+# User Stories Registration
+## User creates team (use admin only for package addition)
+user[player]: logs in / registers<br>
+/themaze/registrationPoint/gui/player/login<br>
+/themaze/registrationPoint/gui/player/register<br>
+
+user[player]: Wristband registration (User scans wristband)<br>
+gui must subscribe: /themaze/registrationPoint/gui/player/wristbandScan<br>
+And then publishes in order to associate wristband to player<br>
+publish: /themaze/registrationPoint/gui/player/registerWristband<br>
+
+user[player]: Wristband Verification (User scans wristband)<br>
+user scans wristband.<br>
+gui must subscribe to: /themaze/registrationPoint/gui/player/wristbandScan<br>
+The gui is responsible for verifying the association between wristband and user.<br>
+publish: /themaze/registrationPoint/gui/player/isValid<br>
+subscribe: /themaze/registrationPoint/gui/player/isValid/response<br>
+In case of a user being registered to another team an error occurs.<br>
+
+user[player]: Team creation (merge)<br>
+if team name is taken error occurs and player must submit a new team name.<br>
+/themaze/registrationPoint1/gui/team/merge<br>
+/themaze/registrationPoint1/gui/team/merge/response<br>
+
+user[player]: goes to admin in order to add a package
+
+user[admin]: checks list of teams in state 'registered'<br>
+/teams/#page1&state=registered<br>
+request teams in topic: ...<br>
+QUESTION: What happens when a team is selected?<br>
+
+user[admin]: selects team<br>
+/team/${teamId}<br>
+
+user[admin]: creates a package<br>
+/team/${teamId}/package/new<br>
+
+user[admin]: assigns package to team<br>
+/team/${teamId}/package/new
+
+team state from 'registered' to '[packaged|ready|...]'<br>
+  
+## Admin creates team and package (sticking to existing pattern)
+user[admin]: navigates to /register/team<br>
+   is redirected to: /register/team/players
+
+user[admin]: logs in / registers player<br>
+/register/team/players
+/themaze/registrationPoint/gui/player/login<br>
+/themaze/registrationPoint/gui/player/register<br>
+
+user[admin]: wristband registration<br>
+/register/team/players
+gui must subscribe: /themaze/registrationPoint/gui/player/wristbandScan<br>
+And then publishes in order to associate wristband to player<br>
+publish: /themaze/registrationPoint/gui/player/registerWristband<br>
+
+
+user[admin]: wristband verification
+/register/team/merge
+
+user[admin]: create / merge team<br>
+/register/team/merge
+/themaze/registrationPoint1/gui/team/merge<br>
+/themaze/registrationPoint1/gui/team/merge/response<br>
+
+user[admin]: creates / assign package to team<br>
+/register/team/package
+possible publish: /themaze/registration/gui/team/package/[add|new]<br>
+
+user[admin]: summary
+/register/team/summary
+
+## Registration Questions && Suggestions.
+
+QUESTION:
+If a team has been registered by the user[player] how does the user[admin]
+adds a package?
+
+possible solution:<br>
+navigate to /teams/page#<br>
+select a team by clicking it.<br>
+redirect to /teams/${teamId}.
+Within the route /teams/${teamId} the user[admin**<br>
+can edit the team in any way possible
+
+SUGGESTION:<br>
+In the existing pattern the user must register a wristband and then verify the associating
+before merging the team.<br>
+The wristband registration stage should be merged with the wristband verification stage.
+
+QUESTION:<br>
+What is the current practice for editing a team after their have been registered?
+
+SUGGESTIONS:<br>
+Team must be able to remove/add players<br>
+Team must be able to pair-unpair wristbands<br>
+Team must be able to add/edit a new package.<br>
+
+
+
+## Routes for Team and Registration
+Navigation links:
+
+/manager/teams
+
+/manager/teams/${teamId}
+
+/registration/team
+
+/registration/${teamId}
+
+/registration/${teamId}/players/
+
+/registration/${teamId}/package/
+
+/registration/${teamId}/summary
+
+
+API Calls:
+
+/topic/.../teams
+
+/topic/.../teams/${teamId}
+
+/topic/.../${teamId}/register
+
+/topic/.../${teamId}/deregister
+
+/topic/.../${teamId}/players/add
+
+/topic/.../${teamId}/players/remove
+
+/topic/.../${teamId}/players/wristband/register
+
+/topic/.../${teamId}/players/wristband/verify
+
+/topic/.../${teamId}/players/wristband/deregister
+
+/topic/.../${teamId}/package/add
+
+/topic/.../${teamId}/package/remove
+
+
+
+
+
+
+

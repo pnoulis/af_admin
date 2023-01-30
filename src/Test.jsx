@@ -87,7 +87,6 @@ function Test() {
       {/* </FuzzyCombobox> */}
 
       <ComboTest />
-      <SomeComponent />
     </div>
   );
 }
