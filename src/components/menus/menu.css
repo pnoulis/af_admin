@@ -42,3 +42,7 @@
 .menu-member:focus {
   background-color: yellow;
 }
+
+a:focus {
+  color: red;
+}

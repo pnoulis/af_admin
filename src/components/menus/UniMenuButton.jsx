@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useNavigate } from 'react-router-dom';
 import {
   useFloating,
   offset,
@@ -382,49 +381,9 @@ function MenuListMember({ index, noFocus, render, className, children, ...props 
   );
 }
 
-function SomeMenu({ isActive, isSelected, handleSelection }) {
-  const navigate = useNavigate();
-  const myRef = React.useRef(null);
-
-  React.useEffect(() => {
-    if (isSelected) {
-      handleSelection(() => {
-        navigate('/app');
-      });
-    }
-  }, [isSelected]);
-
-  React.useEffect(() => {
-    if (isActive) {
-      console.log('will focus');
-      myRef.current.focus();
-    }
-  }, [isActive]);
-
-  return (
-    <div>
-      <a ref={myRef} id='sometihng' href='/app'>click me</a>
-    </div>
-  );
-}
-
-function TestActionMenu() {
-  return (
-    <div>
-      <Menu>
-        <MenuTrigger>click me</MenuTrigger>
-        <MenuList>
-          <MenuListMember
-            index={0}
-            render={(props) => <SomeMenu {...props} />}
-          />
-          <MenuListMember
-            index={1}
-            render={(props) => <SomeMenu {...props} />}
-          />
-        </MenuList>
-      </Menu>
-      <p >some other item</p>
-    </div>
-  );
-}
+export {
+  Menu as UniMenuButton,
+  MenuTrigger as UniMenuButtonTrigger,
+  MenuList as UniMenuButtonList,
+  MenuListMember as UniMenuButtonListMember,
+};

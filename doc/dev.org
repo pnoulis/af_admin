@@ -675,4 +675,100 @@ and therefore becomes the output of the combobox component.
 * select-only combobox
 * Action Menu (Menus in General)
 
+** Interactions
+*** DONE On Tab
+CLOSED: [2023-01-31 Tue 20:05]
+if state is open
+
+menu toggles open state
+menu list is revealed /opened
+the 1st menu-list member is focused.
+
+if state is closed
+
+menu switches to closed state
+menu list is hidden / closed.
+No selection takes place.
+
+*** DONE On escape
+CLOSED: [2023-01-31 Tue 20:05]
+menu toggles to closed state.
+menu list is hidden / closed.
+No selection takes place.
+
+*** DONE On Enter
+CLOSED: [2023-01-31 Tue 20:22]
+The currently active(focused) menu-list-member if any
+is marked as selected.
+onSelection event handler is fired.
+menu list is hidden / closed.
+menu toggles to closed state.
+*** DONE On Click outside the boundaries of the menu
+CLOSED: [2023-01-31 Tue 20:26]
+menu is toggled to its 'closed' state.
+menu list is hidden / closed.
+No selection takes place.
+*** DONE On Click within one of the options.
+CLOSED: [2023-01-31 Tue 20:29]
+The target element of the click event (the one currently active(focused))
+is marked as selected.
+onSelection event handler is fired.
+menu is toggled to its 'closed' state.
+menu list is hidden / closed.
+*** DONE On Click within the menu trigger
+CLOSED: [2023-01-31 Tue 20:29]
+menu is toggled to its 'closed' state.
+menu list is hidden / closed.
+No selection takes place.
+
+*** DONE On Hover within the menu trigger.
+CLOSED: [2023-01-31 Tue 20:42]
+menu is toggled to its 'open' state.
+menu list is revealed / opened.
+
+*** DONE On Hover within one of the menu members.
+CLOSED: [2023-01-31 Tue 20:42]
+menu-list-member is toggled to its active state.
+*** DONE On DOWN key press
+CLOSED: [2023-01-31 Tue 20:29]
+The 1st menu-list-member is the one focused by default as soon
+as the menu is toggled open.
+The next menu-list-member is focused. (the 2nd menu-list-member)
+
+If there are no more menu-list-members to focus the currently activeIndex
+loops back to the 1st option.
+*** DONE On UP key press
+CLOSED: [2023-01-31 Tue 20:29]
+The previous menu-list-member is focused.
+If there are no more menu-list-members to focus to the currently activeIndex
+loops back to the last option.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+** DONE The user of the menu must be able to customize the content of the menu item.
+CLOSED: [2023-01-31 Tue 19:16]
+
+achieved through a render prop:
+
+#+begin_src javascript
+  function MenuItem({render}) {
+    return render(isActive, isSelected, onSelection)
+  }
+#+end_src
+
+
+
+
+
 
