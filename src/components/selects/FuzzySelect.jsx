@@ -6,15 +6,12 @@ import {
   shift,
   size,
   useListNavigation,
-  useHover,
   useFocus,
-  useId,
   useDismiss,
   useInteractions,
   useRole,
   useClick,
   autoUpdate,
-  safePolygon,
   FloatingPortal,
   FloatingFocusManager,
 } from "@floating-ui/react";
@@ -29,13 +26,12 @@ const useComboboxContext = () => {
   return context;
 };
 
-function useCombobox(items = [], config = {}) {
+function useCombobox(items = [], onSelect = () => {}, config = {}) {
   const [open, setOpen] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(null);
   const [input, setInput] = React.useState("");
   const optionsRef = React.useRef([]);
   const listRef = React.useRef([]);
-  const selected = React.useRef("");
 
   // @floating-ui
   const data = useFloating({
@@ -43,6 +39,16 @@ function useCombobox(items = [], config = {}) {
     onOpenChange: setOpen,
     placement: "bottom-start",
     whileElementsMounted: autoUpdate,
+    middleware: [
+      flip(),
+      shift(),
+      offset(),
+      size({
+        apply({ rects, elements }) {
+          elements.floating.style.width = `${rects.reference.width}px`;
+        },
+      }),
+    ],
   });
 
   // @floating-ui
@@ -61,9 +67,18 @@ function useCombobox(items = [], config = {}) {
     }),
   ]);
 
-  const handleSelection = React.useCallback((option) => {
-    selected.current = option || input;
+  // fuzzy search provided by https://fusejs.io/
+  const Search = React.useRef(null);
+  if (Search.current == null) {
+    Search.current = new Fuse(items, {
+      threshold: 0.1,
+    });
+  }
+
+  const handleSelection = React.useCallback((selection) => {
     setOpen(false);
+    setInput(selection);
+    onSelect(selection);
   }, []);
 
   const handleInput = React.useCallback(({ target }) => {
@@ -72,13 +87,19 @@ function useCombobox(items = [], config = {}) {
   }, []);
 
   optionsRef.current = React.useMemo(() => {
-    return items.map((item, i) => {
-      return {
+    if (input === "") {
+      return items.map((item, i) => ({
         label: item,
         id: `${i}-${item}`,
         ref: (node) => (listRef.current[i] = node),
-      };
-    });
+      }));
+    }
+
+    return Search.current.search(input).map((match, i) => ({
+      label: match.item,
+      id: `${i}-${match.item}`,
+      ref: (node) => (listRef.current[i] = node),
+    }));
   }, [input, setInput]);
 
   if (!open) {
@@ -98,12 +119,12 @@ function useCombobox(items = [], config = {}) {
       ...data,
       ...interactions,
     }),
-    [open, setOpen, interactions, data]
+    [open, setOpen, interactions, data, input, setInput]
   );
 }
 
-function Combobox({ items, config, children }) {
-  const state = useCombobox(items, config);
+function Combobox({ items, onSelect, config, children }) {
+  const state = useCombobox(items, onSelect, config);
   return (
     <ComboboxContext.Provider value={state}>
       {children}
@@ -111,7 +132,7 @@ function Combobox({ items, config, children }) {
   );
 }
 
-function ComboboxTrigger({ className, children, ...props }) {
+function ComboboxTrigger({ name, placeholder, className, children, ...props }) {
   const context = useComboboxContext();
 
   React.useEffect(() => {
@@ -121,36 +142,42 @@ function ComboboxTrigger({ className, children, ...props }) {
   }, [context.open]);
 
   return (
-    <div
-      className={`${className || ""} combobox`}
-      ref={context.refs.setReference}
-      tabIndex={0}
-      {...context.getReferenceProps({
-        onKeyDown({ code }) {
-          switch (code) {
-            case "Enter":
-              const selected =
-                context.activeIndex >= 0
-                  ? context.optionsRef[context.activeIndex].label
-                  : context.input;
-              context.handleSelection(selected);
-              break;
-            case "Tab":
-              context.setOpen(false);
-              break;
-            default:
-              break;
-          }
-        },
-        onClick() {
-          if (context.open) {
-            context.handleSelection();
-          }
-        },
-        ...props,
-      })}
-    >
-      {children}
+    <div>
+      <input
+        className={`${className || ""} combobox`}
+        ref={context.refs.setReference}
+        type="text"
+        name={name}
+        id={name}
+        placeholder={placeholder}
+        onChange={context.handleInput}
+        value={context.input}
+        {...context.getReferenceProps({
+          onKeyDown({ code }) {
+            switch (code) {
+              case "Enter":
+                context.handleSelection(
+                  context.activeIndex != null
+                    ? context.optionsRef[context.activeIndex].label
+                    : context.input
+                );
+                break;
+              case "Tab":
+                context.setOpen(false);
+                break;
+              default:
+                break;
+            }
+          },
+          onClick() {
+            if (context.open) {
+              context.handleSelection(context.input);
+            }
+          },
+          ...props,
+        })}
+      />
+      <label htmlFor={name}>{children}</label>
     </div>
   );
 }
@@ -168,7 +195,7 @@ function ComboboxList({ renderItem, className, ...props }) {
           modal={false}
         >
           <ul
-            className={`${className || ""} combobox-list`}
+            className={`combobox-list ${className || ""}`}
             ref={context.refs.setFloating}
             role="group"
             style={{
@@ -200,9 +227,9 @@ function ComboboxOption({
 
   return (
     <li
-      className={`${className || ""} ${
+      className={`combobox-option ${className || ""} ${
         isActive ? "active" : ""
-      } combobox-option`}
+      }`}
       role="option"
       id={option.id}
       ref={(node) => option.ref(node)}
@@ -223,10 +250,14 @@ const options = ["one", "two", "three"];
 function Test() {
   return (
     <div>
-      <Combobox items={options}>
-        <ComboboxTrigger>
-          <input type="text" name="country" id="country" tabIndex={-1} />
-          <label htmlFor="country">country</label>
+      <Combobox
+        items={options}
+        onSelect={(selected) => {
+          console.log(`this was selected:${selected}`);
+        }}
+      >
+        <ComboboxTrigger name={"country"} placeholder={"selecte a country"}>
+          country
         </ComboboxTrigger>
         <ComboboxList
           renderItem={(props, i) => <ComboboxOption key={i} {...props} />}

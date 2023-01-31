@@ -4,7 +4,7 @@
   border: 5px solid black;
 }
 
-.combobox:focus {
+.combobox:focus-within {
   background-color: yellow;
 }
 
