@@ -16,6 +16,8 @@ import {
   EditableComboboxOption,
 } from "/src/components/selects";
 
+import { TestActionMenu } from "/src/components/menus";
+
 const items = ["one", "two", "three"];
 function Test() {
   const [open, setOpen] = React.useState(true);
@@ -24,25 +26,7 @@ function Test() {
     <div>
       <p>iam testing</p>
       {/* <button onClick={() => setOpen((prev) => !prev)}>open dialog</button> */}
-      <Combobox items={items}>
-        <ComboboxTrigger name="country" placeholder="select a country">
-          country
-        </ComboboxTrigger>
-        <ComboboxList
-          renderItem={(props, i) => <ComboboxOption key={i} {...props} />}
-        />
-      </Combobox>
-
-      <EditableCombobox items={items}>
-        <EditableComboboxTrigger name="country" placeholder="select a country">
-          country
-        </EditableComboboxTrigger>
-        <EditableComboboxList
-          renderItem={(props, i) => (
-            <EditableComboboxOption key={i} {...props} />
-          )}
-        />
-      </EditableCombobox>
+      <TestActionMenu />
     </div>
   );
 }

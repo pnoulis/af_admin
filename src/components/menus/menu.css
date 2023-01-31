@@ -26,3 +26,19 @@
 .menuItem:focus {
   padding: 10px;
 }
+
+.menu-trigger {
+  border: 5px solid black;
+}
+
+.menu-trigger:focus {
+  background-color: yellow;
+}
+
+.menu-list {
+  background-color: green;
+}
+
+.menu-member:focus {
+  background-color: yellow;
+}
