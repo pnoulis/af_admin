@@ -612,7 +612,14 @@ keyCode: 40
 key: "ArrowUp"
 keyCode: 38
 
-* combobox
+* Components
+** Comboboxes
+*** resources
+https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
+*** Select-only combobox
+*** Editable combobox
+
+* editable combobox
 ** Interactions
 *** DONE On tab
 CLOSED: [2023-01-30 Mon 10:13]
@@ -656,7 +663,8 @@ comboboxlist is hidden - closed.
 The option from which the event originated is
 marked as selected and is therefore becomes the output
 of the combobox component.
-*** On Click within the combobox trigger
+*** DONE On Click within the combobox trigger
+CLOSED: [2023-01-31 Tue 10:37]
 combobox toggles its state.
 comboboxtrigger toggles focus.
 comboboxlist toggles state.
@@ -664,3 +672,5 @@ comboboxlist toggles state.
 The value of the comboboxtrigger is marked as selected
 and therefore becomes the output of the combobox component.
 
+
+* select-only combobox
