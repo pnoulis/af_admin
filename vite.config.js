@@ -13,6 +13,6 @@ export default defineConfig({
     svgr(),
   ],
   server: {
-    open: '/',
-  }
+    open: "/test",
+  },
 });

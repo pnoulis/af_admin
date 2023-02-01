@@ -251,8 +251,8 @@ function useMenu(config = {}) {
   const interactions = useInteractions([
     config.hover
       ? useHover(data.context, {
-        handleClose: safePolygon({ restMs: 25 }),
-      })
+          handleClose: safePolygon({ restMs: 25 }),
+        })
       : useClick(data.context, { keyboardHandlers: false }),
     useRole(data.context, { role: "menu" }),
     useFocus(data.context, { keyboardOnly: true }),
@@ -328,16 +328,16 @@ function MenuList({ children, className, ...props }) {
             {...context.getFloatingProps({
               onKeyDown(e) {
                 switch (e.code) {
-                case 'Tab':
-                  e.preventDefault();
-                  context.setOpen(false);
-                  break;
-                case 'Enter':
-                  e.preventDefault();
-                  context.setSelectedIndex(context.activeIndex);
-                  break;
-                default:
-                  break;
+                  case "Tab":
+                    e.preventDefault();
+                    context.setOpen(false);
+                    break;
+                  case "Enter":
+                    e.preventDefault();
+                    context.setSelectedIndex(context.activeIndex);
+                    break;
+                  default:
+                    break;
                 }
               },
               ...props,
@@ -351,13 +351,20 @@ function MenuList({ children, className, ...props }) {
   );
 }
 
-function MenuListMember({ index, noFocus, render, className, children, ...props }) {
+function MenuListMember({
+  index,
+  noFocus,
+  render,
+  className,
+  children,
+  ...props
+}) {
   const context = useMenuContext();
   const isActive = context.activeIndex === index;
 
   return (
     <li
-      className={`menu-member ${isActive ? "active" : ""} ${className || ''}`}
+      className={`menu-member ${isActive ? "active" : ""} ${className || ""}`}
       ref={(node) => (context.listRef[index] = node)}
       role="menuitem"
       tabIndex={noFocus ? null : isActive ? 0 : -1}
