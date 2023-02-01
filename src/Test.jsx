@@ -25,6 +25,10 @@ import {
   UniMenuButtonListMember,
 } from "/src/components/menus";
 
+import {
+  TestInfiniteScroll
+} from '/src/components/infiniteScrolling';
+
 import { fetch } from "/src/lib";
 
 const items = ["one", "two", "three"];
@@ -79,7 +83,7 @@ function Test() {
       {/*     /> */}
       {/*   </UniMenuButtonList> */}
       {/* </UniMenuButton> */}
-      <TestAsyncCombobox />
+      <TestInfiniteScroll />
     </div>
   );
 }
