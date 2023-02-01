@@ -12,7 +12,7 @@ function checkStatus(res) {
 }
 
 function makeUrl(path, params) {
-  const url = new URL(path, HOST);
+  const url = new URL(HOST.concat("/", path).replace(/\/{2,}/g, "/"));
 
   if (!params) return url;
   Object.keys(params).forEach((param) =>

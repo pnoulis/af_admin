@@ -772,3 +772,49 @@ achieved through a render prop:
 
 
 
+
+* Asynchronous Selects
+** Asynchronous Combobox (AsyncCombobox)
+An asynchronous combobox is responsible for fetching the data
+it requires to fill its option list.
+
+The data set is partitioned into chunks and through infinite scrolling it is
+progressively fetched and displayed.
+
+*** load a chunk on open.
+combobox toggles to open state.
+combobox list is revealed / opened.
+combobox infinite scrolling fires dataload event.
+combobox changes state to dataloading=true.
+combobox fetches data.
+combobox data has been fetched.
+combobox changes state to dataloading=false.
+combobox renders new list.
+* Infinite scrolling
+Infinite scrolling is implemented using the new *Intersection Observer* API.
+
+the api lets users register a callback function that is executed whenever an
+element they wish to monitor enters or exits another element (or the viewport)
+or when the amount by which the two intersect changes by a requested amount.
+
+if two components intersect by somewhere around N%, invoke callback.
+
+
+The registered callback is invoked where in either of these circumstances occur:
+
+1. A target element intersects either the device's viewport or a specified
+   element. The specified element is reffered to as the the root element.
+2. The first time the observer is initially asked to watch a target element.
+   
+** threshold
+0 -> as soon as one pixel of the target element is visible invoke the handler.
+0.25 -> as soon as 25% of the target element is visible invoke the handler.
+1 -> the target element's visible surface area must be 100% to invoke the handler.
+
+[0, 0.25, 0.5, 0.75, 1] -> invoke the handler 5 times:
+  - 0 -> pixel 1
+  - 0.25 -> 25% visibility
+  - 0.5 -> 50% visibility
+  - 0.75 -> 75% visibility
+  - 1 -> 100% visibility
+                          

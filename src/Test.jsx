@@ -15,6 +15,7 @@ import {
   EditableComboboxTrigger,
   EditableComboboxList,
   EditableComboboxOption,
+  TestAsyncCombobox,
 } from "/src/components/selects";
 
 import {
@@ -24,7 +25,7 @@ import {
   UniMenuButtonListMember,
 } from "/src/components/menus";
 
-import { fetchTest, fetch } from "/src/lib";
+import { fetch } from "/src/lib";
 
 const items = ["one", "two", "three"];
 function Some({ isActive, isSelected, handleSelection }) {
@@ -57,13 +58,6 @@ function Some({ isActive, isSelected, handleSelection }) {
 function Test() {
   const [open, setOpen] = React.useState(true);
 
-  fetch
-    .get("books", {
-      _quantity: 100,
-      _locale: "en_US",
-    })
-    .then((res) => console.log(res));
-
   return (
     <div>
       <p>iam testing</p>
@@ -85,6 +79,7 @@ function Test() {
       {/*     /> */}
       {/*   </UniMenuButtonList> */}
       {/* </UniMenuButton> */}
+      <TestAsyncCombobox />
     </div>
   );
 }
