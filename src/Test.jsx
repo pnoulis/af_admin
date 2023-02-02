@@ -1,4 +1,5 @@
 import * as React from "react";
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import {
   useInteractions,
@@ -26,10 +27,21 @@ import {
 } from "/src/components/menus";
 
 import {
-  TestInfiniteScroll
-} from '/src/components/infiniteScrolling';
+  TestInfiniteScroll,
+  Infinite,
+  MyGoogleInfinite,
+} from "/src/components/infiniteScrolling";
+import { useInfiniteScrolling } from "/src/hooks";
 
 import { fetch } from "/src/lib";
+
+async function getBooks(number = 20) {
+  const data = await fetch.get("/books", {
+    _quantity: number,
+    _locale: "en_US",
+  });
+  return data;
+}
 
 const items = ["one", "two", "three"];
 function Some({ isActive, isSelected, handleSelection }) {
@@ -59,31 +71,60 @@ function Some({ isActive, isSelected, handleSelection }) {
     </div>
   );
 }
+
+const Container = styled.div`
+  background-color: yellow;
+  width: 100%;
+  min-height: max-content;
+  max-height: 200px;
+  overflow: scroll;
+
+  .list {
+    margin: auto;
+    width: 200px;
+    background-color: green;
+  }
+`;
+
+function TestScrolling() {
+  const once = React.useRef(false);
+  const [books, setBooks] = React.useState([]);
+  const { setRoot, setTarget } = useInfiniteScrolling(
+    {
+      offset: 50,
+    },
+    (observed) => {
+      console.log(`is observed:${observed}`);
+      if (observed) {
+        getBooks().then((data) => {
+          setBooks((prev) => [...prev, ...data.data]);
+        });
+      }
+    }
+  );
+
+  React.useEffect(() => {
+    console.log(`book length:${books.length}`);
+  }, [books]);
+
+  return (
+    <Container ref={setRoot}>
+      <ul className="list" ref={setTarget}>
+        {books.map((book, i) => (
+          <li key={i}>{book.title}</li>
+        ))}
+      </ul>
+    </Container>
+  );
+}
 function Test() {
   const [open, setOpen] = React.useState(true);
 
   return (
     <div>
       <p>iam testing</p>
-      {/* <button onClick={() => setOpen((prev) => !prev)}>open dialog</button> */}
-      {/* <UniMenuButton> */}
-      {/*   <UniMenuButtonTrigger> click me </UniMenuButtonTrigger> */}
-      {/*   <UniMenuButtonList> */}
-      {/*     <UniMenuButtonListMember */}
-      {/*       index={0} */}
-      {/*       render={(props) => <Some {...props} />} */}
-      {/*     /> */}
-      {/*     <UniMenuButtonListMember */}
-      {/*       index={1} */}
-      {/*       render={(props) => <Some {...props} />} */}
-      {/*     /> */}
-      {/*     <UniMenuButtonListMember */}
-      {/*       index={2} */}
-      {/*       render={(props) => <Some {...props} />} */}
-      {/*     /> */}
-      {/*   </UniMenuButtonList> */}
-      {/* </UniMenuButton> */}
-      <TestInfiniteScroll />
+      {/* <Infinite /> */}
+      <MyGoogleInfinite />
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { inlineStyle } from '/src/lib';
+import * as React from "react";
+import { inlineStyle } from "/src/lib";
 
 /*
   What is infinite scrolling:
@@ -43,44 +43,58 @@ function useInfiniteScrolling(config = {}, listener = () => {}) {
 
   React.useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => listener(
-        entry.target.className, entry.isIntersecting)),
+      (entries) =>
+        entries.forEach((entry) =>
+          listener(entry.isIntersecting, entry.target.className)
+        ),
       {
         root: rootRef.current,
         rootMargin: `${config.offset || 0}px`,
         threshold: config.threshold || 1,
       }
     );
-    const targets = [document.createElement('span')];
-    targetRef.current.style.position = 'relative';
+    const targets = [document.createElement("span")];
+    targetRef.current.style.position = "relative";
     switch (config.direction) {
-    case 'updown':
-      targets.push(document.createElement('span'));
-      targets[0].setAttribute('style', inlineStyle({
-        position: 'absolute',
-        top: 0,
-      }));
-      targets[0].className = 'infinite-scroll-up';
-      targets[1].setAttribute('style', inlineStyle({
-        position: 'absolute',
-        bottom: 0,
-      }));
-      targets[1].className = 'infinite-scroll-down';
-      break;
-    case 'up':
-      targets[0].setAttribute('style', inlineStyle({
-        position: 'absolute',
-        top: 0,
-      }));
-      targets[0].className = 'infinite-scroll-up';
-      break;
-    default:
-      targets[0].setAttribute('style', inlineStyle({
-        position: 'absolute',
-        bottom: 0,
-      }));
-      targets[0].className = 'infinite-scroll-down';
-      break;
+      case "updown":
+        targets.push(document.createElement("span"));
+        targets[0].setAttribute(
+          "style",
+          inlineStyle({
+            position: "absolute",
+            top: 0,
+          })
+        );
+        targets[0].className = "infinite-scroll-up";
+        targets[1].setAttribute(
+          "style",
+          inlineStyle({
+            position: "absolute",
+            bottom: 0,
+          })
+        );
+        targets[1].className = "infinite-scroll-down";
+        break;
+      case "up":
+        targets[0].setAttribute(
+          "style",
+          inlineStyle({
+            position: "absolute",
+            top: 0,
+          })
+        );
+        targets[0].className = "infinite-scroll-up";
+        break;
+      default:
+        targets[0].setAttribute(
+          "style",
+          inlineStyle({
+            position: "absolute",
+            bottom: 0,
+          })
+        );
+        targets[0].className = "infinite-scroll-down";
+        break;
     }
     targets.forEach((target) => {
       targetRef.current.appendChild(target);
@@ -95,7 +109,10 @@ function useInfiniteScrolling(config = {}, listener = () => {}) {
   }, []);
 
   return {
-    setRoot: (node) => rootRef.current = node,
-    setTarget: (node) => targetRef.current = node
+    setRoot: (node) => (rootRef.current = node),
+    setTarget: (node) => (targetRef.current = node),
   };
 }
+
+export default useInfiniteScrolling;
+export { useInfiniteScrolling };

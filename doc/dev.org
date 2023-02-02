@@ -602,7 +602,6 @@ element which last had focus.
 
 
 
-
 * Browser keyboard events
 ** Codes
 *** Down arrow
@@ -772,7 +771,6 @@ achieved through a render prop:
 
 
 
-
 * Asynchronous Selects
 ** Asynchronous Combobox (AsyncCombobox)
 An asynchronous combobox is responsible for fetching the data
@@ -818,3 +816,124 @@ The registered callback is invoked where in either of these circumstances occur:
   - 0.75 -> 75% visibility
   - 1 -> 100% visibility
                           
+** Things to watch out for
+*** infinite loop
+An infinite loop occurs when:
+
+The user pushing the scrollbar widget towards the edge of the container creates
+a situation where:
+
+- the observer target is intersected.
+- the observer target fires the handler event, which loads more data.
+- more data is loaded and added to the container.
+- the container grows
+- immediate position change towards the end of the container due to the fixed
+  pointer.
+- loop
+
+How does one prevent this behavior from ever occuring?
+
+Google offers the following solution:
+
+Instead of having just one observer target positioned at the end of the
+container there are two observer targets.
+
+They are named:
+
+1) sentinel
+2) button
+
+
+The sentinel fetches data.
+The button appends any available data.
+
+
+The sentinel is not positioned at the bottom of the container.
+Instead it is always placed mid way from the current scroll position to the
+bottom of the container.
+
+If the user fixates his pointer towards the end of the scrollbar, the sentinel
+is never observed. No more data is fetched. When the button is observed and
+fires the event to append more data, there is none. That puts a stop to the
+infinite loop.
+
+This approach has the disadvantage of:
+
+- Calculating the position of the sentinel element to appropriately place it.
+- The user must scroll relatively smoothly, otherwise the sentinel is never
+  observed.
+
+* patterns
+** index.js
+* Conventions
+** Module exports
+About:
+This article seeks to define the structure of a module in terms of file[s],
+filenames and exported objects.
+
+A module represents an encapsulated, discreet, homogenous (uniform) piece of
+functionality.
+
+That does not mean that a module exports strictly one object. A discreet piece
+of functionality may be separated into multiple sections as per the separation
+of concerns (wikipedia: separation of concerns) design principle. Separating a
+service into multiple sections should not be interpreted to mean necessarily
+multiple files which is an implementation detail. A module offering a service
+split into sections may be named a 'composite' service. Whilst a service not
+split into sections may be named a 'simple' service.
+
+In general the objects found within a module may be placed under one of two
+categories.
+Exported or not-Exported.
+Interface or Implementation.
+External or Internal.
+
+The placement of the objects of any type is an implementation detail. Meaning
+that the programmer may either choose to split the code into multiple files or
+not. Keep in mind that splitting a service into multiple files does not mean
+that module exports a 'composite' service. It may very well be that each of
+these files defines a not-exported object for internal consumption.
+
+Be that as it may the principle goes:
+
+Directory structure:
+If a module exporting a service (composite or simple) is spread out into
+multiple files then:
+
+- Directory houses the service.
+- index.js file serves as the entry point.
+  check the index.js pattern
+
+If a module exporting a service (composite or simple) is contained within one
+file then:
+
+- there is no need for a directory.
+- there is no need for the index.js pattern.
+
+Ecmascript exports:
+
+Regardless of the directory structure a service using ES modules has a
+choice of either using a 'default export' or a 'named export'.
+
+Default exports should not be used.
+Only named exports. As such:
+
+export { componentA, componentB };
+
+The export statement itself should always be placed at the end of the file.
+Placing the export statement at the end of the file and not at the start allows
+exporting objects which do not support *hoisting*.
+
+Consider the statements:
+
+export { fn };
+const fn = () => {};
+
+Evaluating these statements shall throw an Error. The identifier fn has not been
+declared yet.
+
+The previous example would work if:
+
+const fn = () => {};
+export { fn };
+
