@@ -17,10 +17,11 @@ const server = {
 const TopicListStyle = styled.div`
   display: grid;
   padding: 20px;
-  grid-template-columns: 1fr;
+  grid-template-columns: 800px;
   grid-auto-rows: auto;
   gap: 50px;
   background-color: var(--grey-1);
+  justify-content: center;
 `;
 
 const TopicStyle = styled.article`
