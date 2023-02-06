@@ -1,6 +1,6 @@
 import Client from "./client.js";
 import setupHooks from "./useMqtt.js";
-import Server from "/dummy_backend/mqttRoutes.js";
+import { Topics } from "/dummy_backend";
 
 const CLIENTS = new Map();
 
@@ -42,7 +42,7 @@ const prodTopics = [
   },
 ];
 
-const msqTopics = Server.routesToClient();
+const msqTopics = Topics.toClient();
 // const msqTopics = [
 //   {
 //     alias: 'boot',
@@ -236,7 +236,7 @@ export default function setupClient(
     MSQ = 2;
   switch (type || import.meta.env.MODE) {
     case "development":
-      console.log('MQTT CLIENT RUNNING ON MSQ MODE');
+      console.log("MQTT CLIENT RUNNING ON MSQ MODE");
       conf = configureConf(MSQ, MSQ, MSQ, MSQ, config);
       conf.name = name || import.meta.env.MODE;
       // console.log("MQTT CLIENT RUNNING ON DEV MODE");

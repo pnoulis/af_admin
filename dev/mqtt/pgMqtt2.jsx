@@ -1,10 +1,40 @@
 import * as React from "react";
 import styled from "styled-components";
-import serverRoutes from "/dummy_backend";
 import jsoneditor from "jsoneditor";
 import "./json_editor/jsoneditor.min.css";
+import { setupClient } from "/src/mqtt/setup2.js";
+import { Topics } from "/dummy_backend";
+import { NavLink, Outlet } from "react-router-dom";
 
-function JsonEditor({ json }) {
+// const client = setupClient();
+// // client.start().on("connect", () => {
+//   client.subscribe("/wristband/register", {}, (err, response) => {
+//     console.log(err);
+//     console.log(response);
+//   });
+// });
+// const server = setupClient("server", undefined, false, true);
+// server.start().on("connect", () => {
+//   console.log("connected");
+//   server.publish("/wristband/register", {});
+// });
+
+// function JsonEditor({ json }) {
+//   const root = React.useRef(null);
+//   const options = {
+//     mode: "text",
+//   };
+
+//   React.useEffect(() => {
+//     const editor = new jsoneditor(root.current, options);
+//     editor.set(json);
+//     return () => editor.destroy();
+//   }, [json]);
+
+//   return <div ref={root}></div>;
+// }
+
+const JsonEditor = React.forwardRef(function JsonEditor({ json }, ref) {
   const root = React.useRef(null);
   const options = {
     mode: "text",
@@ -12,16 +42,39 @@ function JsonEditor({ json }) {
 
   React.useEffect(() => {
     const editor = new jsoneditor(root.current, options);
+    if (ref) {
+      ref.current = editor;
+    }
     editor.set(json);
     return () => editor.destroy();
   }, [json]);
 
   return <div ref={root}></div>;
-}
+});
 
 const StyleMqttPage = styled.div`
   background-color: white;
   padding: 50px 0;
+
+  .menu {
+    background-color: transparent;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+
+    a {
+      display: block;
+      padding: 10px;
+      font-size: 1.2em;
+    }
+
+    a:hover {
+      background-color: blue;
+    }
+    a.active {
+      color: blue;
+    }
+  }
 `;
 const StyleTopicList = styled.ul`
   // background-color: green;
@@ -176,14 +229,29 @@ const StyleClientSection = styled.div`
   }
 `;
 
-function Topic({ topic }) {
+function Topic({ topic, status, server }) {
   const [pending, setPending] = React.useState(false);
   const [subMsgs, setSubMsgs] = React.useState([]);
   const [pubMsgs, setPubMsgs] = React.useState([]);
 
-  function handlePublish() {
-    return 0;
+  function handlePublish(payload) {
+    if (status !== "connected") {
+      return;
+    }
+    setPubMsgs([...pubMsgs, payload]);
+    server.publish(topic.pub.alias, payload);
   }
+  React.useEffect(() => {
+    if (status !== "connected") return;
+    if (topic.sub) {
+      server.subscribe(topic.sub.alias, (err, message) => {
+        if (err) {
+          return 0;
+        }
+        setSubMsgs([...subMsgs, message]);
+      });
+    }
+  }, [status]);
 
   return (
     <StyleTopic>
@@ -206,6 +274,7 @@ function Topic({ topic }) {
 }
 
 function PubSection({ topic, alias, payloads, pubs, publish }) {
+  const editorRef = React.useRef(null);
   return (
     <StylePubSection>
       <header>
@@ -219,9 +288,16 @@ function PubSection({ topic, alias, payloads, pubs, publish }) {
       </section>
       <section>
         <h2>Create payload</h2>
-        <JsonEditor json={payloads[0]?.data} />
+        <JsonEditor ref={editorRef} json={payloads[0]?.data} />
       </section>
-      <button className="publish-button">publish</button>
+      <button
+        className="publish-button"
+        onClick={() => {
+          publish(JSON.parse(editorRef.current.getText()));
+        }}
+      >
+        publish
+      </button>
       <section className="log">
         <h1>Publish logs</h1>
         <Log messages={pubs} />
@@ -301,17 +377,125 @@ function ClientSection() {
   );
 }
 
+function MqttClient() {}
+
+const StyleNotification = styled.span`
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: ${({ status }) => {
+    switch (status) {
+      case "error":
+        return "red";
+      case "pending":
+        return "orange";
+      case "connected":
+        return "green";
+      default:
+        return "grey";
+    }
+  }};
+`;
+
+const StyleMqttButton = styled.button`
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 2px solid black;
+  cursor: pointer;
+  background-color: ${({ selected }) => selected && "green"};
+`;
+function MqttServer() {
+  const [server, setServer] = React.useState("");
+  const [status, setStatus] = React.useState("");
+  const serverRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!server) return;
+    serverRef.current = setupClient("server", false, true, server);
+    serverRef.current
+      .start()
+      .on("connect", () => {
+        setStatus("connected");
+      })
+      .on("error", () => {
+        setStatus("error");
+      })
+      .on("close", () => {
+        setStatus("");
+      });
+  }, [server]);
+
+  const handleServerSelection = ({ target }) => {
+    serverRef.current?.stop();
+    setServer(target.value === server ? "" : target.value);
+  };
+
+  return (
+    <div>
+      <StyleClientSection>
+        <StyleMqttButton
+          selected={server === "production"}
+          value="production"
+          onClick={handleServerSelection}
+        >
+          production server
+        </StyleMqttButton>
+        <StyleMqttButton
+          selected={server === "development"}
+          value="development"
+          onClick={handleServerSelection}
+        >
+          dev server
+        </StyleMqttButton>
+        <StyleMqttButton
+          selected={server === "msq"}
+          value="msq"
+          onClick={handleServerSelection}
+        >
+          mosquito server
+        </StyleMqttButton>
+        <StyleNotification status={status} />
+      </StyleClientSection>
+      <StyleTopicList>
+        {server &&
+          Topics.toExplorer().map((topic, i) => {
+            return (
+              <Topic
+                key={i}
+                topic={topic}
+                status={status}
+                server={serverRef.current}
+              />
+            );
+          })}
+      </StyleTopicList>
+    </div>
+  );
+}
+
 function PgMqtt2() {
   return (
     <StyleMqttPage>
-      <ClientSection />
-      <StyleTopicList>
-        {serverRoutes.routes.map((topic, i) => {
-          return <Topic key={i} topic={topic} />;
-        })}
-      </StyleTopicList>
+      <ul className="menu">
+        <li>
+          <NavLink to="/dev/mqtt/client">client</NavLink>
+        </li>
+        <li>
+          <NavLink to="/dev/mqtt/server">server</NavLink>
+        </li>
+      </ul>
+      <section className="workarea">
+        <Outlet />
+      </section>
+      {/* <ClientSection /> */}
+      {/* <StyleTopicList> */}
+      {/* {Topics.toExplorer().map((topic, i) => { */}
+      {/*   return <Topic key={i} topic={topic} />; */}
+      {/* })} */}
+      {/* </StyleTopicList> */}
     </StyleMqttPage>
   );
 }
 
-export { PgMqtt2 };
+export { PgMqtt2, MqttClient, MqttServer };

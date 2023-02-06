@@ -1,4 +1,4 @@
-const routes = [
+const topics = [
   {
     // one way communication, server publishes
     summary: "wristband scan",
@@ -63,20 +63,24 @@ const routes = [
   },
 ];
 
-function routesToClient() {
-  return routes.map((route) => {
-    return {
+const Topics = {
+  toClient() {
+    return topics.map((route) => ({
       alias: route.alias,
       pub: route.sub?.topic || null,
       sub: route.pub?.topic || null,
-    };
-  });
-}
-
-const server = {
-  routes,
-  routesToClient,
+    }));
+  },
+  toServer() {
+    return topics.map((route) => ({
+      alias: route.alias,
+      pub: route.pub?.topic || null,
+      sub: route.sub?.topic || null,
+    }));
+  },
+  toExplorer() {
+    return topics;
+  },
 };
 
-export default server;
-export { routes };
+export { Topics };

@@ -1,38 +1,36 @@
-import Proxy from './client2.js';
-import server from '../../dummy_backend/index.js';
+import { Proxy } from "./client2.js";
+import { Topics } from "../../dummy_backend/mqttRoutes.js";
+import * as confPresets from "./conf.js";
 
-
-const topics = server.routesToClient();
-const conf = {};
-conf.registry = {topics: topics};
-
-const proxy = new Proxy(conf);
-
-
-const tests = {
-  canonicalize() {
-    const topics = [
-      'wristband/scan',
-      '/wristband/scan',
-      'wristband/scan/',
-      '/wristband/scan/',
-      'wristband /scan',
-    ];
-    proxy.registry.canonicalize(...topics);
-  },
-  replaceParams() {
-    const topics = [
-      '/wristband/scan',
-      '/${clientId}/scan',
-      '/${CLIENTID}/scan',
-      '/${clientId}/${clientId}',
-      '${missing}/scan/',
-      '${missing}/${missing}',
-    ];
-    proxy.registry.setParam('clientId', 'replacedParam');
-    proxy.registry.replaceParams(...topics);
+const CLIENTS = new Map();
+function setupClient(
+  name = import.meta.env.MODE,
+  test = false,
+  server = false,
+  type = import.meta.env.VITE_MQTT_SERVER,
+  adhocConfig = {}
+) {
+  const existingClient = CLIENTS.get(name);
+  if (existingClient) {
+    return existingClient;
   }
+
+  confPresets.registry[type].topics = server
+    ? Topics.toServer()
+    : Topics.toClient();
+
+  const conf = {
+    proxy: { ...confPresets.proxy[type], ...adhocConfig.proxy },
+    server: { ...confPresets.server[type], ...adhocConfig?.server },
+    registry: { ...confPresets.registry[type], ...adhocConfig?.registry },
+    logger: { ...confPresets.logger[type], ...adhocConfig?.logger },
+  };
+  conf.name = name;
+
+  const client = new Proxy(conf);
+  CLIENTS.set(name, client);
+  client.registry.setParam("clientId", client.id);
+  return client;
 }
 
-// tests.canonicalize();
-tests.replaceParams();
+export { setupClient };

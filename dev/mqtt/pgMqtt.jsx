@@ -3,7 +3,7 @@ import jsoneditor from "jsoneditor";
 import "./json_editor/jsoneditor.min.css";
 import styled from "styled-components";
 import Client from "/src/mqtt";
-import Server from "/dummy_backend/mqttRoutes.js";
+import { Topics } from "/dummy_backend/mqttRoutes.js";
 import { ButtonText } from "/src/components/buttons";
 
 const { useMqtt, client } = Client;
@@ -11,7 +11,7 @@ const { useMqtt, client } = Client;
 const server = {
   useMqtt,
   client,
-  ...Server,
+  ...Topics.toServer(),
 };
 
 const TopicListStyle = styled.div`

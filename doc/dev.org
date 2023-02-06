@@ -119,6 +119,31 @@ A destination only accepts one way communication
 If no logging agent has been provided the client shall default to writting to
 the console.
 *** adhoc configuration
+*** Publish flow
+user wants to publish a message and presumably wants to register
+a callback to be invoked when a response has arrived.
+
+
+imitating the http request - response 1.1
+user want to publish a message and be notified with the response.
+
+1. register a client.
+2. initiate a subscription if none has been initiated.
+3. publish the message
+4. response arrives.
+5. subscription invokeds all registered clients.
+6. each registered client is removed from the registry.
+
+User wants to publish a message without wanting to be notified with the
+response.
+1. publish a messsage.
+
+*** Subscription flow
+user wants to subscribe to a channel
+1. create a subscription channel.
+2. register a listener
+
+
 * Color pallete
 ** purple
 #+begin_src css
@@ -601,7 +626,6 @@ element which last had focus.
 
 
 
-
 * Browser keyboard events
 ** Codes
 *** Down arrow
@@ -765,7 +789,6 @@ achieved through a render prop:
     return render(isActive, isSelected, onSelection)
   }
 #+end_src
-
 
 
 

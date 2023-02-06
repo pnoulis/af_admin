@@ -1,39 +1,68 @@
-import { format as prettyFormat } from 'pretty-format';
+import { format as prettyFormat } from "pretty-format";
+import { connect as MqttServer } from "precompiled-mqtt";
 
 function Registry(config, logger) {
   this.strict = config.strict;
   this.params = config.params;
   this.logger = logger;
   this.registry = new Map(
-    config.topics.map(({alias, pub, sub}) => [
+    config.topics.map(({ alias, pub, sub }) => [
       this.canonicalize(alias),
       {
         pub: this.canonicalize(pub),
         sub: this.canonicalize(sub),
-      }
+      },
     ])
   );
-  this.logger.log('trace')('Completed topic registry setup', this);
+  this.logger.log("trace")("Completed topic registry setup", this);
   return this;
 }
 
-Registry.prototype.canonicalize = function(...topics) {
+/**
+ * Transforms a topic to conforming syntax in case of omissions.
+ *
+ * @param {...string} topics
+ * @returns {string|string[]}
+ */
+Registry.prototype.canonicalize = function (...topics) {
   topics = topics.map((topic, i) => {
-    if (!topic) {
-      this.logger.warn(`Failed to canonicalize topic:${topic}`);
+    if (topic == null) {
       return null;
     }
     if (!topic.startsWith("/")) topic = "/" + topic;
     if (topic.endsWith("/")) topic = topic.slice(0, -1);
-    topic = topic.replace(/\s/g, '');
+    topic = topic.replace(/\s/g, "");
     this.logger.trace(`Canonicalized topic:'${topics[i]}' -> '${topic}'`);
-    return topics;
+    return topic;
   });
 
   return topics.length > 1 ? topics : topics.pop();
-}
+};
 
-Registry.prototype.resolve = function(alias) {
+/**
+ * Resolve a topic alias. A topic alias is 'resolved' to
+ * produce:
+ *
+ * [0] - the topic alias after canonicalization.
+ * [1] - the topic to publish to. named pub
+ * [2] - the topic to subscribe to. named sub
+ *
+ * In case of an unregistered topic alias each member of the return array
+ * is equal to the topic alias after canonicalization.
+ *
+ * [0] - the topic alias after canonicalization.
+ * [1] - the topic alias after canonicalization.
+ * [2] - the topic alias after canonicalization.
+ *
+ * If the registry is operating in strict mode an unregistered topic
+ * alias throws an Error.
+ *
+ * @param {string} alias
+ *
+ * @throws {Error} Unregistered topic alias
+ * @returns {string[]}
+ */
+Registry.prototype.resolve = function resolve(alias) {
   let adhocParams = {};
   if (typeof alias === "object") {
     adhocParams = alias;
@@ -42,23 +71,39 @@ Registry.prototype.resolve = function(alias) {
   }
   const topic = this.canonicalize(alias);
   if (!this.registry.has(topic)) {
-    this.logger.log(this.strict ? 'error' : 'warn')(
+    this.logger.log(this.strict ? "error" : "warn")(
+      `Unregistered topic alias:${alias}`
     );
   }
-  const { pub, sub } = this.registry.get(topic) || { pub: topic, sub: topic};
+  const { pub, sub } = this.registry.get(topic) || { pub: topic, sub: topic };
   this.logger.trace(`Resolved alias:${alias}`, pub, sub);
   return [
     topic,
     ...this.canonicalize(...this.replaceParams(pub, sub, adhocParams)),
   ];
-}
+};
 
-Registry.prototype.replaceParams = function(...topics) {
-  const params = typeof topics[topics.length - 1] === 'object'
-        ? Object.assign({}, this.params, topics.pop())
-        : this.params;
+/**
+ * Replace possible parameters within a topic if any match
+ * with those registered.
+ *
+ * A topic parameter of the form ${[a-z]*} part of a topic:
+ * /mytopic/${param}/go/on
+ * is to be replaced by the registered parameter value if any.
+ *
+ * @param {...string|Array.<...string, object>} topics
+ * @returns {string|string[]}
+ */
+Registry.prototype.replaceParams = function (...topics) {
+  const params =
+    typeof topics[topics.length - 1] === "object"
+      ? Object.assign({}, this.params, topics.pop())
+      : this.params;
 
   topics = topics.map((topic, i) => {
+    if (topic == null) {
+      return null;
+    }
     topic = topic.replace(/\${([a-z]*)}/gi, (match, param) => {
       if (!(param in params)) {
         this.logger.error(
@@ -71,16 +116,23 @@ Registry.prototype.replaceParams = function(...topics) {
     this.logger.trace(
       `Replaced parameters for topic:'${topics[i]}' -> '${topic}`
     );
+    return topic;
   });
   return topics.length > 1 ? topics : topics.pop();
-}
+};
 
-Registry.prototype.setParam = function(key, value) {
+/**
+ * Register a topic parameter key and value.
+ *
+ * @param {string} key
+ * @param {*} value - should be a string though.
+ *
+ * @TODO the type of 'value' ought to be restricted to a string.
+ */
+Registry.prototype.setParam = function (key, value) {
   this.params[key] = value;
-  this.logger.trace(
-    `Added parameter:'${key}' -> '${value}'`
-  );
-}
+  this.logger.trace(`Added parameter:'${key}' -> '${value}'`);
+};
 
 function Logger(config) {
   this.verbosity = this.level[config.verbosity];
@@ -93,65 +145,65 @@ Logger.prototype.level = {
   error: 1,
   fatal: 0,
   silent: -1,
-}
+};
 
 // Describing events showing step by step execution
-Logger.prototype.trace = function(message, ...args) {
+Logger.prototype.trace = function (message, ...args) {
   if (this.level.trace > this.verbosity) return;
   console.log(prettyFormat(`TRACE: ${message}`));
   if (args.length > 0) {
-    console.log(prettyFormat(...args));
+    console.log(prettyFormat(args));
   }
-}
+};
 // Purely informative event, may be ignored during normal
 // operation
-Logger.prototype.info = function(message, ...args) {
+Logger.prototype.info = function (message, ...args) {
   if (this.level.info > this.verbosity) return;
   console.log(prettyFormat(`INFO: ${message}`));
   if (args.length > 0) {
     console.log(prettyFormat(...args));
   }
-}
+};
 // Unexpected behavior, but the application may continue
 // with operations in a stable manner.
-Logger.prototype.warn = function(message, ...args) {
+Logger.prototype.warn = function (message, ...args) {
   if (this.level.warn > this.verbosity) return;
   console.log(prettyFormat(`WARN: ${message}`));
   if (args.length > 0) {
     console.log(prettyFormat(...args));
   }
-}
+};
 // One ore more components not functioning properly, preventing
 // some functionality. Service continues to operate.
-Logger.prototype.error = function(message, ...args) {
+Logger.prototype.error = function (message, ...args) {
   if (this.level.error > this.verbosity) return;
   console.log(prettyFormat(`ERROR: ${message}`));
   if (args.length > 0) {
     console.log(prettyFormat(...args));
   }
-}
+};
 // Application will cease to provide its services.
-Logger.prototype.fatal = function(message, ...args) {
+Logger.prototype.fatal = function (message, ...args) {
   if (this.level.error > this.verbosity) return;
   console.log(prettyFormat(`FATAL: ${message}`));
   if (args.length > 0) {
     console.log(prettyFormat(...args));
   }
-}
+};
 
-Logger.prototype.log = function(level) {
+Logger.prototype.log = function (level) {
   return this[level].bind(this);
-}
+};
 
-
-export default function Proxy(config = {}) {
+function Proxy(config = {}) {
   const { proxy, server, registry, logger } = this.parseConfig(config);
   this.name = proxy.name;
   this.id = proxy.id;
+  this.subscriptions = new Map();
   this.server = server;
   this.logger = new Logger(logger);
   this.registry = new Registry(registry, new Logger(logger));
-  this.logger.info('Completed setup\nConfiguration:', {
+  this.logger.info("Completed setup\nConfiguration:", {
     proxy,
     server,
     registry,
@@ -160,18 +212,18 @@ export default function Proxy(config = {}) {
   return this;
 }
 
-Proxy.prototype.parseConfig = function(config) {
+Proxy.prototype.parseConfig = function (config) {
   const proxy = {
-    name: config.name || 'mqtt_proxy',
+    name: config.name || "mqtt_proxy",
   };
-  proxy.id = proxy.name.concat('_', Math.random().toString(16).slice(2.8));
+  proxy.id = proxy.name.concat("_", Math.random().toString(16).slice(2, 8));
   return {
     proxy,
     server: {
       host: config.server?.host,
       options: {
         keepalive: 30,
-        protocolId: 'MQTT',
+        protocolId: "MQTT",
         protocolVersion: 4,
         clean: false,
         reconnectPeriod: 1000,
@@ -181,148 +233,172 @@ Proxy.prototype.parseConfig = function(config) {
       },
     },
     registry: {
-      strict: config.registry?.hasOwnProperty('strict')
-      ? config.registry.strict
+      strict: config.registry?.hasOwnProperty("strict")
+        ? config.registry.strict
         : true,
       topics: config.registry?.topics || [],
       params: config.registry?.params || {},
     },
     logger: {
-      verbosity: config.logger?.verbosity || 'trace',
+      verbosity: config.logger?.verbosity || "trace",
       ...config.logger,
-    }
+    },
   };
-}
+};
 
-Proxy.prototype.decode = function(payload) {
+Proxy.prototype.start = function () {
+  this.server = MqttServer(this.server.host, this.server.options)
+    .on("connect", () => {
+      this.logger.trace("mqtt proxy client connected");
+    })
+    .on("error", (err) => {
+      this.logger.error("mqtt error", err);
+    });
+  return this.server;
+};
+
+Proxy.prototype.stop = function () {
+  this.server?.end(true);
+};
+
+Proxy.prototype.decode = function (payload) {
   try {
-    payload = payload.toString();
     payload = JSON.parse(payload);
   } catch (err) {
-    this.logger.error('Failed to decode payload:', payload, err);
+    this.logger.error("Failed to decode payload:", payload, err);
     throw err;
   }
-  this.logger.trace('Decoded payload:', payload);
+  this.logger.trace("Decoded payload:", payload);
   return payload;
-}
+};
 
-Proxy.prototype.encode = function(payload) {
+Proxy.prototype.encode = function (payload) {
+  if (typeof payload !== "object") {
+    this.logger.error("Non object payload", payload);
+  }
   try {
-    if (typeof payload !== 'object') {
-      throw new Error(`Non Object payload: ${payload}`);
-    }
+    payload.timestamp = new Date().getTime();
     payload = JSON.stringify(payload);
   } catch (err) {
-    this.logger.error('Failed to encode payload', payload, err);
+    this.logger.error("Failed to encode payload", payload, err);
     throw err;
   }
-  payload.timestamp = new Date().getTime();
-  this.logger.trace('Encoded payload:', payload);
+  this.logger.trace("Encoded payload:", payload);
   return payload;
-}
+};
 
-Proxy.prototype.subscribe = function(alias, client, cb) {
-}
+Proxy.prototype.subscribe = function (alias, options, cb) {
+  if (options instanceof Function) {
+    cb = options;
+    options = {};
+  }
+  const [topic, pub, sub] = this.registry.resolve(alias);
 
-Proxy.prototype._subscribe = function(sub, client, options) {
+  const client = this._subscribe(sub, cb, options);
+  return () => this.unregisterClient(sub, client.id);
+};
+
+Proxy.prototype._subscribe = function (sub, client, options) {
+  if (this.subscriptions.has(sub)) {
+    return this.registerClient(sub, client);
+  }
+
+  const clients = [];
+  this.subscriptions.set(sub, clients);
+
   this.server.subscribe(sub, options, (err) => {
     if (err) {
-      this.logger.fatal(
-        `Failed to subscribe client:'${client.id}' to topic:'${sub}'`
-      );
-    }
-    this.logger.trace(`Subscribed client:'${client.id}' to topic:${sub}`);
-    this.server.on('message', (topic, message) => {
-      this.logger.trace(`Received message for topic:${topic}`, message);
-      if (topic === sub) {
-        this.subscriptions.get(sub).forEach(
-          (client) => {
-            this.logger.trace(
-              `Found client:${client.id} for message:`,
-              message
-            );
-            if (!('cb' in client)) {
-              this.logger.error(
-                `Missing callback for client:${client.id}`,
-                message
-              );
-            }
-            client.cb(null, this.decode(message));
-            this.logger.trace(
-              `Successfully delivered message to client:${client.id}`,
-              message
-            );
-          }
+      clients.forEach((client) => {
+        this.logger.fatal(
+          `Failed to subscribe client:'${client.id}' to topic:'${sub}'`
         );
+        client.cb(err);
+      });
+    }
+
+    this.logger.trace(`Subscribed to topic:${sub}`);
+    this.server.on("message", (topic, message) => {
+      this.logger.trace(`Received message for topic:${topic}`);
+      if (topic === sub) {
+        clients.forEach((client) => {
+          client.cb(null, this.decode(message));
+          this.logger.trace(
+            `Successfully delivered message to client:${client.id}`
+          );
+        });
       }
     });
   });
-}
 
-Proxy.prototype.registerClient = function(sub, client) {
-  const clients = this.subscriptions.get(sub) || [];
-  const newClient = {
+  return this.registerClient(sub, client);
+};
+
+Proxy.prototype.registerClient = function (sub, cb) {
+  const clients = this.subscriptions.get(sub);
+  const client = {
     id: new Date().getTime(),
-    cb: client,
   };
-  clients.push(newClient);
+
+  if (cb.transient) {
+    client.cb = (err, data) => {
+      this.unregisterClient(sub, client.id);
+      cb(err || null, data || null);
+    };
+  } else {
+    client.cb = cb;
+  }
+
+  clients.push(client);
   this.logger.trace(
-    `Successfully registered client:${newClient.id} to topic:${sub}`,
+    `Successfully registered client:${client.id} to topic:${sub}`,
     clients
   );
-  return newClient;
-}
+  return client;
+};
 
-Proxy.prototype.unregisterClient = function(sub, clientId) {
+Proxy.prototype.unregisterClient = function (sub, clientId) {
   const clients = this.subscriptions.get(sub);
   if (!clients.length) {
     this.logger.warn(
       `Trying to unregister client:'${clientId} where none is registered`
     );
   }
-  const client = clients.findIndex(client => client.id === clientId);
+  const client = clients.findIndex((client) => client.id === clientId);
 
   if (clientId === -1) {
     this.logger.warn(`Failed to unregister missing client:'${clientId}'`);
   }
   clients.splice(client, 1);
   this.logger.trace(`Successfully unregistered client:'${clientId}'`, clients);
-}
+};
 
-Proxy.prototype.publish = function(alias, payload, options, cb) {
-  const [topic, pub, sub] = this.registry.resolve(alias);
+Proxy.prototype.publish = function (alias, payload, options, cb) {
   if (options instanceof Function) {
     cb = options;
     options = {};
   }
+  const [topic, pub, sub] = this.registry.resolve(alias);
 
-  if (!(cb instanceof Function)) {
-    this.logger.error(
-      'Client failed to provide callback',
-      { alias, payload, options, cb, }
-    );
+  let client = null;
+  if (cb instanceof Function) {
+    cb.transient = true;
+    client = this._subscribe(sub, cb, options);
   }
 
-  const client = this.registerClient(sub, cb);
-  this._subscribe(sub, client, options);
   this._publish(pub, payload, options, client);
-}
+};
 
-Proxy.prototype._publish = function(pub, payload, options, client) {
-  if (options instanceof Function) {
-    client = options;
-    options = {};
-  }
-
+Proxy.prototype._publish = function (pub, payload, options, client) {
   if (!pub) {
     this.logger.warn(`Failed to publish to unknown topic:'${pub}'`);
   }
   this.server.publish(pub, this.encode(payload), options, (err) => {
     if (err) {
-      this.logger.error(
-        `Server error trying to publish to topic:'${pub}`,
-        err
-      );
+      this.logger.error(`Server error trying to publish to topic:'${pub}`, err);
+      client.cb(err);
     }
+    this.logger.trace(`Server successfully published to topic:${pub}`, payload);
   });
-}
+};
+
+export { Proxy };
