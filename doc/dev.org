@@ -958,6 +958,31 @@ const fn = () => {};
 export { fn };
 
 
+* Restructuring
+Move all static assets into ./assets
+Any directly imported assets from within index.html should be
+imported from within a file responsible for starting up the
+application.
+
+** TODO Move wristband.css to its own component
+** TODO Rename src/index.jsx to src/index.js
+** TODO Application entry point file responsibilities
+ - Remove all imports and other components so that work can proceed without any barriers.
+ - Load any resources that are to be shared by the whole component tree
+** TODO Refactor all default imports to named imports
+** MQTT production bootup
+// const { client } = MQTT_START();
+// client.on("connect", () => {
+//   client.subscribe("boot", (payload) => {});
+
+//   client.publish("boot", {
+//     deviceId: client.id,
+//     roomName: "registration5",
+//     deviceType: "REGISTRATION_SCREEN",
+//     timestamp: new Date().getTime(),
+//   });
+// });
+
 * Registration
 ** Flow chart
 *** user logs in or registers

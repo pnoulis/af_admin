@@ -1,13 +1,13 @@
-import Home from "./Home";
-import { FlashMessages } from "./flashMessages";
+// import Home from "./Home";
+import { StyleLayoutSite } from '/src/components/layouts';
+import { Sidebar } from './site-wide';
 
 function App() {
   return (
-    <FlashMessages>
-      <Home />
-    </FlashMessages>
+    <StyleLayoutSite>
+      <Sidebar/>
+    </StyleLayoutSite>
   );
 }
 
 export { App };
-export default App;

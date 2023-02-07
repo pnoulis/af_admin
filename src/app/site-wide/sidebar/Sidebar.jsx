@@ -1,12 +1,11 @@
-import React from 'react';
 import styled from 'styled-components';
-import Header from './Header.jsx';
-import Navigation from './Navigation.jsx';
-import LangWidget from './LangWidget.jsx';
-import TimeWidget from './TimeWidget.jsx';
+import Header from './Header';
+import Navigation from './Navigation';
+import LangWidget from './LangWidget';
+import TimeWidget from './TimeWidget';
 import background from '/assets/backgrounds/sidebar.png';
 
-const Container = styled.aside`
+const StyleSidebar = styled.aside`
 all: unset;
 box-sizing: border-box;
 display: flex;
@@ -23,22 +22,27 @@ align-items: center;
 padding: 2px 14px;
 background-image: url(${background});
 
+// position
+grid-area: Sidebar;
+
 `;
 
-const Divider = styled.hr`
+const StyleDivider = styled.hr`
     height: 2px;
     width: 100%;
     background-color: white;
 `;
 
-export default function Sidebar() {
+function Sidebar() {
   return (
-    <Container className='site--sidebar'>
+    <StyleSidebar>
       <Header />
-      <Divider />
+      <StyleDivider />
       <Navigation />
       <TimeWidget />
       <LangWidget />
-    </Container>
+    </StyleSidebar>
   );
 }
+
+export { Sidebar };

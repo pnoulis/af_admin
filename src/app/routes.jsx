@@ -1,17 +1,14 @@
-import App from "./App";
+import { App } from "./App";
 import registrationRoutes from "./registration";
 
-const routes = [
+const appRoutes = [
   {
-    path: "/app",
+    path: "",
+    element: <App/>,
     children: [
-      {
-        path: "",
-        element: <App />,
-        children: [...registrationRoutes],
-      },
-    ],
+      ...registrationRoutes,
+    ]
   },
 ];
 
-export default routes;
+export { appRoutes };

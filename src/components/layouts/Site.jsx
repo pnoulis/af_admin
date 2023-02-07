@@ -1,14 +1,16 @@
 import styled from 'styled-components';
 
-
-const LayoutSite = styled.div`
+const StyleLayoutSite = styled.div`
 all: unset;
 box-sizing: border-box;
 display: grid;
 
 // Dimensions
-min-width: 100%;
-min-height: 100%;
+width: 100%;
+height: 100%;
+max-width: 1920px;
+max-height: 1080px;
+margin: auto;
 
 // Contents
 grid-template-rows: minmax(40px, min-content) 1fr;
@@ -17,16 +19,11 @@ grid-template-areas:
 "Sidebar Header"
 "Sidebar Main";
 
-
 // Appearance
 background-color: var(--background);
 
 .site--header {
 grid-area: Header;
-}
-
-.site--sidebar {
-grid-area: Sidebar;
 }
 
 .site--main {
@@ -36,4 +33,4 @@ margin: 20px 20px 20px 50px;
 
 `;
 
-export {LayoutSite};
+export { StyleLayoutSite };

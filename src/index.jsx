@@ -1,23 +1,33 @@
-import React from "react";
+import React from 'react';
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import "@fontsource/roboto";
-// import MQTT_START from "/src/mqtt";
-import routes from "./routes";
+import {
+  RouterProvider,
+  createBrowserRouter
+} from "react-router-dom";
+import { testRoutes } from './Test';
+import { devRoutes } from '/dev';
+import { appRoutes } from '/src/app';
 
-// const { client } = MQTT_START();
-// client.on("connect", () => {
-//   client.subscribe("boot", (payload) => {});
 
-//   client.publish("boot", {
-//     deviceId: client.id,
-//     roomName: "registration5",
-//     deviceType: "REGISTRATION_SCREEN",
-//     timestamp: new Date().getTime(),
-//   });
-// });
+let router;
+if (import.meta.env.PROD) {
+  router = createBrowserRouter([]);
+} else { // development
+  router = createBrowserRouter([
+    {
+      path: '/',
+      children: [
+        ...appRoutes,
+        ...devRoutes,
+        ...testRoutes,
+      ]
+    }
+  ]);
+}
+
+console.log(`App running in ${import.meta.env.MODE} mode!`);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={routes} />
+    <RouterProvider router={router}/>
   </React.StrictMode>
 );
