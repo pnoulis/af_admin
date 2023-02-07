@@ -17,7 +17,6 @@ import {
   useMergeRefs,
   FloatingFocusManager,
 } from "@floating-ui/react";
-import "./menu.css";
 
 /*
   _What is a Select Menu_

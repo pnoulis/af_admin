@@ -143,7 +143,6 @@ user wants to subscribe to a channel
 1. create a subscription channel.
 2. register a listener
 
-
 * Color pallete
 ** purple
 #+begin_src css
@@ -625,7 +624,6 @@ element which last had focus.
 
 
 
-
 * Browser keyboard events
 ** Codes
 *** Down arrow
@@ -789,7 +787,6 @@ achieved through a render prop:
     return render(isActive, isSelected, onSelection)
   }
 #+end_src
-
 
 
 
@@ -960,3 +957,11 @@ The previous example would work if:
 const fn = () => {};
 export { fn };
 
+
+* Registration
+** Flow chart
+*** user logs in or registers
+*** register wristband
+*** validate wristband
+*** merge team
+*** create team
