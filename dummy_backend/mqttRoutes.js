@@ -78,8 +78,16 @@ const Topics = {
       sub: route.sub?.topic || null,
     }));
   },
-  toExplorer() {
+  toExplorerServer() {
     return topics;
+  },
+  toExplorerClient() {
+    return topics.map(({summary, alias, pub, sub}) => ({
+      summary,
+      alias,
+      pub: sub || [],
+      sub: pub || [],
+    }));
   },
 };
 

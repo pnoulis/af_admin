@@ -1,3 +1,5 @@
+import { Topics } from "../../dummy_backend/mqttRoutes.js";
+
 const proxy = {
   prod: {},
   dev: {},
@@ -30,7 +32,7 @@ const registry = {
   dev: {},
   msq: {
     strict: false,
-    topics: [],
+    topics: Topics.toClient(),
     params: {
       clientId: "",
     },
