@@ -1,130 +1,69 @@
 import * as React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import {
-  useInteractions,
-  useFloating,
-  useListNavigation,
-  FloatingFocusManager,
-} from "@floating-ui/react";
-import {
-  Combobox,
-  ComboboxTrigger,
-  ComboboxList,
-  ComboboxOption,
-  EditableCombobox,
-  EditableComboboxTrigger,
-  EditableComboboxList,
-  EditableComboboxOption,
-  TestAsyncCombobox,
-} from "/src/components/selects";
+import { setupMqttProxy } from "/src/mqtt";
 
-import {
-  UniMenuButton,
-  UniMenuButtonTrigger,
-  UniMenuButtonList,
-  UniMenuButtonListMember,
-} from "/src/components/menus";
+// const { client, server } = setupMqttProxy();
 
-import {
-  TestInfiniteScroll,
-  Infinite,
-  MyGoogleInfinite,
-} from "/src/components/infiniteScrolling";
-import { useInfiniteScrolling } from "/src/hooks";
+// import { setupClient, setupServer } from "/src/mqtt";
 
-import { fetch } from "/src/lib";
+// const client = setupClient(undefined, undefined, undefined, {
+//   logger: {
+//     verbosity: "info",
+//   },
+// });
 
-async function getBooks(number = 20) {
-  const data = await fetch.get("/books", {
-    _quantity: number,
-    _locale: "en_US",
-  });
-  return data;
-}
-
-const items = ["one", "two", "three"];
-function Some({ isActive, isSelected, handleSelection }) {
-  const navigate = useNavigate();
-  const myRef = React.useRef(null);
-
-  React.useEffect(() => {
-    if (isSelected) {
-      handleSelection(() => {
-        navigate("/app");
-      });
-    }
-  }, [isSelected]);
-
-  React.useEffect(() => {
-    if (isActive) {
-      console.log("will focus");
-      myRef.current.focus();
-    }
-  }, [isActive]);
-
-  return (
-    <div>
-      <a ref={myRef} id="sometihng" href="/app">
-        click me
-      </a>
-    </div>
-  );
-}
-
-const Container = styled.div`
-  background-color: yellow;
-  width: 100%;
-  min-height: max-content;
-  max-height: 200px;
-  overflow: scroll;
-
-  .list {
-    margin: auto;
-    width: 200px;
-    background-color: green;
-  }
+const StyleButton = styled.button`
+  display: block;
+  padding: 10px;
+  background-color: blue;
+  cursor: pointer;
+  margin-bottom: 15px;
 `;
 
-function TestScrolling() {
-  const once = React.useRef(false);
-  const [books, setBooks] = React.useState([]);
-  const { setRoot, setTarget } = useInfiniteScrolling(
-    {
-      offset: 50,
-    },
-    (observed) => {
-      console.log(`is observed:${observed}`);
-      if (observed) {
-        getBooks().then((data) => {
-          setBooks((prev) => [...prev, ...data.data]);
-        });
-      }
-    }
-  );
-
-  React.useEffect(() => {
-    console.log(`book length:${books.length}`);
-  }, [books]);
-
-  return (
-    <Container ref={setRoot}>
-      <ul className="list" ref={setTarget}>
-        {books.map((book, i) => (
-          <li key={i}>{book.title}</li>
-        ))}
-      </ul>
-    </Container>
-  );
-}
 function Test() {
-  const [open, setOpen] = React.useState(true);
+  function show() {
+    console.log(client);
+  }
+  function publish() {
+    server.publish("/wristband/register", {
+      yolo: "server",
+    });
+  }
+
+  function subscribeTransient() {
+    client.publish(
+      "/wristband/register",
+      {
+        transient: "transient",
+      },
+      (err, response) => {
+        if (err) {
+          throw new Error(err);
+        }
+        console.log(response);
+      }
+    );
+  }
+
+  function subscribe() {
+    client.subscribe("/wristband/register", (err, subscription) => {
+      if (err) {
+        throw new Error(err);
+      }
+      console.log(subscription);
+    });
+  }
 
   return (
     <div>
-      <p>iam testing</p>
-      {/* <Infinite /> */}
-      <MyGoogleInfinite />
+      <StyleButton onClick={show}>show params</StyleButton>
+      <StyleButton onClick={publish}>publish</StyleButton>
+      <StyleButton onClick={subscribeTransient}>
+        subscribe transient
+      </StyleButton>
+      <StyleButton onClick={subscribe}>subscribe</StyleButton>
+      <p>hi iam test</p>
     </div>
   );
 }

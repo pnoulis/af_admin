@@ -1,1 +1,1 @@
-export * from "./mqttRoutes.js";
+export * from "./setupTopics";

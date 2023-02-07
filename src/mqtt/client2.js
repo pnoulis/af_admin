@@ -105,13 +105,14 @@ Registry.prototype.replaceParams = function (...topics) {
       return null;
     }
     topic = topic.replace(/\${([a-z]*)}/gi, (match, param) => {
-      if (!(param in params)) {
+      param = params[param];
+      if (!param) {
         this.logger.error(
           `Missing parameter:'${match}' for topic:'${topic}'`,
           params
         );
       }
-      return params[param];
+      return param;
     });
     this.logger.trace(
       `Replaced parameters for topic:'${topics[i]}' -> '${topic}`
@@ -204,7 +205,6 @@ function Proxy(config = {}) {
   this.logger.info("Completed setup\nConfiguration:", {
     name: this.name,
     id: this.id,
-    mode: this.mode,
     server,
     registry,
     logger,
@@ -213,9 +213,10 @@ function Proxy(config = {}) {
 }
 
 Proxy.prototype.parseConfig = function (config) {
-  this.name = config.proxy.name || 'mqtt_proxy';
-  this.id = config.proxy.id || config.proxy.name.concat("_", Math.random().toString(16).slice(2, 8));
-  this.mode = config.proxy.mode;
+  this.name = config.proxy.name || "mqtt_proxy";
+  this.id =
+    config.proxy.id ||
+    config.proxy.name.concat("_", Math.random().toString(16).slice(2, 8));
   return {
     server: {
       host: config.server?.host,
@@ -226,7 +227,10 @@ Proxy.prototype.parseConfig = function (config) {
         clean: false,
         reconnectPeriod: 1000,
         connectTimeout: 30 * 1000, // 30 seconds
-        clientId: this.id,
+        clientId: config.proxy.name.concat(
+          "_",
+          Math.random().toString(16).slice(2, 8)
+        ),
         ...config.server?.options,
       },
     },
@@ -247,10 +251,10 @@ Proxy.prototype.parseConfig = function (config) {
 Proxy.prototype.start = function () {
   this.server = MqttServer(this.server.host, this.server.options)
     .on("connect", () => {
-      this.logger.trace("mqtt proxy client connected");
+      this.logger.info(`${this.name} connected`);
     })
-    .on("error", (err) => {
-      this.logger.error("mqtt error", err);
+    .on("error", () => {
+      this.logger.error(`${this.name} disconnection error`);
     });
   return this.server;
 };
@@ -296,9 +300,14 @@ Proxy.prototype.subscribe = function (alias, options, cb) {
   return () => this.unregisterClient(sub, client.id);
 };
 
-Proxy.prototype._subscribe = function (sub, client, options) {
+Proxy.prototype._subscribe = function (
+  sub,
+  client,
+  transient = false,
+  options
+) {
   if (this.subscriptions.has(sub)) {
-    return this.registerClient(sub, client);
+    return this.registerClient(sub, client, transient);
   }
 
   const clients = [];
@@ -317,16 +326,18 @@ Proxy.prototype._subscribe = function (sub, client, options) {
     this.logger.trace(`Subscribed to topic:${sub}`);
     this.server.on("message", (topic, message) => {
       this.logger.trace(`Received message for topic:${topic}`);
+      const unregister = [];
       if (topic === sub) {
         clients.forEach((client) => {
-          if (client.cb.transient) {
-            this.unregisterClient(sub, client);
+          if (client.transient) {
+            unregister.push(client.id);
           }
           client.cb(null, this.decode(message));
           this.logger.trace(
             `Successfully delivered message to client:${client.id}`
           );
         });
+        unregister.forEach((clientId) => this.unregisterClient(sub, clientId));
       }
     });
   });
@@ -334,21 +345,13 @@ Proxy.prototype._subscribe = function (sub, client, options) {
   return this.registerClient(sub, client);
 };
 
-Proxy.prototype.registerClient = function (sub, cb) {
+Proxy.prototype.registerClient = function (sub, cb, transient = false) {
   const clients = this.subscriptions.get(sub);
   const client = {
     id: new Date().getTime(),
     cb,
+    transient,
   };
-
-  // if (cb.transient) {
-  //   client.cb = (err, data) => {
-  //     this.unregisterClient(sub, client.id);
-  //     cb(err || null, data || null);
-  //   };
-  // } else {
-  //   client.cb = cb;
-  // }
 
   clients.push(client);
   this.logger.trace(
@@ -383,8 +386,7 @@ Proxy.prototype.publish = function (alias, payload, options, cb) {
 
   let client = null;
   if (cb instanceof Function) {
-    cb.transient = true;
-    client = this._subscribe(sub, cb, options);
+    client = this._subscribe(sub, cb, true, options);
   }
 
   this._publish(pub, payload, options, client);

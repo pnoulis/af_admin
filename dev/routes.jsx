@@ -1,5 +1,5 @@
 import Home from "./Home";
-import { PgMqtt2, MqttClient, MqttServer } from "./mqtt";
+import { PgMqtt2, MqttProxy } from "./mqtt";
 
 const routes = [
   {
@@ -12,11 +12,11 @@ const routes = [
         children: [
           {
             path: "server",
-            element: <MqttServer />,
+            element: <MqttProxy type="server" />,
           },
           {
             path: "client",
-            element: <MqttClient />,
+            element: <MqttProxy type="client" />,
           },
         ],
       },

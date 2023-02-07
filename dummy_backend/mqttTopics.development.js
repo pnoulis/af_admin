@@ -1,4 +1,4 @@
-const topics = [
+const devMqttTopics = [
   {
     // one way communication, server publishes
     summary: "wristband scan",
@@ -63,55 +63,4 @@ const topics = [
   },
 ];
 
-function Topics(topic) {
-  const topics = {
-  }
-}
-
-const Topics = {
-  stripToClient: (topics) => topics.map((route) => ({
-    alias: route.alias,
-    pub: route.sub?.topic || null,
-    sub: route.pub?.topic || null,
-  })),
-  stripToServer: () => topics.map((route) => ({
-    alias: route.alias,
-    pub: route.pub?.topic || null,
-    sub: route.sub?.topic || null,
-  })),
-  toExplorerServer(topics)
-  toExplorerServer(confTopics) {
-  },
-  toExplorerClient(confTopics) {
-  }
-};
-const Topics = {
-  toClient() {
-    return topics.map((route) => ({
-      alias: route.alias,
-      pub: route.sub?.topic || null,
-      sub: route.pub?.topic || null,
-    }));
-  },
-  toServer() {
-    return topics.map((route) => ({
-      alias: route.alias,
-      pub: route.pub?.topic || null,
-      sub: route.sub?.topic || null,
-    }));
-  },
-  toExplorerServer() {
-    return topics;
-  },
-  toExplorerClient() {
-    return topics.map(({summary, alias, pub, sub}) => ({
-      summary,
-      alias,
-      pub: sub || [],
-      sub: pub || [],
-    }));
-
-  },
-};
-
-export { Topics };
+export { devMqttTopics };

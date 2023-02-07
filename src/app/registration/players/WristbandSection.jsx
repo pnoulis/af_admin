@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState, useRef } from "react";
 import { PlayersList } from "./PlayersList";
 import { WristbandSectionStyle } from "./styles";
 import { ReactComponent as WristbandIcon } from "/assets/icons/wristband_image.svg";
-import Client from "/src/mqtt";
-const { useMqtt, client } = Client();
+// import Client from "/src/mqtt";
+// const { useMqtt, client } = Client();
 
 const playersList = [
   {

@@ -12,7 +12,4 @@ export default defineConfig({
     }),
     svgr(),
   ],
-  server: {
-    open: "/test",
-  },
 });

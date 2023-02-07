@@ -2,11 +2,11 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import jsoneditor from "jsoneditor";
 import "./json_editor/jsoneditor.min.css";
 import styled from "styled-components";
-import Client from "/src/mqtt";
+// import Client from "/src/mqtt";
 import { Topics } from "/dummy_backend/mqttRoutes.js";
 import { ButtonText } from "/src/components/buttons";
 
-const { useMqtt, client } = Client;
+// const { useMqtt, client } = Client;
 
 const server = {
   useMqtt,
