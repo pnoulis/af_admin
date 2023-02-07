@@ -196,15 +196,15 @@ Logger.prototype.log = function (level) {
 };
 
 function Proxy(config = {}) {
-  const { proxy, server, registry, logger } = this.parseConfig(config);
-  this.name = proxy.name;
-  this.id = proxy.id;
+  const { server, registry, logger } = this.parseConfig(config);
   this.subscriptions = new Map();
   this.server = server;
   this.logger = new Logger(logger);
   this.registry = new Registry(registry, new Logger(logger));
   this.logger.info("Completed setup\nConfiguration:", {
-    proxy,
+    name: this.name,
+    id: this.id,
+    mode: this.mode,
     server,
     registry,
     logger,
@@ -213,12 +213,10 @@ function Proxy(config = {}) {
 }
 
 Proxy.prototype.parseConfig = function (config) {
-  const proxy = {
-    name: config.name || "mqtt_proxy",
-  };
-  proxy.id = proxy.name.concat("_", Math.random().toString(16).slice(2, 8));
+  this.name = config.proxy.name || 'mqtt_proxy';
+  this.id = config.proxy.id || config.proxy.name.concat("_", Math.random().toString(16).slice(2, 8));
+  this.mode = config.proxy.mode;
   return {
-    proxy,
     server: {
       host: config.server?.host,
       options: {
@@ -228,7 +226,7 @@ Proxy.prototype.parseConfig = function (config) {
         clean: false,
         reconnectPeriod: 1000,
         connectTimeout: 30 * 1000, // 30 seconds
-        clientId: proxy.id,
+        clientId: this.id,
         ...config.server?.options,
       },
     },
@@ -321,6 +319,9 @@ Proxy.prototype._subscribe = function (sub, client, options) {
       this.logger.trace(`Received message for topic:${topic}`);
       if (topic === sub) {
         clients.forEach((client) => {
+          if (client.cb.transient) {
+            this.unregisterClient(sub, client);
+          }
           client.cb(null, this.decode(message));
           this.logger.trace(
             `Successfully delivered message to client:${client.id}`
@@ -337,16 +338,17 @@ Proxy.prototype.registerClient = function (sub, cb) {
   const clients = this.subscriptions.get(sub);
   const client = {
     id: new Date().getTime(),
+    cb,
   };
 
-  if (cb.transient) {
-    client.cb = (err, data) => {
-      this.unregisterClient(sub, client.id);
-      cb(err || null, data || null);
-    };
-  } else {
-    client.cb = cb;
-  }
+  // if (cb.transient) {
+  //   client.cb = (err, data) => {
+  //     this.unregisterClient(sub, client.id);
+  //     cb(err || null, data || null);
+  //   };
+  // } else {
+  //   client.cb = cb;
+  // }
 
   clients.push(client);
   this.logger.trace(

@@ -2,37 +2,15 @@ import * as React from "react";
 import styled from "styled-components";
 import jsoneditor from "jsoneditor";
 import "./json_editor/jsoneditor.min.css";
-import { setupClient } from "/src/mqtt/setup2.js";
+import { setupClient, setupServer } from "/src/mqtt/setup2.js";
 import { Topics } from "/dummy_backend";
 import { NavLink, Outlet } from "react-router-dom";
 
-// const client = setupClient();
-// // client.start().on("connect", () => {
-//   client.subscribe("/wristband/register", {}, (err, response) => {
-//     console.log(err);
-//     console.log(response);
-//   });
-// });
 // const server = setupClient("server", undefined, false, true);
 // server.start().on("connect", () => {
 //   console.log("connected");
 //   server.publish("/wristband/register", {});
 // });
-
-// function JsonEditor({ json }) {
-//   const root = React.useRef(null);
-//   const options = {
-//     mode: "text",
-//   };
-
-//   React.useEffect(() => {
-//     const editor = new jsoneditor(root.current, options);
-//     editor.set(json);
-//     return () => editor.destroy();
-//   }, [json]);
-
-//   return <div ref={root}></div>;
-// }
 
 const JsonEditor = React.forwardRef(function JsonEditor({ json }, ref) {
   const root = React.useRef(null);
@@ -234,6 +212,7 @@ function Topic({ topic, status, server }) {
   const [subMsgs, setSubMsgs] = React.useState([]);
   const [pubMsgs, setPubMsgs] = React.useState([]);
 
+
   function handlePublish(payload) {
     if (status !== "connected") {
       return;
@@ -243,11 +222,13 @@ function Topic({ topic, status, server }) {
   }
   React.useEffect(() => {
     if (status !== "connected") return;
+      console.log('will subscribe');
     if (topic.sub) {
       server.subscribe(topic.sub.alias, (err, message) => {
         if (err) {
-          return 0;
+          console.log(err);
         }
+        console.log(message);
         setSubMsgs([...subMsgs, message]);
       });
     }
@@ -273,13 +254,13 @@ function Topic({ topic, status, server }) {
   );
 }
 
-function PubSection({ topic, alias, payloads, pubs, publish }) {
+function PubSection({ topic, alias, payloads = [], pubs, publish }) {
   const editorRef = React.useRef(null);
   return (
     <StylePubSection>
       <header>
         <h1>Publish</h1>
-        <div className="topic">{topic}</div>
+        <div className="topic">{topic || 'no publish topic available'}</div>
         <div className="topic">alias: {alias}</div>
       </header>
       <section>
@@ -288,7 +269,7 @@ function PubSection({ topic, alias, payloads, pubs, publish }) {
       </section>
       <section>
         <h2>Create payload</h2>
-        <JsonEditor ref={editorRef} json={payloads[0]?.data} />
+        <JsonEditor ref={editorRef} json={payloads.length > 0 ? payloads[0].data : {}} />
       </section>
       <button
         className="publish-button"
@@ -315,7 +296,7 @@ function SamplePayloadsList({ samples = [] }) {
             <CodeSectionStyle>
               // {sample.summary}
               <br />
-              {JSON.stringify(samples, null, 2)}
+              {JSON.stringify(sample, null, 2)}
             </CodeSectionStyle>
           </li>
         );
@@ -377,7 +358,86 @@ function ClientSection() {
   );
 }
 
-function MqttClient() {}
+function MqttClient() {
+  const { proxies, setProxy } = useMqttContext();
+  const [status, setStatus] = React.useState("");
+  const clientRef = React.useRef(null);
+
+    const handleServerSelection = ({ target }) => {
+    clientRef.current?.stop();
+    clientRef.current = target.value;
+    setProxy(target.value);
+  };
+
+  React.useEffect(() => {
+    if (!clientRef.current) return;
+    clientRef.current = proxies[clientRef.current].client;
+    clientRef.current.start()
+      .on("connect", () => {
+        setStatus("connected");
+      })
+      .on("error", () => {
+        setStatus("error");
+      })
+      .on("close", () => {
+        setStatus("");
+      });
+  }, [proxies]);
+
+  return (
+    <div>
+      <StyleClientSection>
+        <StyleMqttButton
+          selected={clientRef.current?.name === "production"}
+          value="production"
+          onClick={handleServerSelection}
+        >
+          production server
+        </StyleMqttButton>
+        <StyleMqttButton
+          selected={clientRef.current?.name === "development"}
+          value="development"
+          onClick={handleServerSelection}
+        >
+          dev server
+        </StyleMqttButton>
+        <StyleMqttButton
+          selected={clientRef.current?.name === "msq"}
+          value="msq"
+          onClick={handleServerSelection}
+        >
+          mosquito server
+        </StyleMqttButton>
+        <StyleNotification status={status} />
+      </StyleClientSection>
+      <StyleTopicList>
+    {status === 'connected' &&
+     Topics.toExplorerClient().map((topic, i) => {
+       return <Topic
+                key={i}
+                topic={topic}
+                status={status}
+                server={clientRef.current}/>;
+     })
+    }
+      </StyleTopicList>
+
+    </div>
+  );
+}
+// {clientRef.current &&
+//  Topics.toExplorerClient().map((topic, i) => {
+//    return (
+//      <Topic
+//        key={i}
+//        topic={topic}
+//        status={status}
+//        server={clientRef.current}
+//      />
+//    );
+//  })}
+
+
 
 const StyleNotification = styled.span`
   display: block;
@@ -406,50 +466,49 @@ const StyleMqttButton = styled.button`
   background-color: ${({ selected }) => selected && "green"};
 `;
 function MqttServer() {
-  const [server, setServer] = React.useState("");
+  const { proxies, setProxy } = useMqttContext();
   const [status, setStatus] = React.useState("");
   const serverRef = React.useRef(null);
 
-  React.useEffect(() => {
-    if (!server) return;
-    serverRef.current = setupClient("server", false, true, server);
-    serverRef.current
-      .start()
-      .on("connect", () => {
-        setStatus("connected");
-      })
-      .on("error", () => {
-        setStatus("error");
-      })
-      .on("close", () => {
-        setStatus("");
-      });
-  }, [server]);
-
-  const handleServerSelection = ({ target }) => {
-    serverRef.current?.stop();
-    setServer(target.value === server ? "" : target.value);
+    const handleServerSelection = ({ target }) => {
+      // serverRef.current?.stop();
+      serverRef.current = proxies[target.value].server;
+      console.log(proxies);
+      setStatus('connected');
+      if (status !== 'connected') {
+        serverRef.current.start();
+      }
+        // serverRef.current.start()
+        //   .on("connect", () => {
+        //     setStatus("connected");
+        //   })
+        //   .on("error", () => {
+        //     setStatus("error");
+        //   })
+        //   .on("close", () => {
+        //     setStatus("");
+        //   });
   };
 
   return (
     <div>
       <StyleClientSection>
         <StyleMqttButton
-          selected={server === "production"}
+          selected={serverRef.current?.name === "production"}
           value="production"
           onClick={handleServerSelection}
         >
           production server
         </StyleMqttButton>
         <StyleMqttButton
-          selected={server === "development"}
+          selected={serverRef.current?.name === "development"}
           value="development"
           onClick={handleServerSelection}
         >
           dev server
         </StyleMqttButton>
         <StyleMqttButton
-          selected={server === "msq"}
+          selected={serverRef.current?.name === "msq"}
           value="msq"
           onClick={handleServerSelection}
         >
@@ -458,43 +517,64 @@ function MqttServer() {
         <StyleNotification status={status} />
       </StyleClientSection>
       <StyleTopicList>
-        {server &&
-          Topics.toExplorer().map((topic, i) => {
-            return (
-              <Topic
-                key={i}
-                topic={topic}
-                status={status}
-                server={serverRef.current}
-              />
-            );
-          })}
       </StyleTopicList>
     </div>
   );
 }
 
+// {status === 'connected' &&
+//  Topics.toExplorerServer().map((topic, i) => {
+//    return (
+//      <Topic
+//        key={i}
+//        topic={topic}
+//        status={status}
+//        server={serverRef.current}
+//      />
+//    );
+//  })}
+
+
+
+const MqttContext = React.createContext(null);
+const useMqttContext = () => {
+  const context = React.useContext(MqttContext);
+  if (context == null) {
+    throw new Error(
+      `Mqtt Components must be wraped in <Mqtt/>'`
+    );
+  }
+  return context;
+};
+
 function PgMqtt2() {
+  const [proxies, setProxies ] = React.useState({});
+
+  const setProxy = (name) => {
+    console.log(proxies[name]);
+    if (proxies[name]) return;
+    const client = setupClient(name);
+    const server = setupServer(client);
+    setProxies({...proxies, [name]: {client, server}});
+  };
+
   return (
-    <StyleMqttPage>
-      <ul className="menu">
-        <li>
-          <NavLink to="/dev/mqtt/client">client</NavLink>
-        </li>
-        <li>
-          <NavLink to="/dev/mqtt/server">server</NavLink>
-        </li>
-      </ul>
-      <section className="workarea">
-        <Outlet />
-      </section>
-      {/* <ClientSection /> */}
-      {/* <StyleTopicList> */}
-      {/* {Topics.toExplorer().map((topic, i) => { */}
-      {/*   return <Topic key={i} topic={topic} />; */}
-      {/* })} */}
-      {/* </StyleTopicList> */}
-    </StyleMqttPage>
+    <MqttContext.Provider value={{proxies, setProxy}}>
+      <StyleMqttPage>
+        <ul className="menu">
+          <li>
+            <NavLink to="/dev/mqtt/client">client</NavLink>
+          </li>
+          <li>
+            <NavLink to="/dev/mqtt/server">server</NavLink>
+          </li>
+        </ul>
+        <section className="workarea">
+          <MqttClient/>
+          <MqttServer/>
+        </section>
+      </StyleMqttPage>
+    </MqttContext.Provider>
   );
 }
 
