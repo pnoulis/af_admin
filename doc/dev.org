@@ -966,6 +966,7 @@ application.
 
 ** TODO Move wristband.css to its own component
 ** TODO Rename src/index.jsx to src/index.js
+Not able to do since src/index.jsx uses jsx syntax to render the React component tree.
 ** TODO Application entry point file responsibilities
  - Remove all imports and other components so that work can proceed without any barriers.
  - Load any resources that are to be shared by the whole component tree

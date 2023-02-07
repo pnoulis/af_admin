@@ -1,11 +1,21 @@
-// import Home from "./Home";
-import { StyleLayoutSite } from '/src/components/layouts';
-import { Sidebar } from './site-wide';
+import { Outlet } from 'react-router-dom';
+import {
+  StyleLayoutSite,
+  StyleLayoutMain,
+} from '/src/components/layouts';
+import {
+  Sidebar,
+  SiteWideHeader,
+} from './site-wide';
 
 function App() {
   return (
     <StyleLayoutSite>
+      <SiteWideHeader/>
       <Sidebar/>
+      <StyleLayoutMain>
+        <Outlet/>
+      </StyleLayoutMain>
     </StyleLayoutSite>
   );
 }

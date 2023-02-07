@@ -21,16 +21,6 @@ grid-template-areas:
 
 // Appearance
 background-color: var(--background);
-
-.site--header {
-grid-area: Header;
-}
-
-.site--main {
-grid-area: Main;
-margin: 20px 20px 20px 50px;
-}
-
 `;
 
 export { StyleLayoutSite };
