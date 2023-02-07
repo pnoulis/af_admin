@@ -56,8 +56,8 @@ const Container = styled.div`
 export default function AddPlayer() {
   return (
     <Container>
-      <PlayerSelectionSection />
-      <WristbandSection />
+      {/* <PlayerSelectionSection /> */}
+      {/* <WristbandSection /> */}
     </Container>
   );
 }

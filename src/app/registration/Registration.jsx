@@ -1,16 +1,21 @@
-import React, { useEffect } from "react";
+import * as React from "react";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { StylePanel } from "/src/components/layouts";
 import { Header } from "./Header";
-import { Outlet, useNavigate } from "react-router-dom";
 
 function Register() {
+  const { pathname: location } = useLocation();
   const navigate = useNavigate();
-  useEffect(() => {
-    navigate("team/players", {
-      replace: true,
-      relative: true
-    });
-  }, []);
+
+  React.useEffect(() => {
+    if (location === '/register') {
+      navigate('team/players', {
+        replace: true,
+        relative: true,
+      });
+    }
+  }, [location]);
+
   return (
     <StylePanel>
       <Header />
