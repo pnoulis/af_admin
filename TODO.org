@@ -3,3 +3,6 @@
 ** DONE Create Package
 CLOSED: [2022-12-22 Thu 20:55]
 ** DONE Register Wristband
+
+* TODO refactor SiteSidebar
+children components file use default export instead of named exports
