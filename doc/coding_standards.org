@@ -137,6 +137,181 @@ export * from './route_team_players';
 
 ** shared functional components
 ** shared styled components
+** components that introduce layouts
+*** The problem
+components which introduce a layout are:
+
+grid
+flex
+table
+ul
+forms
+LayoutField
+images
+
+will be suffixed with their type such as:
+
+SiteLayout
+TeamsLayout
+SidebarLayout
+
+if styled-components is being used then:
+
+StyleSiteLayout
+StyleTeamsLayout
+StyleSidebarLayout
+
+Such layout components must also be accompanied by the sub-components.
+
+For tables:
+
+LayoutCaption -> caption
+LayoutHeader -> thead
+LayoutFooter -> tfoot
+LayoutBody -> tbody
+LayoutRow -> tr
+LayoutHeaderData -> th
+LayoutData -> td
+
+for grids:
+
+LayoutItem -> *
+
+for flex:
+
+LayoutItem -> *
+
+for lists:
+LayoutList -> ul
+LayoutListItem -> <li>
+
+for forms:
+
+LayoutFieldSet -> fieldset
+LayoutLegend -> legend
+LayoutField -> div
+LayoutSubmit -> button
+
+for LayoutFields:
+
+LayoutFieldLabel -> label
+LayoutFieldInput -> input
+
+
+Each subcomponent must be defined in the same file as the layout introducing
+component. For example if one defines a list of players within the file:
+
+PlayersList.jsx
+
+where within:
+
+function PlayersList() {
+return (
+<StyleLayoutPlayersList>
+</StyleLayoutPlayersList>
+);
+}
+
+the component <StyleLayoutPlayersList/>
+
+could either be defined within the same file
+or if defined in its own file it should be named as:
+
+StyleLayoutPlayersList.jsx
+
+Where within the file the following components should be defined:
+
+const StyleLayoutPlayersList = styled.ul`
+`
+
+const StyleLayoutPlayersListItem = styled.li`
+`
+
+or if it makes sense to split them a directory should be created
+appropriately named such as:
+
+layout_players_list/
+layout_players_list/StyleLayoutPlayersList
+layout_players_list/StyleLayoutPlayersListItem
+
+
+The component which introduces the layout component should ideally include its
+subcomponents in the same render function. such as:
+
+function RouteIndex() {
+
+return (
+<SiteLayout>
+   <SiteLayoutItem>
+       ....
+   </SiteLayoutItem>
+</SiteLayout>
+);
+}
+
+Instead of:
+
+function RouteIndex() {
+return (
+<SiteLayout>
+   <Sidebar/>
+</SiteLayout>
+);
+}
+
+where:
+
+Sidebar.js
+import { SiteLayoutItem } from './...';
+function Sidebar() {
+return (
+<SiteLayoutItem>
+....
+</SiteLayoutItem>
+);
+}
+*** pattern 1 (styled components)
+Using styled component
+
+Consider a Parent component which introduces a layout.
+
+const StyleLayoutSidebar = styled.aside`
+display: flex;
+`
+
+import SidebarWidget;
+
+const StyleLayoutSidebarItemWidget = styled(SidebarWidget)`
+
+`
+
+
+return (
+<StyleLayoutSidebar>
+   <StyleLayoutSidebarItemWidget/>
+</StyleLayoutSidebar>
+)
+
+*** pattern 2 (styled components && clasess)
+
+const StyleLayoutSidebar = styled.aside`
+display: flex;
+
+& .layout-item.widget {
+}
+
+`
+
+import Widget;
+
+return (
+<StyleLayoutSidebar>
+   <section className='layout-item widget>
+    <Widget/> 
+   </section>
+</StyleLayoutSidebar>
+);
+
 * Naming things
 Directories follow snake_case.
 https://en.wikipedia.org/wiki/Snake_case
@@ -171,8 +346,8 @@ Css identifiers follow kebab case:
 https://en.wikipedia.org/wiki/Letter_case#Kebab_case
 site-header
 
-
-* Css style structure
+* Css
+** component template
 all: unset;
 /* Type */
 box-sizing: border-box;
@@ -181,3 +356,5 @@ box-sizing: border-box;
 /* Fonts */
 /* Effects */
 /* Children */
+
+* Patterns

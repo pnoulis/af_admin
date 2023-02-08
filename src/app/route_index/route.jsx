@@ -7,6 +7,7 @@ const routeIndex = {
 
 const linkIndex = {
   path: "/",
+  label: "home",
 };
 
 export { routeIndex, linkIndex };

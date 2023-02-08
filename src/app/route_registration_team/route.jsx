@@ -7,6 +7,7 @@ const routeRegistrationTeam = {
 
 const linkRegistrationTeam = {
   path: "/registration/team",
+  label: "registration",
 };
 
 export { routeRegistrationTeam, linkRegistrationTeam };

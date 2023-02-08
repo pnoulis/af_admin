@@ -1,57 +1,60 @@
-import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
-import { language } from '/src/misc';
-import {GlobalStore} from '/src/stores';
+import styled from "styled-components";
 
-const Container = styled.div`
-    flex: 0 0 100px;
-    display: flex;
-    align-items: center;
-    font-size: 1em;
-    line-height: 0.9;
-    letter-spacing: 1.5px;
-color: grey;
-    > ul {
-        display: flex;
-        flex-flow: row nowrap;
-    }
+const langs = ["eng", "fr", "de", "nl"];
 
-    .lang:not(:last-child) {
-        > em::after {
-            color: grey;
-            content: '|';
-            margin: 0 4px;
-            position: relative;
-        }
-    }
-
-    .lang:hover {
-        cursor: pointer;
-        color: white;
-    }
-
-    .lang.onDisplay > em {
-        color: white;
-    }
+const StyleLayoutLangWidget = styled.ul`
+  all: unset;
+  /* Type */
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  /* Dimensions */
+  /* Position */
+  /* Fonts */
+  font-size: 1em;
+  line-height: 0.9;
+  letter-spacing: 1.5px;
+  // color: grey;
+  /* Effects */
+  list-style: none;
+  /* Children */
 `;
 
-export default function LangWidget() {
-  const { state, dispatch } = GlobalStore.use();
+const StyleLayoutLangWidgetItemLang = styled.li`
+  all: unset;
+  /* Type */
+  box-sizing: border-box;
+  /* Dimensions */
+  /* Position */
+  /* Fonts */
+  color: grey;
+  /* Effects */
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+  }
+
+  /* Children */
+  &:not(:last-of-type) em::after {
+    color: grey;
+    content: "|";
+    margin: 0 4px;
+    position: relative;
+  }
+`;
+
+function LangWidget() {
   return (
-    <Container>
-      <ul>
-        {
-          language.langs.map((lang, i) => (
-            <li key={i} className={`lang ${state?.lang === lang.bcp47 ? 'onDisplay' : undefined}`}>
-              <em
-                onClick={() => dispatch('switchLanguage', lang.bcp47)}
-              >
-                {lang.iso639_1}
-              </em>
-            </li>
-          ))
-        }
-      </ul>
-    </Container>
+    <StyleLayoutLangWidget>
+      {langs.map((lang, i) => (
+        <StyleLayoutLangWidgetItemLang key={i}>
+          <em>{lang}</em>
+        </StyleLayoutLangWidgetItemLang>
+      ))}
+    </StyleLayoutLangWidget>
   );
 }
+
+export { LangWidget };
