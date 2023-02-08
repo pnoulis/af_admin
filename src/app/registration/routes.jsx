@@ -5,19 +5,19 @@ import Summary from "./summary";
 
 const routes = [
   {
-    path: "register",
+    path: "register/team",
     element: <Register />,
     children: [
       {
-        path: "team/players",
+        path: "players",
         element: <Players />,
       },
       {
-        path: "team/package",
+        path: "package",
         element: <Package />,
       },
       {
-        path: "team/summary",
+        path: "summary",
         element: <Summary />,
       },
     ],

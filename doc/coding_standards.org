@@ -1,0 +1,191 @@
+* Module exports
+About:
+This article seeks to define the structure of a module in terms of file[s],
+filenames and exported objects.
+
+A module represents an encapsulated, discreet, homogenous (uniform) piece of
+functionality.
+
+That does not mean that a module exports strictly one object. A discreet piece
+of functionality may be separated into multiple sections as per the separation
+of concerns (wikipedia: separation of concerns) design principle. Separating a
+service into multiple sections should not be interpreted to mean necessarily
+multiple files which is an implementation detail. A module offering a service
+split into sections may be named a 'composite' service. Whilst a service not
+split into sections may be named a 'simple' service.
+
+In general the objects found within a module may be placed under one of two
+categories.
+Exported or not-Exported.
+Interface or Implementation.
+External or Internal.
+
+The placement of the objects of any type is an implementation detail. Meaning
+that the programmer may either choose to split the code into multiple files or
+not. Keep in mind that splitting a service into multiple files does not mean
+that module exports a 'composite' service. It may very well be that each of
+these files defines a not-exported object for internal consumption.
+
+Be that as it may the principle goes:
+
+Directory structure:
+If a module exporting a service (composite or simple) is spread out into
+multiple files then:
+
+- Directory houses the service.
+- index.js file serves as the entry point.
+  check the index.js pattern
+
+If a module exporting a service (composite or simple) is contained within one
+file then:
+
+- there is no need for a directory.
+- there is no need for the index.js pattern.
+
+Ecmascript exports:
+
+Regardless of the directory structure a service using ES modules has a
+choice of either using a 'default export' or a 'named export'.
+
+Default exports should not be used.
+Only named exports. As such:
+
+export { ComponentA, ComponentB };
+
+The export statement itself should always be placed at the end of the file.
+Placing the export statement at the end of the file and not at the start allows
+exporting objects which do not support *hoisting*.
+
+Consider the statements:
+
+export { fn };
+const fn = () => {};
+
+Evaluating these statements shall throw an Error. The identifier fn has not been
+declared yet.
+
+The previous example would work if:
+
+const fn = () => {};
+export { fn };
+
+* Components
+** About
+This is an attempt to place components into categories, mark them as such and
+define a directory structure.
+** Component types
+**** route components
+Some components are accessed by means of *navigation* to the appropriate
+*location*. Such components represent routes or pages.
+
+As such they should be prefixed using the word *Route[r]* or *Page*.
+
+for example:
+
+RouteRegistration
+
+Route components must be placed under their own directory appropriately named:
+
+route_registration
+
+Each such route component must export a Link React component which is to be used
+to access their location.
+
+route_registration/
+route_registration/index.js
+route_registration/link.js
+
+link.js:
+
+import { NavLink } from 'react-router-dom'
+
+function LinkRouteRegistration({children, ...props}) {
+return <NavLink to='/absolute/path/to/location' {...props}>{children</NavLink>
+}
+
+export { LinkRouteRegistration };
+
+index.js:
+
+export * from './link.js';
+
+More over if using the new v6.8 react-router-dom library one must declare the
+route to the component.
+
+route_registration/
+route_registration/index.js
+route_registration/route.js
+
+route.js:
+
+import { RouteRegistration } from './RouteRegistration';
+
+const routeRegistration = {
+   path: "relative/path",
+   element: <RouteRegistration/>,
+}
+
+export { routeRegistration };
+
+index.js:
+
+export * from './route.js';
+
+It is common that such route components are nested.
+
+In such a case the parent route component of a child nested component is
+responsible for exporting the child:
+
+For example if having a structure such as:
+
+route_registartion/
+route_registration/index.js
+route_registration/link.js
+route_registration/route.js
+route_registration/RouteRegistration.jsx
+route_registration/route_team_players/
+route_registration/route_team_players/index.js
+route_registration/route_team_players/link.js
+route_registration/route_team_players/route.js
+route_registration/route_team_players/RouteTeamPlayers.jsx
+
+The parent route must export its children, routes and links like so:
+
+route_registration/index.js ->
+
+export * from './route_team_players';
+
+* Naming things
+Directories follow snake_case.
+https://en.wikipedia.org/wiki/Snake_case
+Files follow camelCase.
+https://en.wikipedia.org/wiki/Camel_case
+Files which export React Components should:
+1. follow upper camel case: CamelCase
+   ReactComponent
+2. The main exported react component name must be exactly the same as the file
+   it is used to export it.
+   ReactComponent -> file
+   exports -> ReactComponent
+   
+Programming identifiers follow camelCase.
+
+functions should follow the syntax:
+verbNoun
+such as:
+composeMusic
+
+All other identifiers should follow the syntax:
+[type]Noun
+such as:
+linkHomePage
+personAge
+age
+
+Classes follow upper CamelCase:
+AClass
+
+Css identifiers follow kebab case:
+https://en.wikipedia.org/wiki/Letter_case#Kebab_case
+site-header
+
