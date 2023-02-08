@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { SidebarLink } from "/src/components/links";
+import { linkRegistrationTeam } from "/src/app/links";
 
-const Container = styled.nav`
+const StyleNavigation = styled.nav`
   flex: 1;
   align-self: stretch;
   padding: 15px 0 20px 0;
@@ -9,11 +10,11 @@ const Container = styled.nav`
 
 export default function Navigation() {
   return (
-    <Container>
-      <SidebarLink to="register">registration</SidebarLink>
-      <SidebarLink to="manager">manager</SidebarLink>
-      <SidebarLink to="scoreboard">scoreboard</SidebarLink>
-      <SidebarLink to="cashier">cashier</SidebarLink>
-    </Container>
+    <StyleNavigation>
+      <SidebarLink to={linkRegistrationTeam.path}>registration</SidebarLink>
+      <SidebarLink to="/manager">manager</SidebarLink>
+      <SidebarLink to="/scoreboard">scoreboard</SidebarLink>
+      <SidebarLink to="/cashier">cashier</SidebarLink>
+    </StyleNavigation>
   );
 }

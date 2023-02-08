@@ -5,4 +5,8 @@ const routeIndex = {
   element: <RouteIndex />,
 };
 
-export { routeIndex };
+const linkIndex = {
+  path: "/",
+};
+
+export { routeIndex, linkIndex };
