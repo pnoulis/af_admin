@@ -58,6 +58,7 @@ html, body, :root, #root {
   --info: hsl(var(--base-tertiary), 50%);
   --background: hsl(var(--base-grey), 96%);
   --background-contrast: hsl(var(--base-primary), 98%);
+  --background-contrast-2: hsl(var(--base-primary), 99%);
   --card-basic-color: white;
   --card-basic-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.3); /*black with 30% opacity*/
   --card-basic-shadow-2: 0 0 0.2rem rgba(0, 0, 0, 0.3);

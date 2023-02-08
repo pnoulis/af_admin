@@ -3,16 +3,16 @@ import { FlashMessagesStore } from "/src/stores";
 import styled from "styled-components";
 
 const StyleFlashMessage = styled.article`
-  padding: 12px 20px;
+  padding: 10px 20px;
+min-width: 350px;
   border-radius: var(--border-radius-0);
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
   letter-spacing: 1px;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   color: white;
-  column-gap: 30px;
-  box-shadow: var(--card-basic-shadow);
+box-shadow: 2px 8px 50px rgba(0, 0, 0, 0.3), -2px -2px 8px rgba(0, 0, 0, 0.3);
 `;
 
 function FlashMessage({ className, message, timeout = 3000, id, children }) {

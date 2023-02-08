@@ -2,7 +2,7 @@ import styled, {css} from 'styled-components';
 
 const Card_0 = styled.div`
 border-radius: var(--border-radius-2);
-box-shadow: var(--card-basic-shadow);
+box-shadow: var(--card-basic-shadow-2);
 border: 4px solid transparent;
 padding: 10px;
 

@@ -325,6 +325,8 @@ Files which export React Components should:
    ReactComponent -> file
    exports -> ReactComponent
    
+   
+
 Programming identifiers follow camelCase.
 
 functions should follow the syntax:
