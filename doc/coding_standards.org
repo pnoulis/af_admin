@@ -73,8 +73,7 @@ export { fn };
 ** About
 This is an attempt to place components into categories, mark them as such and
 define a directory structure.
-** Component types
-**** route components
+** route components
 Some components are accessed by means of *navigation* to the appropriate
 *location*. Such components represent routes or pages.
 
@@ -84,52 +83,33 @@ for example:
 
 RouteRegistration
 
-Route components must be placed under their own directory appropriately named:
-
-route_registration
-
-Each such route component must export a Link React component which is to be used
-to access their location.
+Each such route component must be placed within its own directory with the
+following structure: 
 
 route_registration/
 route_registration/index.js
-route_registration/link.js
+route_registration/RouteRegistration.jsx
+route_registration/route.jsx
 
-link.js:
+_index.js_
 
-import { NavLink } from 'react-router-dom'
+export * from './RouteRegistration';
+export * from './route.jsx';
 
-function LinkRouteRegistration({children, ...props}) {
-return <NavLink to='/absolute/path/to/location' {...props}>{children</NavLink>
-}
-
-export { LinkRouteRegistration };
-
-index.js:
-
-export * from './link.js';
-
-More over if using the new v6.8 react-router-dom library one must declare the
-route to the component.
-
-route_registration/
-route_registration/index.js
-route_registration/route.js
-
-route.js:
+_route.jsx_
 
 import { RouteRegistration } from './RouteRegistration';
 
 const routeRegistration = {
-   path: "relative/path",
-   element: <RouteRegistration/>,
-}
+   path: 'relative/path',
+   element: <RouteRegistration/>
+};
 
-export { routeRegistration };
+const linkRegistration = {
+   path: '/absolute/path'
+};
 
-index.js:
-
-export * from './route.js';
+export { routeRegistration, linkRegistration };
 
 It is common that such route components are nested.
 
@@ -140,21 +120,23 @@ For example if having a structure such as:
 
 route_registartion/
 route_registration/index.js
-route_registration/link.js
 route_registration/route.js
 route_registration/RouteRegistration.jsx
 route_registration/route_team_players/
 route_registration/route_team_players/index.js
-route_registration/route_team_players/link.js
 route_registration/route_team_players/route.js
 route_registration/route_team_players/RouteTeamPlayers.jsx
 
-The parent route must export its children, routes and links like so:
+The parent route must export its children like so:
 
-route_registration/index.js ->
+_route_registration/index.js_
 
+export * from './RouteRegistration';
+export * from './route';
 export * from './route_team_players';
 
+** shared functional components
+** shared styled components
 * Naming things
 Directories follow snake_case.
 https://en.wikipedia.org/wiki/Snake_case
@@ -189,3 +171,13 @@ Css identifiers follow kebab case:
 https://en.wikipedia.org/wiki/Letter_case#Kebab_case
 site-header
 
+
+* Css style structure
+all: unset;
+/* Type */
+box-sizing: border-box;
+/* Dimensions */
+/* Position */
+/* Fonts */
+/* Effects */
+/* Children */

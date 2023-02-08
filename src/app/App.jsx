@@ -1,17 +1,12 @@
 import * as React from "react";
 import { Outlet } from "react-router-dom";
-import { SiteHeader, SiteSidebar } from "./site";
-import { StyleLayoutMain, StyleLayoutSite } from "/src/components/layouts";
+import { Site } from "./site";
 
 function App() {
   return (
-    <StyleLayoutSite>
-      <SiteHeader />
-      <SiteSidebar />
-      <StyleLayoutMain>
-        <Outlet />
-      </StyleLayoutMain>
-    </StyleLayoutSite>
+    <Site>
+      <Outlet />
+    </Site>
   );
 }
 
