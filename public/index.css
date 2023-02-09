@@ -6,11 +6,47 @@
   -webkit-text-size-adjust: 100%;
 }
 
-html, body, :root, #root {
+html, body {
   width: 100%;
   height: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+#app-root {
+  width: 1920px;
+  height: 1080px;
+  min-width: 1366px;
+  min-height: 768px;
+  max-width: 100vw;
+  max-height: 100vh;
   font-size: 1rem;
+  position: absolute;
+  overflow: scroll;
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans;
+}
+
+#react-root {
+  width: 100%;
+  height: 100%;
+}
+
+#flash-message-portal {
+  position: absolute;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-rows: 1fr;
+  gap: 20px;
+  left: calc(50px + 50%);
+  bottom: 0;
+  transform: translateX(-50%);
+  justify-items: center;
+  padding-bottom: 30px;
 }
 
 /* Pallete */

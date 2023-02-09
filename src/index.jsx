@@ -24,7 +24,7 @@ if (import.meta.env.PROD) {
   ]);
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("react-root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>

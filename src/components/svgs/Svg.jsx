@@ -1,7 +1,7 @@
 import * as React from "react";
 
 const Svg = React.forwardRef(
-  ({ className, size = 2, color = "black", children, ...props }, ref) => {
+  ({ className, size, color = "black", children, ...props }, ref) => {
     const { current: path } = React.useRef(children.type().props.children);
     let myRef;
     const cbref = (element) => {
@@ -27,8 +27,10 @@ const Svg = React.forwardRef(
       <svg
         className={className}
         ref={cbref}
-        width={`${size}em`}
-        height={`${size}em`}
+        /* width={`${size ? size + "em" : "100%"}`} */
+        /* height={`${size}em`} */
+        width={size ? `${size}em` : "100%"}
+        height={size ? `${size}em` : "100%"}
         fill={color}
         {...props}
       >

@@ -13,8 +13,6 @@ const StyleLayoutSite = styled.div`
   /* Dimensions */
   width: 100%;
   height: 100%;
-  max-width: 1920px;
-  max-height: 1080px;
   /* Position */
   margin: auto;
   /* Fonts */
