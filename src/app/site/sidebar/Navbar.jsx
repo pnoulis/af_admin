@@ -59,6 +59,10 @@ const StyleNavLink = styled(NavLink)`
     opacity: 1;
     background: var(--primary-base);
   }
+
+  &.active {
+    background: var(--primary-base);
+  }
   /* Children */
 `;
 

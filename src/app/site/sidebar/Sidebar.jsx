@@ -94,7 +94,7 @@ function Sidebar() {
       </StyleLayoutSidebarItemHeader>
       <StyleLayoutSidebarItemLine />
       <StyleLayoutSidebarItemNavbar>
-        <Navbar items={[linkRegistrationTeam, linkRegistrationTeam]} />
+        <Navbar items={[linkRegistrationTeam]} />
       </StyleLayoutSidebarItemNavbar>
       <StyleLayoutSidebarItemTimeWidget>
         <TimeWidget />
