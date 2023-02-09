@@ -12,6 +12,7 @@ const StyleLayoutNavbar = styled.ul`
   /* Position */
   /* Fonts */
   /* Effects */
+  list-style: none;
   /* Children */
 `;
 const StyleLayoutNavbarItem = styled.li`

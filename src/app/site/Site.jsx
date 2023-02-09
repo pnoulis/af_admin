@@ -48,6 +48,7 @@ const StyleLayoutSiteItemMain = styled.main`
   /* Type */
   box-sizing: border-box;
   /* Dimensions */
+  padding: 40px;
   /* Position */
   grid-area: main;
   /* Fonts */
