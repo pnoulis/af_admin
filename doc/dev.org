@@ -918,3 +918,9 @@ Not able to do since src/index.jsx uses jsx syntax to render the React component
 *** validate wristband
 *** merge team
 *** create team
+* Producing git logs
+git show --stat --oneline range..range
+git show --stat --oneline range..range | grep -n -A 1 insertions > gitlog
+git log --stat --since='YYYY-MM-DD'
+git log --stat --after='YYYY-MM-DD'
+git log --stat --since='yesterday'
