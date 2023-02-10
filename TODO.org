@@ -41,6 +41,10 @@ ask to either scratch or save the team.
 flash message on result.
 
 saved teams are show in /teams.
+** LoginPlayerForm
+client publish to topic
+
+
 * DONE modal dialog
 CLOSED: [2023-02-09 Thu 22:22]
 dialog should:
@@ -50,7 +54,6 @@ save team
 delete team.
 
 * Players List and Players Info
-
 * TODO Team name scratch
 * card with outline
 * svg icon balls
