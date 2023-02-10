@@ -1,6 +1,52 @@
+// From the Perspective of the server
 const devMqttTopics = [
   {
-    // one way communication, server publishes
+    // Login Player
+    summary: "login player",
+    alias: "/player/login",
+    pub: {
+      topic: "/themaze/${clientId}/gui/player/login/response",
+      alias: "/player/login",
+      payloads: [],
+    },
+    sub: {
+      topic: "/themaze/${clientId}/gui/player/login",
+      alias: "/player/login",
+      payloads: [],
+    },
+  },
+  {
+    // Register Player
+    summary: "Register player",
+    alias: "/player/register",
+    pub: {
+      topic: "/themaze/${clientId}/gui/player/register/response",
+      alias: "/player/register",
+      payloads: [],
+    },
+    sub: {
+      topic: "/themaze/${clientId}/gui/player/register",
+      alias: "/player/register",
+      payloads: [],
+    },
+  },
+  {
+    // Create a client Id
+    summary: "Create a unique channel between client and server",
+    alias: "boot",
+    pub: {
+      topic: "/themaze/booted/${clientId}",
+      alias: "boot",
+      payloads: [],
+    },
+    sub: {
+      topic: "/themaze/booted",
+      alias: "boot",
+      payloads: [],
+    },
+  },
+  {
+    // scan wristband
     summary: "wristband scan",
     alias: "/wristband/scan",
     pub: {
@@ -20,6 +66,7 @@ const devMqttTopics = [
     },
   },
   {
+    // register wristband
     summary: "wristband register",
     alias: "/wristband/register",
     pub: {

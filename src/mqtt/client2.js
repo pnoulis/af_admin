@@ -199,6 +199,7 @@ Logger.prototype.log = function (level) {
 function Proxy(config = {}) {
   const { server, registry, logger } = this.parseConfig(config);
   this.subscriptions = new Map();
+  this.started = false;
   this.server = server;
   this.logger = new Logger(logger);
   this.registry = new Registry(registry, new Logger(logger));
@@ -249,6 +250,8 @@ Proxy.prototype.parseConfig = function (config) {
 };
 
 Proxy.prototype.start = function () {
+  if (this.started) return this.server;
+  this.started = true;
   this.server = MqttServer(this.server.host, this.server.options)
     .on("connect", () => {
       this.logger.info(`${this.name} connected`);
@@ -261,6 +264,7 @@ Proxy.prototype.start = function () {
 
 Proxy.prototype.stop = function () {
   this.server?.end(true);
+  this.started = false;
 };
 
 Proxy.prototype.decode = function (payload) {

@@ -9,12 +9,12 @@ const confDevelopment = {
     },
     server: {
       host:
-        `${import.meta.env?.VITE_REACT_APP_BROKER_PROTOCOL}://` +
-        `${import.meta.env?.VITE_REACT_APP_BROKER_URL}:` +
-        `${import.meta.env?.VITE_REACT_APP_BROKER_PORT}`,
+        `${import.meta.env?.VITE_MQTT_BROKER_PROTOCOL}://` +
+        `${import.meta.env?.VITE_MQTT_BROKER_URL}:` +
+        `${import.meta.env?.VITE_MQTT_BROKER_PORT}`,
       options: {
-        username: import.meta.env?.VITE_REACT_APP_BROKER_USERNAME,
-        password: import.meta.env?.VITE_REACT_APP_BROKER_PASSWORD,
+        username: import.meta.env?.VITE_MQTT_BROKER_USERNAME,
+        password: import.meta.env?.VITE_MQTT_BROKER_PASSWORD,
       },
     },
     registry: {
@@ -34,7 +34,7 @@ const confDevelopment = {
    */
   msq: {
     proxy: {
-      name: "",
+      name: "msq",
       id: "",
     },
     server: {

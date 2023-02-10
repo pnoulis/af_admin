@@ -5,15 +5,18 @@ import {
   StyleLayoutPanelItemMain,
 } from "/src/components/styled/panels";
 import { RegistrationPanelHeader } from "./RegistrationPanelHeader";
+import { RegistrationProvider } from "./store";
 
 function RouteRegistrationTeam() {
   return (
-    <StyleLayoutPanel>
-      <RegistrationPanelHeader />
-      <StyleLayoutPanelItemMain>
-        <Outlet />
-      </StyleLayoutPanelItemMain>
-    </StyleLayoutPanel>
+    <RegistrationProvider>
+      <StyleLayoutPanel>
+        <RegistrationPanelHeader />
+        <StyleLayoutPanelItemMain>
+          <Outlet />
+        </StyleLayoutPanelItemMain>
+      </StyleLayoutPanel>
+    </RegistrationProvider>
   );
 }
 

@@ -2,7 +2,7 @@ import { confProduction } from "./conf.production";
 import { confDevelopment } from "./conf.development";
 import { topicsDevelopment } from "./topics.development";
 import { Proxy } from "./client2";
-import { setupUseMqtt } from './useMqtt';
+import { setupUseMqtt } from "./useMqtt";
 
 const PROXIES = new Map();
 function setupMqttProxy({
@@ -13,17 +13,18 @@ function setupMqttProxy({
   if (PROXIES.has(name)) {
     return PROXIES.get(name);
   }
+
   let client;
 
   switch (import.meta.env.MODE) {
     case "production":
-    client = new Proxy(confProduction);
-    PROXIES.set(name, {
-      client,
-      useMqtt: setupUseMqtt(client),
-    });
-    break;
-  case "development":
+      client = new Proxy(confProduction);
+      PROXIES.set(name, {
+        client,
+        useMqtt: setupUseMqtt(client),
+      });
+      break;
+    case "development":
       const confPreset = import.meta.env.VITE_MQTT_CONF_PRESET;
       const topicsPreset = import.meta.env.VITE_MQTT_TOPICS_PRESET;
       if (!confPreset) {

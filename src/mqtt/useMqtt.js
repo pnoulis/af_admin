@@ -1,3 +1,5 @@
+import { setupMqttProxy } from "./setup2";
+import * as React from "react";
 // import { useEffect, useState } from 'react';
 // export default function setupHooks(client) {
 //   function useMqtt(alias, defer = false) {
@@ -24,10 +26,20 @@
 //   return useMqtt;
 // }
 
+const setupUseMqtt = (client) =>
+  function useMqtt(alias) {
+    console.log(client);
+  };
 
-const setupUseMqtt= (client) => function useMqtt(alias) {
-  console.log('usemqtt');
-  console.log(client);
-};
+function useMqtt(proxyOptions = {}) {
+  const [proxy, setProxy] = React.useState(() => setupMqttProxy(proxyOptions));
 
-export { setupUseMqtt };
+  React.useEffect(() => {
+    // proxy.client.start();
+    // return () => proxy.client.stop();
+  }, [proxy]);
+
+  return proxy;
+}
+
+export { setupUseMqtt, useMqtt };

@@ -94,6 +94,7 @@ function TextInput_0({ className, type, name, placeholder, ...props }) {
         autoComplete="off"
         placeholder={placeholder || " "}
         onChange={onChange}
+        value={fields[name]}
         {...props}
       ></input>
       <label className="label" htmlFor={name}>

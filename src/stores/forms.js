@@ -11,11 +11,13 @@ const actions = {
 };
 
 function reducer(state, action) {
+  state.invalid = false;
+  let newState;
   switch (action.type) {
     case "ERRORS":
       return { ...state, errors: action.errors };
     case "INPUT":
-      return {
+      newState = {
         ...state,
         fields: {
           ...state.fields,
@@ -26,6 +28,9 @@ function reducer(state, action) {
           [action.name]: Field.validate(action.name, action.value),
         },
       };
+      return newState;
+    case "RESET":
+      return action.initialState;
     default:
       return state;
   }
@@ -34,6 +39,7 @@ function reducer(state, action) {
 const FORM_SCHEMA = {
   fields: {},
   errors: {},
+  invalid: true,
 };
 const formContext = React.createContext(FORM_SCHEMA);
 const useFormContext = () => useContext(formContext);
@@ -43,7 +49,12 @@ function useForm(initialState = {}) {
     ...initialState,
   });
   const proxy = useCallback(
-    (action, ...payload) => dispatch(actions[action](...payload)),
+    (action, ...payload) => {
+      if (action === "reset") {
+        return dispatch({ type: "RESET", initialState });
+      }
+      dispatch(actions[action](...payload));
+    },
     [initialState]
   );
 

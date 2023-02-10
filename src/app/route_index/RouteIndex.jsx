@@ -1,57 +1,72 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { setupMqttProxy } from '/src/mqtt';
-const { client, useMqtt, server } = setupMqttProxy({
-  name: 'testing',
-  registry: {
-    params: {
-      clientId: 'single'
-    }
-  }
-});
+import * as React from "react";
+import styled from "styled-components";
+import { useMqtt } from "/src/mqtt";
 const StyleMqttRoutes = styled.div`
-width: 100%;
-height: 100%;
-display: grid;
-grid-template-columns: minmax(400px, max-content);
-grid-auto-rows: 70px;
-gap: 20px;
-justify-content: center;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(400px, max-content);
+  grid-auto-rows: 70px;
+  gap: 20px;
+  justify-content: center;
 `;
 
 const StyleMqttRouteItem = styled.p`
-background-color: red;
-font-size: 1.8rem;
-display: flex;
-align-items: center;
-justify-content: center;
+  background-color: red;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-&:hover {
-opacity: .7;
-cursor: pointer;
-}
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
 `;
 
-function MqttRoute({children}) {
+function MqttRoute({ children }) {
+  return <StyleMqttRouteItem>{children}</StyleMqttRouteItem>;
+}
+
+function PublishSuccessLogin() {
+  const { server } = useMqtt();
+  const payload = {
+    timestamp: 123456789, // Milliseconds
+    result: "OK",
+    player: {
+      id: "a18f9fb7-9c63-4c6f-bbc0-946c9fe216fd",
+      firstname: "pavlos",
+      lastname: "noulis",
+      username: "pnoulis",
+      phone: 123456789, // Integer
+      email: "email@at.com",
+    },
+  };
   return (
-    <StyleMqttRouteItem>
-      {children}
+    <StyleMqttRouteItem
+      onClick={() => {
+        server.publish("/player/login", payload);
+      }}
+    >
+      publish success login
     </StyleMqttRouteItem>
   );
 }
 
-function PublishSuccessLogin() {
-  React.useEffect(() => {
-    server.start().on('connect', () => {
-      console.log('server connected');
-    });
-    return () => server.stop();
-  }, []);
+function PublishFailureLogin() {
+  const { server } = useMqtt();
+  const payload = {
+    timestamp: 123456789, // Milliseconds
+    result: "NOK",
+    message: "Wrong username and/or password",
+  };
   return (
-    <StyleMqttRouteItem onClick={() => {
-      server.publish('/wristband/register', {mymessage: 'yolo'});
-    }}>
-      publish success login
+    <StyleMqttRouteItem
+      onClick={() => {
+        server.publish("/player/login", payload);
+      }}
+    >
+      publish Failure Login
     </StyleMqttRouteItem>
   );
 }
@@ -59,7 +74,8 @@ function PublishSuccessLogin() {
 function RouteIndex() {
   return (
     <StyleMqttRoutes>
-      <PublishSuccessLogin/>
+      <PublishSuccessLogin />
+      <PublishFailureLogin />
       <MqttRoute>one</MqttRoute>
       <MqttRoute>one</MqttRoute>
       <MqttRoute>one</MqttRoute>

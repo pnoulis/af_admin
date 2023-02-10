@@ -2,8 +2,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import styled from "styled-components";
 import { Card_0 } from "/src/components/cards/";
-import { BasicDialog, SaveTeamDialog } from '/src/components/dialogs';
-import { ButtonText, ButtonTextBasic } from '/src/components/buttons';
+import { BasicDialog, SaveTeamDialog } from "/src/components/dialogs";
+import { ButtonText, ButtonTextBasic } from "/src/components/buttons";
 import {
   Roster,
   PlayerActionbar,
@@ -16,11 +16,7 @@ import {
   PlayerRosterPackage,
   PlayerWidgetMerge,
   PlayerRosterMerge,
-} from '/src/app/route_registration_team/roster';
-import {setupMqttProxy } from '/src/mqtt';
-
-const mqtt = setupMqttProxy();
-console.log(mqtt);
+} from "/src/app/route_registration_team/roster";
 
 const Container = styled.div`
   width: 100%;
@@ -43,6 +39,7 @@ const MyCard = styled("div")`
   box-shadow: 5px -5px 50px rgba(0, 0, 0, 0.1), -1px 1px 50px rgba(0, 0, 0, 0.1);
   // box-shadow: var(--card-basic-shadow);
   display: flex;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
 `;
@@ -63,49 +60,48 @@ const Cont = styled.div`
 `;
 
 const MyDialog = styled.div`
-display: flex;
-flex-flow: row wrap;
-width: 350px;
-height: max-content;
-justify-content: center;
-gap: 40px;
+  display: flex;
+  flex-flow: row wrap;
+  width: 350px;
+  height: max-content;
+  justify-content: center;
+  gap: 40px;
 `;
 const DialogTitle = styled.p`
-font-family: NoirPro-Bold;
-text-align: center;
-// color: var(--primary-strong);
-font-size: var(--text-md);
-text-transform: uppercase;
-letter-spacing: 1px;
-word-spacing: 3px;
-margin-top: 30px;
+  font-family: NoirPro-Bold;
+  text-align: center;
+  // color: var(--primary-strong);
+  font-size: var(--text-md);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-spacing: 3px;
+  margin-top: 30px;
 `;
 
 const players = [
   {
-    username: 'somename',
+    username: "somename",
   },
   {
-    username: 'somename',
+    username: "somename",
   },
   {
-    username: 'somename',
+    username: "somename",
   },
   {
-    username: 'somename',
+    username: "somename",
   },
   {
-    username: 'somename',
+    username: "somename",
   },
   {
-    username: 'somename',
+    username: "somename",
   },
 ];
 
-
 function Test() {
   const myRef = React.useRef(null);
-  const [dial, setDial ] = React.useState(false);
+  const [dial, setDial] = React.useState(false);
 
   return (
     <React.Fragment>
@@ -118,13 +114,11 @@ function Test() {
           show dialog
         </button>
         <MyCard>
-
           {/* <PlayerWidget/> */}
           {/* <MyCard2>yo</MyCard2> */}
-          {/* <PlayerRoster/> */}
-          {/* <PlayerRosterPackage/> */}
-          {/* <PlayerWidgetMerge/> */}
-          <PlayerRosterMerge/>
+          <PlayerRoster />
+          <PlayerRosterPackage />
+          <PlayerRosterMerge />
         </MyCard>
       </Container>
       <Cont>
@@ -135,8 +129,6 @@ function Test() {
     </React.Fragment>
   );
 }
-
-
 
 const testRoutes = [
   {

@@ -1,22 +1,22 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { ToggleForm } from './ToggleForm';
-import { LoginPlayerForm } from './LoginPlayerForm';
-import { RegisterPlayerForm } from './RegisterPlayerForm';
+import * as React from "react";
+import styled from "styled-components";
+import { ToggleForm } from "./ToggleForm";
+import { LoginPlayerForm } from "./LoginPlayerForm";
+import { RegisterPlayerForm } from "./RegisterPlayerForm";
 
 const StyleLayoutAddPlayer = styled.div`
   all: unset;
   /* Type */
   box-sizing: border-box;
-display: grid;
-grid-template-columns: 1fr;
-grid-template-rows: auto 1fr;
-grid-template-areas: "toggle_form" "player_form";
-gap: 30px;
-padding-top: 50px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "toggle_form" "player_form";
+  gap: 30px;
+  padding-top: 50px;
   /* Dimensions */
-width: 100%;
-height: 100%;
+  width: 100%;
+  height: 100%;
   /* Position */
   /* Fonts */
   /* Effects */
@@ -24,16 +24,16 @@ height: 100%;
 `;
 
 const StyleLayoutItemToggleForm = styled(ToggleForm)`
-grid-area: toggle_form;
+  grid-area: toggle_form;
 `;
 
 const StyleLayoutItemPlayerForm = styled.section`
-grid-area: player_form;
-display: flex;
-align-items: center;
-justify-content: center;
-width: 400px;
-margin: auto;
+  grid-area: player_form;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 350px;
+  margin: auto;
 `;
 
 function AddPlayer() {
@@ -45,10 +45,7 @@ function AddPlayer() {
         onToggle={() => setRegisterUser((prev) => !prev)}
       />
       <StyleLayoutItemPlayerForm>
-        { registerUser
-          ? <RegisterPlayerForm/>
-          : <LoginPlayerForm/>
-        }
+        {registerUser ? <RegisterPlayerForm /> : <LoginPlayerForm />}
       </StyleLayoutItemPlayerForm>
     </StyleLayoutAddPlayer>
   );
