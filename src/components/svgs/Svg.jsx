@@ -27,10 +27,8 @@ const Svg = React.forwardRef(
       <svg
         className={className}
         ref={cbref}
-        /* width={`${size ? size + "em" : "100%"}`} */
-        /* height={`${size}em`} */
-        width={size ? `${size}em` : "100%"}
-        height={size ? `${size}em` : "100%"}
+        width={size || '100%'}
+        height={size || '100%'}
         fill={color}
         {...props}
       >

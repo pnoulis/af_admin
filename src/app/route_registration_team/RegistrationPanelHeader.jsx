@@ -28,7 +28,10 @@ function RegistrationPanelHeader() {
           {...linkPlayers}
           renderIcon={<AddPlayerIcon />}
         />
-        <PanelHeaderNavbarItem {...linkMerge} renderIcon={<CreateTeam />} />
+        <PanelHeaderNavbarItem
+          {...linkMerge}
+          renderIcon={<CreateTeam />}
+        />
         <PanelHeaderNavbarItem
           {...linkPackage}
           renderIcon={<PriceTeamIcon />}

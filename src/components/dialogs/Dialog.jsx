@@ -39,8 +39,8 @@ function Dialog({ open, onOpenChange, children, ...props }) {
   });
 
   React.useEffect(() => {
-    open ? dialogRef.current.showModal() : dialogRef.current.close();
-    return () => dialogRef.current.close();
+    open ? dialogRef.current?.showModal() : dialogRef.current?.close();
+    return () => dialogRef.current?.close();
   }, [open, onOpenChange]);
 
   return (

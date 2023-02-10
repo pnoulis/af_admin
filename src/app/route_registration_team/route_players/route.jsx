@@ -7,7 +7,7 @@ const routePlayers = {
 
 const linkPlayers = {
   path: "/registration/team/players",
-  label: "add players",
+  label: "players",
 };
 
 export { routePlayers, linkPlayers, RoutePlayers };

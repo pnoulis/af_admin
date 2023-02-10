@@ -5,7 +5,7 @@ const StyleLayoutPanel = styled.article`
   /* Type */
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: 130px 1fr;
+  grid-template-rows: 115px 1fr;
   grid-template-columns: 1fr;
   grid-template-areas: "header" "main";
   gap: 20px;

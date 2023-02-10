@@ -1,9 +1,26 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import styled from "styled-components";
-// import { setupMqttProxy } from "/src/mqtt";
 import { Card_0 } from "/src/components/cards/";
-import { useFlashMessage } from "/src/flash_messages";
+import { BasicDialog, SaveTeamDialog } from '/src/components/dialogs';
+import { ButtonText, ButtonTextBasic } from '/src/components/buttons';
+import {
+  Roster,
+  PlayerActionbar,
+  PlayerActionbarItemRosterRemove,
+  PlayerActionbarItemWristbandPair,
+  PlayerActionbarItemDiscount,
+  PlayerActionbarItemPrice,
+  PlayerWidget,
+  PlayerRoster,
+  PlayerRosterPackage,
+  PlayerWidgetMerge,
+  PlayerRosterMerge,
+} from '/src/app/route_registration_team/roster';
+import {setupMqttProxy } from '/src/mqtt';
+
+const mqtt = setupMqttProxy();
+console.log(mqtt);
 
 const Container = styled.div`
   width: 100%;
@@ -45,78 +62,81 @@ const Cont = styled.div`
   transform: translateX(-50%);
 `;
 
-// function FlashMessagesPortal({ children }) {
-//   return children
-//     ? ReactDOM.createPortal(
-//         children,
-//         document.getElementById("flash-messages-portal")
-//       )
-//     : null;
-// }
+const MyDialog = styled.div`
+display: flex;
+flex-flow: row wrap;
+width: 350px;
+height: max-content;
+justify-content: center;
+gap: 40px;
+`;
+const DialogTitle = styled.p`
+font-family: NoirPro-Bold;
+text-align: center;
+// color: var(--primary-strong);
+font-size: var(--text-md);
+text-transform: uppercase;
+letter-spacing: 1px;
+word-spacing: 3px;
+margin-top: 30px;
+`;
 
-// function useFlashMessages() {
-//   const [fm, setFm] = React.useState(() => () => null);
+const players = [
+  {
+    username: 'somename',
+  },
+  {
+    username: 'somename',
+  },
+  {
+    username: 'somename',
+  },
+  {
+    username: 'somename',
+  },
+  {
+    username: 'somename',
+  },
+  {
+    username: 'somename',
+  },
+];
 
-//   const createFm = React.useCallback((customFm, options) => {
-//     options = options || customFm;
-
-//     switch (options?.type) {
-//       default:
-//         if (!React.isValidElement(customFm)) {
-//           throw new Error("Custom flash message in not a valid React element");
-//         }
-//         setFm(() => () => (
-//           <FlashMessagesPortal>{customFm}</FlashMessagesPortal>
-//         ));
-//     }
-//   }, []);
-//   return [fm, createFm];
-// }
-
-function Fmcompo() {
-  const [getFm, createFm] = useFlashMessage();
-
-  React.useEffect(() => {
-    console.log("get fm changed");
-  }, [getFm]);
-  return (
-    <div>
-      <button
-        onClick={() => {
-          console.log("will create flash message");
-          createFm({ type: "info", message: "yolo" });
-        }}
-      >
-        create flash message
-      </button>
-      {getFm()}
-      {getFm()}
-    </div>
-  );
-}
 
 function Test() {
   const myRef = React.useRef(null);
+  const [dial, setDial ] = React.useState(false);
+
   return (
     <React.Fragment>
       <Container ref={myRef}>
         <button
           onClick={() => {
-            console.log(myRef.current);
+            setDial(true);
           }}
         >
-          Test document node
+          show dialog
         </button>
         <MyCard>
-          <MyCard2>yo</MyCard2>
+
+          {/* <PlayerWidget/> */}
+          {/* <MyCard2>yo</MyCard2> */}
+          {/* <PlayerRoster/> */}
+          {/* <PlayerRosterPackage/> */}
+          {/* <PlayerWidgetMerge/> */}
+          <PlayerRosterMerge/>
         </MyCard>
       </Container>
       <Cont>
-        <Fmcompo />
+        {/* <PlayerActionbarItemRosterRemove/> */}
+        {/* <PlayerActionbarItemWristbandPair/> */}
+        {/* <PlayerActionbarItemDiscount/> */}
       </Cont>
     </React.Fragment>
   );
 }
+
+
 
 const testRoutes = [
   {
