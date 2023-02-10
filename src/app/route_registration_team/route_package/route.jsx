@@ -7,7 +7,7 @@ const routePackage = {
 
 const linkPackage = {
   path: "/registration/team/package",
-  label: "add package",
+  label: "package",
 };
 
 export { routePackage, linkPackage, RoutePackage };

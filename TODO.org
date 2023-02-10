@@ -10,6 +10,51 @@ children components file use default export instead of named exports
 * DONE Refactor FlashMessages
 CLOSED: [2023-02-09 Thu 12:36]
 * TODO Refactor registration
+** DONE Ability to size each icon in the PanelHeaderNavbarItem.
+CLOSED: [2023-02-09 Thu 20:51]
+
+** Teams section
+Table of teams that are in the not-playing state.
+Ability to search through those list of teams
+On click on a row:
+navigate to players.
+
+teams which are registered.
+teams which have been saved.
+
+show a line that show the number of saved teams.
+** NavbarTeamName toolbar
+Show team name if any.
+
+add a new team.
+
+adding a new team means deleting the one currently
+being edited.
+
+if the team has been merged then simply clear the cache of the team and
+navigate to players.
+
+if the team has not been merged:
+
+modal dialog for confirmation.
+ask to either scratch or save the team.
+flash message on result.
+
+saved teams are show in /teams.
+* DONE modal dialog
+CLOSED: [2023-02-09 Thu 22:22]
+dialog should:
+
+two buttons
+save team
+delete team.
+
+* Players List and Players Info
+
+* TODO Team name scratch
+* card with outline
+* svg icon balls
+* TODO Add ripple to sidebar links
 * Types of cards
 flash messsages
 panel
