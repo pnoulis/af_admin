@@ -35,8 +35,8 @@ function PublishSuccessLogin() {
     result: "OK",
     player: {
       id: "a18f9fb7-9c63-4c6f-bbc0-946c9fe216fd",
-      firstname: "pavlos",
-      lastname: "noulis",
+      firstName: "pavlos",
+      lastName: "noulis",
       username: "pnoulis",
       phone: 123456789, // Integer
       email: "email@at.com",

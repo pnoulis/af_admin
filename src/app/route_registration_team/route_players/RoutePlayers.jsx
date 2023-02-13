@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { AddPlayer } from "./add_player";
+import { RegisterWristband } from "./register_wristband";
 
 const StyleLayoutRoutePlayers = styled.div`
   all: unset;
@@ -13,6 +14,7 @@ const StyleLayoutRoutePlayers = styled.div`
   /* Dimensions */
   width: 100%;
   height: 100%;
+  padding-top: 50px;
   /* Position */
   /* Fonts */
   /* Effects */
@@ -23,10 +25,15 @@ const StyleLayoutItemAddPlayer = styled(AddPlayer)`
   grid-area: add_player;
 `;
 
+const StyleLayoutItemRegisterWristband = styled(RegisterWristband)`
+  grid-area: register_wristband;
+`;
+
 function RoutePlayers() {
   return (
     <StyleLayoutRoutePlayers>
       <StyleLayoutItemAddPlayer />
+      <StyleLayoutItemRegisterWristband />
     </StyleLayoutRoutePlayers>
   );
 }

@@ -3,8 +3,7 @@ import { TextInput_0 } from "/src/components/textInputs";
 import { ButtonText } from "/src/components/buttons";
 import styled from "styled-components";
 import { FormStore } from "/src/stores";
-import { useRegistrationContext } from "/src/app/route_registration_team";
-import { useMqtt } from "/src/mqtt";
+import { useAddPlayerToTeam } from "/src/app/route_registration_team";
 
 const TextInput = styled(TextInput_0)`
   height: 55px;
@@ -45,20 +44,15 @@ const StyleErrorMessage = styled.p`
 `;
 
 function LoginPlayerForm() {
-  const { client } = useMqtt();
-  const { state, dispatchRegistration } = useRegistrationContext();
-  const [error, setError] = React.useState("");
+  const { addPlayerToTeam, getFm } = useAddPlayerToTeam();
   const [form, setForm] = FormStore.init({
+    error: "",
     errors: {},
     fields: {
       username: "",
       password: "",
     },
   });
-
-  React.useEffect(() => {
-    console.log(state);
-  }, [state]);
 
   return (
     <FormStore.Provide value={{ ...form, setForm }}>
@@ -67,38 +61,18 @@ function LoginPlayerForm() {
         onSubmit={(e) => {
           e.preventDefault();
           if (Object.values(form.fields).some((field) => !field)) return;
-          client.publish("/player/login", { ...form.fields }, (err, res) => {
-            if (err) {
-              throw new Error("500 - Internal server error page here");
-            }
-            if (res.result === "NOK") {
-              setError(res.message);
-            } else {
-              /* setForm("reset"); */
-              // make sure the player is not already part of the team.
-              if (
-                state.active?.players.find(
-                  (player) => player.username === res.username
-                )
-              ) {
-                console.log("player is already part of the team");
-                console.log("throw a flash error message");
-              }
-              console.log(state);
-              console.log(`calling dispatch`);
-              dispatchRegistration({ type: "add_player", player: res.player });
-            }
-          });
+          addPlayerToTeam(form, setForm);
         }}
       >
         <legend>login player</legend>
         <TextInput name="username" />
         <TextInput type="password" name="password" />
-        <StyleErrorMessage>{error}</StyleErrorMessage>
+        <StyleErrorMessage>{form.error}</StyleErrorMessage>
         <ButtonText form="loginPlayerForm" type="submit">
           login
         </ButtonText>
       </StyleLoginPlayerForm>
+      {getFm()}
     </FormStore.Provide>
   );
 }

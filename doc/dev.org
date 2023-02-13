@@ -918,6 +918,25 @@ Not able to do since src/index.jsx uses jsx syntax to render the React component
 *** validate wristband
 *** merge team
 *** create team
+** Wristband Pairing
+THe registerWristband component is responsbile for pairing wristbands
+to Users.
+
+
+onMount the registerwristband sets up a subscription for new scans.
+
+
+Each playerWidget emits an onClick pair event.
+
+The registerWristband picks that up.
+check if another user is being paired.
+If yes a modal is created requesting confirmation from the admin
+that the next scan shall belong to the new user.
+
+the register wristband toggles the wristbandPairing mode of the specified user.
+
+
+
 * Producing git logs
 git show --stat --oneline range..range
 git show --stat --oneline range..range | grep -n -A 1 insertions > gitlog

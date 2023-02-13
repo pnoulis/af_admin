@@ -1,8 +1,9 @@
 import * as React from "react";
+import { registrationTestState } from "./store.test";
 
 const PLAYER_SCHEMA = {
   username: "",
-  firstname: "",
+  firstName: "",
 
   /**
      @value {Integer} - Wristband Id
@@ -13,18 +14,19 @@ const PLAYER_SCHEMA = {
      @value {Integer} - A pool of wristband colors
      available to the players.
 
-     0 - green
-     1 - yellow
-     2 - blue
-     3 - red
-     4 - pink
-     5 - purple
+     0 - black
+     1 - red
+     2 - purple
+     3 - green
+     4 - yellow
+     5 - blue
+     6 - orange
   */
   wristbandColorCode: 0,
 
   /**
      @value {String} - a wristband is
-     first registered, then verified.
+     first paired, then registered, then verified.
   */
   wristbandStatus: "",
 
@@ -127,20 +129,14 @@ const registrationReducer = (state, action) => {
     case "new_team":
       break;
     case "add_player":
-      const team = {
-        ...(state.active || TEAM_SCHEMA),
-      };
-      console.log(`after state active sprea`);
-      console.log(team);
+      const team = state.active || TEAM_SCHEMA;
       team.players.push({
         ...PLAYER_SCHEMA,
         username: action.player.username,
-        firstname: action.player.firstName,
+        firstName: action.player.firstName,
       });
 
-      if (team.id) {
-        state.teams[state.teams.findIndex((t) => t.id === team.id) - 1] = team;
-      } else {
+      if (!team.id) {
         team.id = Math.random().toString(16).slice(2, 12);
         state.teams.push(team);
       }
@@ -151,7 +147,20 @@ const registrationReducer = (state, action) => {
     case "remove_player":
       break;
     case "pair_wristband": // toggle
-      break;
+      console.log(action.username);
+      state.active?.players.forEach((player) => {
+        if (player.username === action.username) {
+          console.log(`player matched`);
+          player.wristbandPairing = !player.wristbandPairing;
+          console.log("wristband pairing:");
+          console.log(player);
+        } else {
+          player.wristbandPairing = false;
+        }
+      });
+      return {
+        ...state,
+      };
     case "register_wristband":
       break;
     case "verify_wristband":
@@ -175,11 +184,19 @@ const registrationReducer = (state, action) => {
   }
 };
 
-const useRegistrationContext = () => React.useContext(RegistrationContext);
+const useRegistrationContext = () => {
+  const context = React.useContext(RegistrationContext);
+  if (context == null) {
+    throw new Error(
+      "A Component is not being provided the Registration Context"
+    );
+  }
+  return context;
+};
 const RegistrationProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(
     registrationReducer,
-    REGISTRATION_SCHEMA
+    registrationTestState[1]()
   );
   return (
     <RegistrationContext.Provider

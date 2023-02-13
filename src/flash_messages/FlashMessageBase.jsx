@@ -1,6 +1,6 @@
 import * as React from "react";
 
-function FlashMessageBase({ rmFm, timeout = 3000, className, children }) {
+function FlashMessageBase({ rmFm, timeout = 5000, className, children }) {
   React.useEffect(() => {
     const timeoutId = setTimeout(() => {
       rmFm();

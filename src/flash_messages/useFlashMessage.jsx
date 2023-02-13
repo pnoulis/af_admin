@@ -44,7 +44,6 @@ function useFlashMessage() {
 
     switch (options?.type) {
       case "info":
-        console.log("will cerate an info fm");
         fm = <FlashMessageInfo rmFm={rmFm} {...options} />;
         break;
       case "success":

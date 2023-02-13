@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import styled from "styled-components";
 import { Card_0 } from "/src/components/cards/";
 import { BasicDialog, SaveTeamDialog } from "/src/components/dialogs";
+import { useFlashMessage } from "/src/flash_messages";
 import { ButtonText, ButtonTextBasic } from "/src/components/buttons";
 import {
   Roster,
@@ -102,13 +103,14 @@ const players = [
 function Test() {
   const myRef = React.useRef(null);
   const [dial, setDial] = React.useState(false);
+  const [fm, createFm] = useFlashMessage();
 
   return (
     <React.Fragment>
       <Container ref={myRef}>
         <button
           onClick={() => {
-            setDial(true);
+            createFm(<p>toehuneothu</p>);
           }}
         >
           show dialog
@@ -119,7 +121,9 @@ function Test() {
           <PlayerRoster />
           <PlayerRosterPackage />
           <PlayerRosterMerge />
+          <SaveTeamDialog />
         </MyCard>
+        {fm()}
       </Container>
       <Cont>
         {/* <PlayerActionbarItemRosterRemove/> */}

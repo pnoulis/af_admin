@@ -13,7 +13,6 @@ const StyleLayoutAddPlayer = styled.div`
   grid-template-rows: auto 1fr;
   grid-template-areas: "toggle_form" "player_form";
   gap: 30px;
-  padding-top: 50px;
   /* Dimensions */
   width: 100%;
   height: 100%;

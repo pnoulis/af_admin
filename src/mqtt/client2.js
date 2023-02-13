@@ -334,6 +334,7 @@ Proxy.prototype._subscribe = function (
       if (topic === sub) {
         clients.forEach((client) => {
           if (client.transient) {
+            this.logger.trace(`Unsubscribed client:${client.id}`);
             unregister.push(client.id);
           }
           client.cb(null, this.decode(message));
@@ -346,7 +347,7 @@ Proxy.prototype._subscribe = function (
     });
   });
 
-  return this.registerClient(sub, client);
+  return this.registerClient(sub, client, transient);
 };
 
 Proxy.prototype.registerClient = function (sub, cb, transient = false) {

@@ -8,12 +8,17 @@ const actions = {
   setInput(name, value) {
     return { type: "INPUT", name, value };
   },
+  setError(error) {
+    return { type: "ERROR", error };
+  },
 };
 
 function reducer(state, action) {
   state.invalid = false;
   let newState;
   switch (action.type) {
+    case "ERROR":
+      return { ...state, error: action.error };
     case "ERRORS":
       return { ...state, errors: action.errors };
     case "INPUT":

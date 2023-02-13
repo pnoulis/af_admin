@@ -2,6 +2,9 @@ import { setupMqttProxy } from "/src/mqtt";
 
 if (import.meta.env.VITE_MQTT_CONF_PRESET === "msq") {
   const proxy = setupMqttProxy({
+    logger: {
+      verbosity: "trace",
+    },
     registry: {
       params: {
         clientId: "static",
