@@ -27,13 +27,13 @@ const TEAM_SCHEMA = {
   id: "",
   name: "",
   status: "",
-  players: [],
+  roster: [],
 };
 const active_team = {
   id: "stehous23",
   name: "the_tigers",
   status: "cached",
-  players: [
+  roster: [
     {
       username: "test1",
       firstName: "yolo1",

@@ -11,7 +11,7 @@ function useAddPlayerToTeam() {
   const addPlayerToTeam = React.useCallback(
     (form, setForm) => {
       if (
-        state.active?.players.find(
+        state.active?.roster.find(
           (player) => player.username == form.fields.username
         )
       ) {

@@ -38,7 +38,18 @@ function RegisterWristband() {
   const { state, dispatchRegistration } = useRegistrationContext();
 
   const handleOnWristbandPair = React.useCallback((player) => {
-    dispatchRegistration({ type: "pair_wristband", username: player.username });
+    if (player.wristbandPairing) {
+      dispatchRegistration({ type: "pair_wristband", player, pairing: false });
+    } else {
+      return "";
+    }
+  }, []);
+
+  const handleOnWristbandUnpair = React.useCallback((player) => {
+    dispatchRegistration({
+      type: "unpair_wristband",
+      username: player.username,
+    });
   }, []);
 
   const handleOnPlayerRemove = React.useCallback(() => {}, []);
@@ -50,7 +61,7 @@ function RegisterWristband() {
   return (
     <StyleLayoutRegisterWristband>
       <StyleLayoutItemTeamRoster
-        roster={state.active?.players}
+        roster={state.active?.roster}
         onPlayerRemove={handleOnPlayerRemove}
         onWristbandPair={handleOnWristbandPair}
       />

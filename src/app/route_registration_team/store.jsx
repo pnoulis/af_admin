@@ -108,7 +108,7 @@ const TEAM_SCHEMA = {
      1. The user makes such a request.
   */
   status: "",
-  players: [],
+  roster: [],
 };
 const REGISTRATION_SCHEMA = {
   /**
@@ -130,7 +130,7 @@ const registrationReducer = (state, action) => {
       break;
     case "add_player":
       const team = state.active || TEAM_SCHEMA;
-      team.players.push({
+      team.roster.push({
         ...PLAYER_SCHEMA,
         username: action.player.username,
         firstName: action.player.firstName,
@@ -146,18 +146,26 @@ const registrationReducer = (state, action) => {
       };
     case "remove_player":
       break;
-    case "pair_wristband": // toggle
-      console.log(action.username);
-      state.active?.players.forEach((player) => {
+    case "pair_wristband": // thin, toggle
+      state.active.roster = state.active.roster.map((player) => {
         if (player.username === action.username) {
-          console.log(`player matched`);
-          player.wristbandPairing = !player.wristbandPairing;
-          console.log("wristband pairing:");
-          console.log(player);
+          player.wristbandPairing = action.pairing;
         } else {
           player.wristbandPairing = false;
         }
+        return player;
       });
+      // state.active?.players.forEach((player) => {
+      //   if (player.username === action.username) {
+      //     player.wristbandPairing = action.pairing;
+      //   } else {
+      //     player.wristbandPairing = false;
+      //   }
+      // });
+      return {
+        ...state,
+      };
+    case "unpair_wristband":
       return {
         ...state,
       };

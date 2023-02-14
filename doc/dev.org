@@ -943,3 +943,12 @@ git show --stat --oneline range..range | grep -n -A 1 insertions > gitlog
 git log --stat --since='YYYY-MM-DD'
 git log --stat --after='YYYY-MM-DD'
 git log --stat --since='yesterday'
+
+* refactor  state.active.players to state.active.roster
+pnoul@dev1:~/projects/intelligent_entertainment/af_admin$ grep -rEi '.*state\.active\??\.players.*' src/app
+src/app/route_registration_team/store.jsx:      state.active.players = state.active.players.map((player) => {
+src/app/route_registration_team/store.jsx:      // state.active?.players.forEach((player) => {
+src/app/route_registration_team/route_players/register_wristband/RegisterWristband.jsx:        roster={state.active?.players}
+src/app/route_registration_team/events.jsx:        state.active?.players.find(
+
+
