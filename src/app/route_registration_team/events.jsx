@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useMqtt } from "/src/mqtt";
 import { useFlashMessage } from "/src/flash_messages";
-import { useRegistrationContext } from "./store";
+import { useRegistrationContext, WRISTBAND_STATUS } from "./store";
 
 function useAddPlayerToTeam() {
   const { state, dispatchRegistration } = useRegistrationContext();
@@ -49,22 +49,49 @@ function useAddPlayerToTeam() {
 function usePairPlayerWristband() {
   const { state, dispatchRegistration } = useRegistrationContext();
   const { client } = useMqtt();
-  const subscriptionRef = React.useRef(null);
 
-  const handleOnPairWristband = React.useCallback(
-    (player) => {
-      // unsubscribe
-      subscriptionRef.current && subscriptionRef.current();
-      // simple toggle action
-      if (player.wristbandPairing) {
-        return dispatchRegistration({
-          type: "pair_wristband",
-          username: player.username,
-        });
+  React.useEffect(() => {
+    const unsubscribe = client.subscribe("wristband/scan", (err, res) => {
+      if (err) {
+        throw new Error("500 - Server internal error");
       }
-    },
-    [state, dispatchRegistration]
-  );
+
+      const player = state.active?.roster.find(
+        (player) => player.wristband.pairng
+      );
+
+      if (!player) {
+        // throw flash message here
+        throw new Error(
+          "Received scan for wristband but no user is being paired"
+        );
+      }
+
+      dispatchRegistration({
+        type: "pair_wristband",
+        player,
+        pairing: false,
+        wristband: {
+          ...res,
+        },
+      });
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleOnPairWristband = React.useCallback((player) => {
+    if (player.wristband.status >= WRISTBAND_STATUS["paired"]) {
+      // show dialog
+    } else {
+      dispatchRegistration({
+        type: "pair_wristband",
+        player,
+        pairing: !player.wristband.pairing,
+        wristband: null,
+      });
+    }
+  }, []);
 
   return {
     handleOnPairWristband,

@@ -56,8 +56,8 @@ function PlayerWidget({ player, onPlayerRemove, onWristbandPair }) {
       <StyleLayoutItemUsername>{player.username}</StyleLayoutItemUsername>
       <PlayerActionbar>
         <PlayerActionbarItemWristbandPair
-          pairing={player.wristbandPairing}
-          wristbandColorCode={player.wristbandColorCode}
+          pairing={player.wristband.pairing}
+          wristbandColorCode={player.wristband.colorCode}
           onClick={() => onWristbandPair(player)}
         />
         <PlayerRemoveFromTeam onClick={onPlayerRemove} />

@@ -2,23 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import styled from "styled-components";
 import { Card_0 } from "/src/components/cards/";
-import { BasicDialog, SaveTeamDialog } from "/src/components/dialogs";
-import { useFlashMessage } from "/src/flash_messages";
-import { ButtonText, ButtonTextBasic } from "/src/components/buttons";
-import {
-  Roster,
-  PlayerActionbar,
-  PlayerActionbarItemRosterRemove,
-  PlayerActionbarItemWristbandPair,
-  PlayerActionbarItemDiscount,
-  PlayerActionbarItemPrice,
-  PlayerWidget,
-  PlayerRoster,
-  PlayerRosterPackage,
-  PlayerWidgetMerge,
-  PlayerRosterMerge,
-} from "/src/app/route_registration_team/roster";
-
+import { flashMessage } from "/src/flash_messages_2";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -102,34 +86,21 @@ const players = [
 
 function Test() {
   const myRef = React.useRef(null);
-  const [dial, setDial] = React.useState(false);
-  const [fm, createFm] = useFlashMessage();
 
   return (
     <React.Fragment>
       <Container ref={myRef}>
-        <button
-          onClick={() => {
-            createFm(<p>toehuneothu</p>);
-          }}
-        >
-          show dialog
-        </button>
         <MyCard>
-          {/* <PlayerWidget/> */}
-          {/* <MyCard2>yo</MyCard2> */}
-          <PlayerRoster />
-          <PlayerRosterPackage />
-          <PlayerRosterMerge />
-          <SaveTeamDialog />
+          <button
+            onClick={() => {
+              flashMessage.render(null, { timeout: 1000 });
+            }}
+          >
+            create flashMessage
+          </button>
         </MyCard>
-        {fm()}
       </Container>
-      <Cont>
-        {/* <PlayerActionbarItemRosterRemove/> */}
-        {/* <PlayerActionbarItemWristbandPair/> */}
-        {/* <PlayerActionbarItemDiscount/> */}
-      </Cont>
+      <Cont></Cont>
     </React.Fragment>
   );
 }

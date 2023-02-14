@@ -946,9 +946,74 @@ git log --stat --since='yesterday'
 
 * refactor  state.active.players to state.active.roster
 pnoul@dev1:~/projects/intelligent_entertainment/af_admin$ grep -rEi '.*state\.active\??\.players.*' src/app
-src/app/route_registration_team/store.jsx:      state.active.players = state.active.players.map((player) => {
-src/app/route_registration_team/store.jsx:      // state.active?.players.forEach((player) => {
-src/app/route_registration_team/route_players/register_wristband/RegisterWristband.jsx:        roster={state.active?.players}
-src/app/route_registration_team/events.jsx:        state.active?.players.find(
+src/app/route_registration_team/store.jsx:
+state.active.players = state.active.players.map((player) => {
+src/app/route_registration_team/store.jsx:
+// state.active?.players.forEach((player) => {
+src/app/route_registration_team/route_players/register_wristband/RegisterWristband.jsx
+:        roster={state.active?.players}
+src/app/route_registration_team/events.jsx:
+state.active?.players.find(
+
+
+
+* Refactor flash Messages
+The way my flash-messages system now works is thus:
+
+the useFlashMessage hook returns a function called getFm.
+
+The getFm is responsible for rendering a portal.
+
+As such whenever i want to create a flash message i need to invoke the getFm()
+function as part of the returned jsx element tree of a component.
+
+
+That in my opinion leads to tight coupling between my flash-messages system and
+my application.
+
+Instead what i could is is thus:
+
+Instead of having one element tree, i could have 2.
+
+One for my app and one for my flash messages.
+
+like so:
+
+
+ReactDOM.createRoot(document.getElementById('app-react-root')).render(
+<RouterProvider router={router}>
+)
+
+ReactDOM.createRoot(document.getElementById('flash-messages-react-root')).render(
+<FlashMessages/>
+);
+
+
+The flashMessages compoent renders everything inside FLASH_MESSAGES.
+
+on unmount it saves the contents of FLASH_MESSAGES in session.
+on mount if FLASH_MESSAGES is not empty it sets up a timeout.
+this timeout is responsible for removing the flash messages.
+
+the useflashmessage renders
+
+
+Why do i need to keep refereneces? i dont. but that will save me the trouble of
+using ids.
+
+the useFlashmessage
+
+calls render.
+create fm -> creates a node.
+options.timeout
+
+set -> adds an fm to the list of fms.
+fms = [
+{ timeout: 1234 }
+]
+
+flashMessages rerenders.
+
+on each rerender get
 
 

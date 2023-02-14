@@ -1,10 +1,30 @@
+const WRISTBAND_STATUS = {
+  paired: 1,
+  registered: 2,
+  verified: 3,
+};
+
+const WRISTBAND_COLOR_CODES = [
+  "black",
+  "red",
+  "purple",
+  "green",
+  "yellow",
+  "blue",
+  "orange",
+];
+
+const WRISTBAND_SCHEMA = {
+  number: 0,
+  colorCode: null,
+  status: null,
+  pairing: false,
+};
+
 const PLAYER_SCHEMA = {
   username: "",
   firstName: "",
-  wristbandNumber: 0,
-  wristbandColorCode: 0,
-  wristbandStatus: "",
-  wristbandPairing: false,
+  wristband: WRISTBAND_SCHEMA,
 };
 const PACKAGE_SCHEMA = {
   id: 0,
@@ -37,26 +57,32 @@ const active_team = {
     {
       username: "test1",
       firstName: "yolo1",
-      wristbandNumber: 1,
-      wristbandColorCode: 1,
-      wristbandStatus: "paired",
-      wristbandPairing: false,
+      wristband: {
+        number: 1,
+        colorCode: 1,
+        status: WRISTBAND_STATUS["paired"],
+        pairing: false,
+      },
     },
     {
       username: "test2",
       firstName: "yolo2",
-      wristbandNumber: 2,
-      wristbandColorCode: 2,
-      wristbandStatus: "paired",
-      wristbandPairing: false,
+      wristband: {
+        number: 2,
+        colorCode: 2,
+        status: WRISTBAND_STATUS["paired"],
+        pairing: false,
+      },
     },
     {
       username: "test3",
       firstName: "yolo3",
-      wristbandNumber: 3,
-      wristbandColorCode: 3,
-      wristbandStatus: "",
-      wristbandPairing: true,
+      wristband: {
+        number: 3,
+        colorCode: 3,
+        status: null,
+        pairing: true,
+      },
     },
   ],
 };

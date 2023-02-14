@@ -1,14 +1,27 @@
 import * as React from "react";
 import { registrationTestState } from "./store.test";
 
-const PLAYER_SCHEMA = {
-  username: "",
-  firstName: "",
+const WRISTBAND_STATUS = {
+  paired: 1,
+  registered: 2,
+  verified: 3,
+};
 
+const WRISTBAND_COLOR_CODES = [
+  "black",
+  "red",
+  "purple",
+  "green",
+  "yellow",
+  "blue",
+  "orange",
+];
+
+const WRISTBAND_SCHEMA = {
   /**
-     @value {Integer} - Wristband Id
-  */
-  wristbandNumber: 0,
+    @value {Integer} - Wristband Id
+ */
+  number: 0,
 
   /**
      @value {Integer} - A pool of wristband colors
@@ -22,18 +35,24 @@ const PLAYER_SCHEMA = {
      5 - blue
      6 - orange
   */
-  wristbandColorCode: 0,
+  colorCode: null,
 
   /**
      @value {String} - a wristband is
      first paired, then registered, then verified.
   */
-  wristbandStatus: "",
+  status: null,
 
   /**
      @value {Boolean} - Maybe not needed.
   */
-  wristbandPairing: false,
+  pairing: false,
+};
+
+const PLAYER_SCHEMA = {
+  username: "",
+  firstName: "",
+  wristband: WRISTBAND_SCHEMA,
 };
 
 const PACKAGE_SCHEMA = {
@@ -148,20 +167,20 @@ const registrationReducer = (state, action) => {
       break;
     case "pair_wristband": // thin, toggle
       state.active.roster = state.active.roster.map((player) => {
-        if (player.username === action.username) {
-          player.wristbandPairing = action.pairing;
+        if (player.username === action.player.username) {
+          player.wristband = {
+            number:
+              action.wristband?.wristbandNumber || WRISTBAND_SCHEMA.number,
+            colorCode:
+              action.wristband?.wristbandColor || WRISTBAND_SCHEMA.color,
+            status: action.wristband ? WRISTBAND_STATUS["paired"] : null,
+            pairing: action.pairing,
+          };
         } else {
-          player.wristbandPairing = false;
+          player.wristband.pairing = false;
         }
         return player;
       });
-      // state.active?.players.forEach((player) => {
-      //   if (player.username === action.username) {
-      //     player.wristbandPairing = action.pairing;
-      //   } else {
-      //     player.wristbandPairing = false;
-      //   }
-      // });
       return {
         ...state,
       };
@@ -215,4 +234,4 @@ const RegistrationProvider = ({ children }) => {
   );
 };
 
-export { useRegistrationContext, RegistrationProvider };
+export { useRegistrationContext, RegistrationProvider, WRISTBAND_STATUS };
