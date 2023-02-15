@@ -125,7 +125,6 @@ function ConfirmUnpairDialog({
   open: controlledOpen,
   onOpenChange: setControlledOpen,
   onUnpair,
-  onCancel,
   ...props
 }) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
@@ -139,7 +138,14 @@ function ConfirmUnpairDialog({
       </StyleCloseDialogButton>
       <MyDialog>
         <DialogTitle>Unpair wristband?</DialogTitle>
-        <ButtonTextBasic onClick={onUnpair}>unpair</ButtonTextBasic>
+        <ButtonTextBasic
+          onClick={() => {
+            onUnpair();
+            setOpen(false);
+          }}
+        >
+          unpair
+        </ButtonTextBasic>
         <ButtonTextBasic onClick={() => setOpen(false)}>cancel</ButtonTextBasic>
       </MyDialog>
     </StyleBasicDialog>

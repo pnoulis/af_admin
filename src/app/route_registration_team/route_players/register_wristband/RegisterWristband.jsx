@@ -4,9 +4,8 @@ import { TeamRoster } from "./TeamRoster";
 import { WristbandStatus } from "./WristbandStatus";
 import {
   useRegistrationContext,
-  WRISTBAND_STATUS,
+  usePairPlayerWristband,
 } from "/src/app/route_registration_team";
-import { ConfirmUnpairDialog } from "./ConfirmUnpairDialog";
 
 const StyleLayoutRegisterWristband = styled.div`
   all: unset;
@@ -40,20 +39,10 @@ const StyleLayoutItemWristbandStatus = styled(WristbandStatus)`
 
 function RegisterWristband() {
   const { state, dispatchRegistration } = useRegistrationContext();
-  const [showDialog, setShowDialog] = React.useState(false);
-
-  const handleOnWristbandPair = React.useCallback((player) => {
-    if (player.wristband.status >= WRISTBAND_STATUS["paired"]) {
-      setShowDialog(true);
-    } else {
-      dispatchRegistration({
-        type: "pair_wristband",
-        player,
-        pairing: !player.wristband.pairing,
-        wristband: null,
-      });
-    }
-  }, []);
+  const handlePairPlayerWristband = usePairPlayerWristband(
+    state,
+    dispatchRegistration
+  );
 
   const handleOnPlayerRemove = React.useCallback(() => {}, []);
 
@@ -66,10 +55,9 @@ function RegisterWristband() {
       <StyleLayoutItemTeamRoster
         roster={state.active?.roster}
         onPlayerRemove={handleOnPlayerRemove}
-        onWristbandPair={handleOnWristbandPair}
+        onWristbandPair={handlePairPlayerWristband}
       />
       <StyleLayoutItemWristbandStatus />
-      <ConfirmUnpairDialog open={showDialog} onOpenChange={setShowDialog} />
     </StyleLayoutRegisterWristband>
   );
 }

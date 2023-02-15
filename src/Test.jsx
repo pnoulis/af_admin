@@ -5,7 +5,6 @@ import * as ReactServer from "react-dom/server";
 import styled from "styled-components";
 import { FlashMessage } from "/src/flash_messages";
 import { Card_0 } from "/src/components/cards/";
-import { ConfirmUnpairDialog } from "/src/app/route_registration_team/route_players/register_wristband/ConfirmUnpairDialog.jsx";
 import { Modal } from "/src/modals";
 const Container = styled.div`
   width: 100%;
@@ -78,13 +77,7 @@ function Test() {
     <React.Fragment>
       <Container ref={myRef}>
         <MyCard>
-          <button
-            onClick={() => {
-              Modal.render(<ConfirmUnpairDialog initialOpen />);
-            }}
-          >
-            create modal
-          </button>
+          <button onClick={() => {}}>create modal</button>
           <div id="fm-root"></div>
         </MyCard>
       </Container>

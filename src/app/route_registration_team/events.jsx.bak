@@ -80,7 +80,7 @@ function usePairPlayerWristband() {
     return () => unsubscribe();
   }, []);
 
-  const handleOnPairWristband = React.useCallback((player) => {
+  const handleOnWristbandPair = React.useCallback((player) => {
     if (player.wristband.status >= WRISTBAND_STATUS["paired"]) {
       // show dialog
     } else {
@@ -88,14 +88,9 @@ function usePairPlayerWristband() {
         type: "pair_wristband",
         player,
         pairing: !player.wristband.pairing,
-        wristband: null,
       });
     }
   }, []);
 
-  return {
-    handleOnPairWristband,
-  };
+  return handleOnWristbandPair;
 }
-
-export { useAddPlayerToTeam };

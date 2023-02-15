@@ -3,7 +3,11 @@ import { TextInput_0 } from "/src/components/textInputs";
 import { ButtonText } from "/src/components/buttons";
 import styled from "styled-components";
 import { FormStore } from "/src/stores";
-import { useAddPlayerToTeam } from "/src/app/route_registration_team";
+import {
+  useLoginPlayer,
+  useRegistrationContext,
+} from "/src/app/route_registration_team";
+import { useAddPlayerToTeam } from "../../events";
 
 const TextInput = styled(TextInput_0)`
   height: 55px;
@@ -44,15 +48,33 @@ const StyleErrorMessage = styled.p`
 `;
 
 function LoginPlayerForm() {
-  const { addPlayerToTeam, getFm } = useAddPlayerToTeam();
+  const { state, dispatchRegistration } = useRegistrationContext();
+  const handleLoginPlayer = useLoginPlayer();
+  const handleAddplayerToTeam = useAddPlayerToTeam();
   const [form, setForm] = FormStore.init({
     error: "",
     errors: {},
+    submitting: false,
     fields: {
       username: "",
       password: "",
     },
   });
+
+  React.useEffect(() => {
+    if (!form.submitting) return;
+    handleLoginPlayer(form.fields, (err, res) => {
+      if (err) {
+        throw new Error("500 - Internal server error page");
+      } else if (res.result === "NOK") {
+        setForm("setError", res.message);
+        setForm("setSubmit", false);
+      } else {
+        setForm("reset");
+        handleAddplayerToTeam(state, dispatchRegistration, res.player);
+      }
+    });
+  }, [form.submitting]);
 
   return (
     <FormStore.Provide value={{ ...form, setForm }}>
@@ -61,14 +83,18 @@ function LoginPlayerForm() {
         onSubmit={(e) => {
           e.preventDefault();
           if (Object.values(form.fields).some((field) => !field)) return;
-          addPlayerToTeam(form, setForm);
+          setForm("setSubmit", true);
         }}
       >
         <legend>login player</legend>
         <TextInput name="username" />
         <TextInput type="password" name="password" />
         <StyleErrorMessage>{form.error}</StyleErrorMessage>
-        <ButtonText form="loginPlayerForm" type="submit">
+        <ButtonText
+          form="loginPlayerForm"
+          type="submit"
+          disabled={form.submitting}
+        >
           login
         </ButtonText>
       </StyleLoginPlayerForm>

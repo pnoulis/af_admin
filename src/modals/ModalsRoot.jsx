@@ -2,11 +2,12 @@ import * as React from "react";
 import { Modal } from "./Modal";
 
 function ModalsRoot({ root }) {
+  const rootRef = React.useRef(null);
   React.useEffect(() => {
-    Modal.mountPoint = root;
+    Modal.mountPoint = rootRef.current;
   }, []);
 
-  return <React.Fragment></React.Fragment>;
+  return <div ref={rootRef}></div>;
 }
 
 export { ModalsRoot };

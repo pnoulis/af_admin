@@ -27,7 +27,7 @@ body {
   max-height: 100vh;
   font-size: 1rem;
   position: absolute;
-  overflow: scroll;
+  overflow: auto;
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans;
 }
 

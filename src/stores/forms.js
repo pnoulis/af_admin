@@ -11,10 +11,12 @@ const actions = {
   setError(error) {
     return { type: "ERROR", error };
   },
+  setSubmit(submitting) {
+    return { type: "SUBMIT", submitting };
+  },
 };
 
 function reducer(state, action) {
-  state.invalid = false;
   let newState;
   switch (action.type) {
     case "ERROR":
@@ -36,6 +38,11 @@ function reducer(state, action) {
       return newState;
     case "RESET":
       return action.initialState;
+    case "SUBMIT":
+      return {
+        ...state,
+        submitting: action.submitting,
+      };
     default:
       return state;
   }
@@ -44,7 +51,8 @@ function reducer(state, action) {
 const FORM_SCHEMA = {
   fields: {},
   errors: {},
-  invalid: true,
+  error: "",
+  submitting: false,
 };
 const formContext = React.createContext(FORM_SCHEMA);
 const useFormContext = () => useContext(formContext);

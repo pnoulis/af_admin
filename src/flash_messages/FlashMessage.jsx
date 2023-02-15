@@ -52,42 +52,42 @@ FlashMessage.prototype.warn = function warn(message = "", options) {
   const fmRoot = this.createRoot(options);
   this.render(
     fmRoot,
-    <StyleLayoutFmBase variant="warning" {...props}>
+    <StyleLayoutFlashMessage variant="warning">
       <StyleLayoutFmItemIcon>
         <Svg color="white">
           <WarningIcon />
         </Svg>
       </StyleLayoutFmItemIcon>
       <StyleLayoutFmItemMessage>{message}</StyleLayoutFmItemMessage>
-    </StyleLayoutFmBase>
+    </StyleLayoutFlashMessage>
   );
 };
 FlashMessage.prototype.error = function error(message = "", options) {
   const fmRoot = this.createRoot(options);
   this.render(
     fmRoot,
-    <StyleLayoutFmBase variant="error" {...props}>
+    <StyleLayoutFlashMessage variant="error">
       <StyleLayoutFmItemIcon>
         <Svg color="white">
           <ErrorIcon />
         </Svg>
       </StyleLayoutFmItemIcon>
       <StyleLayoutFmItemMessage>{message}</StyleLayoutFmItemMessage>
-    </StyleLayoutFmBase>
+    </StyleLayoutFlashMessage>
   );
 };
 FlashMessage.prototype.success = function success(message = "", options) {
   const fmRoot = this.createRoot(options);
   this.render(
     fmRoot,
-    <StyleLayoutFmBase variant="success" {...props}>
+    <StyleLayoutFlashMessage variant="success">
       <StyleLayoutFmItemIcon>
         <Svg color="white">
           <SuccessIcon />
         </Svg>
       </StyleLayoutFmItemIcon>
       <StyleLayoutFmItemMessage>{message}</StyleLayoutFmItemMessage>
-    </StyleLayoutFmBase>
+    </StyleLayoutFlashMessage>
   );
 };
 FlashMessage.prototype.custom = function custom(customFm, options) {

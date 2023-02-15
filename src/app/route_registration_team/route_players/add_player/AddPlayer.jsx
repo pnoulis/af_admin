@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { ToggleForm } from "./ToggleForm";
 import { LoginPlayerForm } from "./LoginPlayerForm";
 import { RegisterPlayerForm } from "./RegisterPlayerForm";
+import {
+  useAddPlayerToTeam,
+  useRegistrationContext,
+} from "/src/app/route_registration_team";
 
 const StyleLayoutAddPlayer = styled.div`
   all: unset;
@@ -36,15 +40,18 @@ const StyleLayoutItemPlayerForm = styled.section`
 `;
 
 function AddPlayer() {
-  const [registerUser, setRegisterUser] = React.useState(false);
+  const { state, dispatchRegistration } = useRegistrationContext();
+  const handleAddPlayerToTeam = useAddPlayerToTeam(state, dispatchRegistration);
+  const [show, setShow] = React.useState(false);
+
   return (
     <StyleLayoutAddPlayer>
       <StyleLayoutItemToggleForm
-        registerUser={registerUser}
-        onToggle={() => setRegisterUser((prev) => !prev)}
+        registerUser={show}
+        onToggle={() => setShow((prev) => !prev)}
       />
       <StyleLayoutItemPlayerForm>
-        {registerUser ? <RegisterPlayerForm /> : <LoginPlayerForm />}
+        {show ? <RegisterPlayerForm /> : <LoginPlayerForm />}
       </StyleLayoutItemPlayerForm>
     </StyleLayoutAddPlayer>
   );

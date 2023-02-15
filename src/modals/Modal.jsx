@@ -1,3 +1,4 @@
+import ReactDOM from "react-dom";
 import * as ReactClient from "react-dom/client";
 
 function Modal() {}
@@ -7,8 +8,10 @@ Modal.prototype.render = function render(modal) {
     throw new Error("<ModalsRoot/> has not mounted");
   }
 
-  this.mountPoint.render(modal);
-  // ReactClient.createRoot(this.mountPoint).render(modal);
+  const modalRoot = document.createElement("article");
+  const reactroot = ReactClient.createRoot(modalRoot);
+  this.mountPoint.appendChild(modalRoot);
+  reactroot.render(modal);
 };
 
 const modal = new Modal();

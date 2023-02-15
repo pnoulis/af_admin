@@ -30,6 +30,20 @@ function MqttRoute({ children }) {
 
 function PublishSuccessLogin() {
   const { server } = useMqtt();
+  const [message, setMessage] = React.useState({});
+
+  React.useEffect(() => {
+    const unsubscribe = server.subscribe("/player/login", (err, message) => {
+      if (err) {
+        throw new Error(err);
+      }
+
+      setMessage(message);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const payload = {
     timestamp: 123456789, // Milliseconds
     result: "OK",
@@ -45,7 +59,13 @@ function PublishSuccessLogin() {
   return (
     <StyleMqttRouteItem
       onClick={() => {
-        server.publish("/player/login", payload);
+        server.publish("/player/login", {
+          ...payload,
+          player: {
+            ...payload.player,
+            ...message,
+          },
+        });
       }}
     >
       publish success login

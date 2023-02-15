@@ -935,8 +935,7 @@ that the next scan shall belong to the new user.
 
 the register wristband toggles the wristbandPairing mode of the specified user.
 
-
-
+*** TODO the wristbandPairing flag should be atteched to the player not on the wristband
 * Producing git logs
 git show --stat --oneline range..range
 git show --stat --oneline range..range | grep -n -A 1 insertions > gitlog

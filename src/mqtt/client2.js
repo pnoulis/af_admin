@@ -300,7 +300,7 @@ Proxy.prototype.subscribe = function (alias, options, cb) {
   }
   const [topic, pub, sub] = this.registry.resolve(alias);
 
-  const client = this._subscribe(sub, cb, options);
+  const client = this._subscribe(sub, cb, false, options);
   return () => this.unregisterClient(sub, client.id);
 };
 
