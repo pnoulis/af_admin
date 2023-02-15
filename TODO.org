@@ -65,3 +65,5 @@ things within a panel.
 dialogs
 
 
+
+* TODO make flashMessages persistent and tab/window global
