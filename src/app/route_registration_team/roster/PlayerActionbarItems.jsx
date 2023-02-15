@@ -1,7 +1,7 @@
 import * as React from "react";
-import { SvgTooltip, SvgBall, Svg } from "/src/components/svgs";
+import { SvgTooltip, SvgBall, Svg, SvgButton } from "/src/components/svgs";
 import styled, { css, keyframes } from "styled-components";
-import { ReactComponent as Trash } from "/assets/icons/trash_1.svg";
+import { ReactComponent as TrashIcon } from "/assets/icons/trash_1.svg";
 import { ReactComponent as Signal } from "/assets/icons/signal_1.svg";
 import { ReactComponent as EuroIcon } from "/assets/icons/euro-cropped.svg";
 import { ReactComponent as DiscountIcon } from "/assets/icons/discount-cropped.svg";
@@ -41,6 +41,16 @@ const animatePairing = css`
   animation: ${animate} 1s infinite;
 `;
 
+const StyleTooltipContent = styled(TooltipContent)`
+  background-color: white;
+  padding: 5px 8px;
+  font-size: 1rem;
+  box-shadow: var(--card-basic-shadow-2);
+  border-radius: 4px;
+  font-family: NoirPro-Light;
+  letter-spacing: 2px;
+`;
+
 const StylePlayerActionbarItemWristbandPair = styled(SvgBall)`
   &:hover {
     cursor: pointer;
@@ -57,7 +67,18 @@ const StylePlayerActionbarItemWristbandPair = styled(SvgBall)`
   ${({ pairing }) => (pairing ? animatePairing : "")};
 `;
 
-function PlayerActionbarItemRosterRemove({ size }) {
+function PlayerActionbarItemRosterRemove({ size, ...props }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger {...props}>
+        <SvgButton size={size || "30px"}>
+          <TrashIcon />
+        </SvgButton>
+      </TooltipTrigger>
+      <StyleTooltipContent>remove player</StyleTooltipContent>
+    </Tooltip>
+  );
+
   return (
     <SvgTooltip title="remove player" size={size || "30px"}>
       <Trash />
@@ -83,7 +104,7 @@ function PlayerActionbarItemWristbandPair({
           <Signal />
         </StylePlayerActionbarItemWristbandPair>
       </TooltipTrigger>
-      <TooltipContent>pair wristband</TooltipContent>
+      <StyleTooltipContent>pair wristband</StyleTooltipContent>
     </Tooltip>
   );
 }

@@ -8,11 +8,9 @@ const StyleLayoutFlashMessagesRoot = styled.div`
   grid-auto-columns: 1fr;
   grid-auto-rows: 1fr;
   gap: 20px;
-  min-height: 50px;
   width: 100%;
   bottom: 0;
   margin-bottom: 30px;
-  background-color: green;
 `;
 
 function FlashMessagesRoot() {

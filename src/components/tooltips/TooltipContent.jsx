@@ -13,6 +13,7 @@ const TooltipContent = React.forwardRef(function TooltipContent(
     <FloatingPortal>
       {context.open && (
         <div
+          className={props.className}
           ref={ref}
           style={{
             position: context.strategy,

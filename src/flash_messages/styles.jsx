@@ -3,6 +3,7 @@ import styled from "styled-components";
 const StyleLayoutFlashMessage = styled.div`
   padding: 10px 20px;
   min-width: 350px;
+  max-width: 500px;
   width: max-content;
   margin: auto;
   border-radius: var(--border-radius-0);
