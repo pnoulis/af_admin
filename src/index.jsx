@@ -4,7 +4,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { testRoutes } from "./Test";
 import { routesApp } from "/src/app";
 import "@fontsource/roboto";
-import { FlashMessagesRoot } from "./flash_messages_2";
+import { FlashMessagesRoot } from "./flash_messages";
+import { ModalsRoot } from "./modals";
 
 console.log(`App running in ${import.meta.env.MODE} mode!`);
 
@@ -36,5 +37,14 @@ ReactDOM.createRoot(
 ).render(
   <React.StrictMode>
     <FlashMessagesRoot />
+  </React.StrictMode>
+);
+
+const modalsRoot = ReactDOM.createRoot(
+  document.getElementById("modals-react-root")
+);
+modalsRoot.render(
+  <React.StrictMode>
+    <ModalsRoot root={modalsRoot} />
   </React.StrictMode>
 );

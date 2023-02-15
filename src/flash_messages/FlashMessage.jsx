@@ -103,5 +103,4 @@ FlashMessage.prototype.custom = function custom(customFm, options) {
 };
 
 const flashMessage = new FlashMessage();
-
 export { flashMessage as FlashMessage };

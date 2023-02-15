@@ -53,17 +53,9 @@ two buttons
 save team
 delete team.
 
-* Players List and Players Info
 * TODO Team name scratch
-* card with outline
-* svg icon balls
 * TODO Add ripple to sidebar links
-* Types of cards
-flash messsages
-panel
-things within a panel.
-dialogs
-
-
-
 * TODO make flashMessages persistent and tab/window global
+use indexDb and service workers.
+
+* TODO create a better modal system

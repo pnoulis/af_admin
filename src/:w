@@ -80,7 +80,7 @@ function Test() {
         <MyCard>
           <button
             onClick={() => {
-              Modal.render(<ConfirmUnpairDialog initialOpen />);
+              Modal.render(<p>something</p>);
             }}
           >
             create modal

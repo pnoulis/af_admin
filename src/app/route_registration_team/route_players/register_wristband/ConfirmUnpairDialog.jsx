@@ -1,6 +1,7 @@
 import { Dialog } from "/src/components/dialogs";
 import styled from "styled-components";
 import * as React from "react";
+import ReactClient from "react-dom/client";
 import { ReactComponent as CloseIcon } from "/assets/icons/cancel_1.svg";
 import { Svg } from "/src/components/svgs";
 import { createRipple } from "/src/lib";

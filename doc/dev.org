@@ -956,7 +956,6 @@ src/app/route_registration_team/events.jsx:
 state.active?.players.find(
 
 
-
 * Refactor flash Messages
 The way my flash-messages system now works is thus:
 
