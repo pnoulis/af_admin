@@ -1,116 +1,107 @@
 import * as React from "react";
-import styled from "styled-components";
+import * as ReactClient from "react-dom/client";
 import { ReactComponent as InfoIcon } from "/assets/icons/info-outlined.svg";
-import { ReactComponent as ErrorIcon } from '/assets/icons/error-outlined.svg';
-import { ReactComponent as WarningIcon } from '/assets/icons/warning-outlined.svg';
-import { ReactComponent as SuccessIcon } from '/assets/icons/task-success-outlined.svg';
-import { FlashMessageBase } from "./FlashMessageBase";
+import { ReactComponent as ErrorIcon } from "/assets/icons/error-outlined.svg";
+import { ReactComponent as WarningIcon } from "/assets/icons/warning-outlined.svg";
+import { ReactComponent as SuccessIcon } from "/assets/icons/task-success-outlined.svg";
 import { Svg } from "/src/components/svgs";
+import {
+  StyleLayoutFlashMessage,
+  StyleLayoutFmItemIcon,
+  StyleLayoutFmItemMessage,
+} from "./styles";
 
+function FlashMessage() {}
 
-const StyleLayoutFmBase = styled(FlashMessageBase)`
-  padding: 10px 20px;
-  min-width: 350px;
-  border-radius: var(--border-radius-0);
-  font-size: var(--text-md);
-  letter-spacing: 1px;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  color: white;
-  gap: 20px;
-  box-shadow: 2px 8px 50px rgba(0, 0, 0, 0.3), -2px -2px 8px rgba(0, 0, 0, 0.3);
+FlashMessage.prototype.render = function render(fmRoot, fmContent) {
+  if (!this.mountPoint) {
+    throw new Error("<FlashMessageRoot/> has not mounted");
+  }
+  if (!this.setFm) {
+    throw new Error("Missing flashMessage setter!");
+  }
 
-  background-color: ${({ variant }) => {
-    switch (variant) {
-      case "info":
-        return "var(--info)";
-      case "success":
-        return "var(--success - strong)";
-      case "warning":
-        return "var(--warn)";
-      case "error":
-        return "var(--error-2)";
-      default:
-        return "black";
-    }
-  }};
-`;
+  this.mountPoint.appendChild(fmRoot);
+  ReactClient.createRoot(fmRoot).render(fmContent);
+  this.setFm({ timeout: fmRoot.getAttribute("data-timeout") });
+};
 
-const StyleLayoutFmItemIcon = styled.section`
-  flex: 0 0 50px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const StyleLayoutFmItemMessage = styled.section`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+FlashMessage.prototype.createRoot = function create({ timeout = 5000 } = {}) {
+  timeout = Date.now() + timeout;
+  const fmRoot = document.createElement("article");
+  fmRoot.setAttribute("class", "flash-message");
+  fmRoot.setAttribute("data-timeout", timeout);
+  return fmRoot;
+};
 
-function FlashMessageInfo({ message, ...props }) {
-  return (
-    <StyleLayoutFmBase variant="info" {...props}>
+FlashMessage.prototype.info = function info(message, options) {
+  const fmRoot = this.createRoot(options);
+  this.render(
+    fmRoot,
+    <StyleLayoutFlashMessage variant="info">
       <StyleLayoutFmItemIcon>
         <Svg color="white">
           <InfoIcon />
         </Svg>
       </StyleLayoutFmItemIcon>
       <StyleLayoutFmItemMessage>{message}</StyleLayoutFmItemMessage>
-    </StyleLayoutFmBase>
+    </StyleLayoutFlashMessage>
   );
-}
-
-function FlashMessageSuccess({ message, ...props }) {
-  return (
-    <StyleLayoutFmBase variant="success" {...props}>
-      <StyleLayoutFmItemIcon>
-        <Svg color='white'>
-          <SuccessIcon/>
-        </Svg>
-      </StyleLayoutFmItemIcon>
-      <StyleLayoutFmItemMessage>{message}</StyleLayoutFmItemMessage>
-    </StyleLayoutFmBase>
-  );
-}
-
-function FlashMessageWarning({ message, ...props }) {
-  return (
+};
+FlashMessage.prototype.warn = function warn(message = "", options) {
+  const fmRoot = this.createRoot(options);
+  this.render(
+    fmRoot,
     <StyleLayoutFmBase variant="warning" {...props}>
       <StyleLayoutFmItemIcon>
-        <Svg color='white'>
-          <WarningIcon/>
+        <Svg color="white">
+          <WarningIcon />
         </Svg>
       </StyleLayoutFmItemIcon>
       <StyleLayoutFmItemMessage>{message}</StyleLayoutFmItemMessage>
     </StyleLayoutFmBase>
   );
-}
-
-function FlashMessageError({ message, ...props }) {
-  return (
+};
+FlashMessage.prototype.error = function error(message = "", options) {
+  const fmRoot = this.createRoot(options);
+  this.render(
+    fmRoot,
     <StyleLayoutFmBase variant="error" {...props}>
       <StyleLayoutFmItemIcon>
-        <Svg color='white'>
-          <ErrorIcon/>
+        <Svg color="white">
+          <ErrorIcon />
         </Svg>
       </StyleLayoutFmItemIcon>
       <StyleLayoutFmItemMessage>{message}</StyleLayoutFmItemMessage>
     </StyleLayoutFmBase>
   );
-}
-
-function FlashMessageCustom({ children, ...props }) {
-  return <FlashMessageBase {...props}>{children}</FlashMessageBase>;
-}
-
-export {
-  FlashMessageInfo,
-  FlashMessageSuccess,
-  FlashMessageWarning,
-  FlashMessageError,
-  FlashMessageCustom,
 };
+FlashMessage.prototype.success = function success(message = "", options) {
+  const fmRoot = this.createRoot(options);
+  this.render(
+    fmRoot,
+    <StyleLayoutFmBase variant="success" {...props}>
+      <StyleLayoutFmItemIcon>
+        <Svg color="white">
+          <SuccessIcon />
+        </Svg>
+      </StyleLayoutFmItemIcon>
+      <StyleLayoutFmItemMessage>{message}</StyleLayoutFmItemMessage>
+    </StyleLayoutFmBase>
+  );
+};
+FlashMessage.prototype.custom = function custom(customFm, options) {
+  if (!React.isValidElement(customFm)) {
+    throw new Error("Custom Flash Message is not a valid React Element");
+  }
+
+  const fmRoot = this.createRoot(options);
+  this.render(
+    fmRoot,
+    <StyleLayoutFlashMessage>{customFm}</StyleLayoutFlashMessage>
+  );
+};
+
+const flashMessage = new FlashMessage();
+
+export { flashMessage as FlashMessage };

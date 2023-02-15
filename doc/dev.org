@@ -1017,3 +1017,113 @@ flashMessages rerenders.
 on each rerender get
 
 
+The user wants to create a new flash message.
+
+The service worker receives the request.
+It creates a new flash message. it writes it to file.
+
+on file change the clients are notified. They mount the new file.
+
+
+* Javascript inheritance
+** What is the prototype chain.
+The prototype inheritance system is the mechanism utilized by the language in its
+efforts to support object oriented programming.
+
+In recent ECMAscript versions the word *class* has been implemented as a
+keyword. The keyword *class* is used to create classes, but that is no different
+from instantiating a new object using a function and the keyword new.
+
+for example:
+
+class Human {
+constructor(height, age) {
+this.height = height;
+this.width = width;
+}
+}
+const pavlos = new Human();
+
+function Human(height, age) {
+this.height = height;
+this.age = age;
+}
+const pavlos = new Human();
+
+
+Both syntaxes produce an Object.
+Both syntaxes utilize the prototype inheritance system.
+
+Every property of an object in javascript may be placed in these categories:
+
+Enumerable or Non-Enumerable
+Owned or Inherited
+
+When an object in instantiated the javascript runtime makes sure to assign the
+__proto__ property to it. The __proto__ key represents the parent of the object
+in terms of property inheritance, it is itself an object. Meaning that Every
+Object in javascript inherits the properties of the __proto__ object. THe
+__proto__ object inherits properties from its own __proto__ object and so on and
+so forth until the end of the chain is reached. The end of the chain is reached
+when the __proto__ property has a value of null.
+
+** The prototype property
+Some objects in javascript also get assigned the 'prototype' property at
+runtime. This is not to be confused with the __proto__ property.
+
+Only functions get assigned the prototype property and that takes place only if
+they are instantiated with the new keyword.
+
+The prototype property shadows the __proto__ property. Meaning that the
+prototype object of objects created using a constructor is not __proto__ but prototype.
+
+
+** Property shadowing
+Property shadowing takes place when an object's property with a name 'A' is
+replaced by a property of the same name 'A' somewhere below the property
+inheritance chain.
+
+Given the property inheritance chain:
+
+objectC -> objectB -> objectA
+
+where -> objectB.hasOwnProperty(A) && objectC.hasOwnProperty(A)
+
+then if the proprety A is accessed like so:
+
+objectC.A
+
+we have property shadowing.
+
+
+the property objectC.A shadows property Object.getPrototypeOf(objectC).A
+
+** Creating custom inheritance prototype chains
+
+*** using Object.create
+*** Using Functions, object.assign, and utilizing the prototype property 
+const personPrototype = {
+greet() {
+console.log(`hello, my name is ${this.name}!`);
+};
+
+function Person(name) {
+this.name = name;
+}
+
+// Object.assign modifies the target object in place
+// Object.assign(target, source);
+Object.assign(Person.prototype, personPrototype);
+
+// Or
+Person.prototype.greet = personPrototype.greet;
+
+// Or
+Person.prototype.greet = function greet() {
+}
+
+
+const pavlos = new Person();
+
+
+

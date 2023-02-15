@@ -1,11 +1,11 @@
 import * as React from "react";
 import { useMqtt } from "/src/mqtt";
-import { useFlashMessage } from "/src/flash_messages";
+// import { useFlashMessage } from "/src/flash_messages";
 import { useRegistrationContext, WRISTBAND_STATUS } from "./store";
 
 function useAddPlayerToTeam() {
   const { state, dispatchRegistration } = useRegistrationContext();
-  const [getFm, createFm] = useFlashMessage();
+  // const [getFm, createFm] = useFlashMessage();
   const { client } = useMqtt();
 
   const addPlayerToTeam = React.useCallback(
@@ -28,10 +28,10 @@ function useAddPlayerToTeam() {
           setForm("setError", res.message);
         } else {
           dispatchRegistration({ type: "add_player", player: res.player });
-          createFm({
-            type: "info",
-            message: `Successfully added ${res.player.username}`,
-          });
+          // createFm({
+          //   type: "info",
+          //   message: `Successfully added ${res.player.username}`,
+          // });
         }
       });
     },
@@ -40,7 +40,7 @@ function useAddPlayerToTeam() {
 
   return {
     addPlayerToTeam,
-    getFm,
+    // getFm,
     state,
     dispatchRegistration,
   };

@@ -4,7 +4,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { testRoutes } from "./Test";
 import { routesApp } from "/src/app";
 import "@fontsource/roboto";
-import { FlashMessages } from "./flash_messages_2";
+import { FlashMessagesRoot } from "./flash_messages_2";
 
 console.log(`App running in ${import.meta.env.MODE} mode!`);
 
@@ -35,6 +35,6 @@ ReactDOM.createRoot(
   document.getElementById("flash-messages-react-root")
 ).render(
   <React.StrictMode>
-    <FlashMessages />
+    <FlashMessagesRoot />
   </React.StrictMode>
 );

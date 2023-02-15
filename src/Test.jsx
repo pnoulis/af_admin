@@ -1,8 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as ReactClient from "react-dom/client";
+import * as ReactServer from "react-dom/server";
 import styled from "styled-components";
+import { FlashMessage } from "/src/flash_messages_2";
 import { Card_0 } from "/src/components/cards/";
-import { flashMessage } from "/src/flash_messages_2";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -63,26 +65,9 @@ const DialogTitle = styled.p`
   margin-top: 30px;
 `;
 
-const players = [
-  {
-    username: "somename",
-  },
-  {
-    username: "somename",
-  },
-  {
-    username: "somename",
-  },
-  {
-    username: "somename",
-  },
-  {
-    username: "somename",
-  },
-  {
-    username: "somename",
-  },
-];
+function SomeComp() {
+  return <p onClick={() => alert("hello")}>hello some comp flash message</p>;
+}
 
 function Test() {
   const myRef = React.useRef(null);
@@ -93,11 +78,12 @@ function Test() {
         <MyCard>
           <button
             onClick={() => {
-              flashMessage.render(null, { timeout: 1000 });
+              FlashMessage.info("yolo", {});
             }}
           >
             create flashMessage
           </button>
+          <div id="fm-root"></div>
         </MyCard>
       </Container>
       <Cont></Cont>

@@ -72,7 +72,6 @@ function LoginPlayerForm() {
           login
         </ButtonText>
       </StyleLoginPlayerForm>
-      {getFm()}
     </FormStore.Provide>
   );
 }
