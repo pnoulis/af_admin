@@ -11,9 +11,13 @@ function useAddPlayerToTeam() {
       ) {
         FlashMessage.warn(
           `Player ${newPlayer.username} is already part of the team`,
-          { timeout: 10000 }
+          { timeout: 5000 }
         );
       } else {
+        FlashMessage.info(
+          `Successfully added ${newPlayer.username} to team`,
+          { timeout: 5000 }
+        );
         setState({ type: "add_player", player: newPlayer });
       }
     },

@@ -12,9 +12,9 @@ const StyleLayoutTeamRoster = styled.div`
 
 const StyleLayoutItem = styled.div``;
 
-function TeamRoster({ onPlayerRemove, onWristbandPair, roster = [] }) {
+function TeamRoster({ onPlayerRemove, onWristbandPair, roster = [], className }) {
   return (
-    <StyleLayoutTeamRoster>
+    <StyleLayoutTeamRoster className={className}>
       {roster.map((player, i) => (
         <StyleLayoutItem key={i}>
           <PlayerWidget

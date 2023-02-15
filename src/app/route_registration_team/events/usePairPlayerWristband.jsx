@@ -18,7 +18,7 @@ function usePairPlayerWristband(state, setState) {
       }
 
       const player = state.active?.roster.find(
-        (player) => player.wristband.pairng
+        (player) => player.wristband.pairing
       );
 
       if (!player) {
@@ -29,18 +29,18 @@ function usePairPlayerWristband(state, setState) {
           player,
           pairing: false,
           wristband: {
-            ...res,
+            number: res.wristbandNumber,
+            colorCode: res.wristbandColor,
           },
         });
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [state, setState]);
 
   const handlePairPlayerWristband = React.useCallback((player) => {
     if (player.wristband.status >= WRISTBAND_STATUS["paired"]) {
-      // show dialog
       Modal.render(
         <ConfirmUnpairDialog
           initialOpen
@@ -49,7 +49,6 @@ function usePairPlayerWristband(state, setState) {
               type: "pair_wristband",
               player,
               pairing: false,
-              wristband: null,
             })
           }
         />

@@ -66,7 +66,6 @@ const StyleBasicDialog = styled(Dialog)`
   z-index: 100;
   position: fixed;
   min-width: 200px;
-  min-height: 200px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -74,7 +73,7 @@ const StyleBasicDialog = styled(Dialog)`
   box-shadow: var(--panel-shadow);
   background: var(--card-basic-color);
   border: none;
-  padding: 20px;
+  padding: 10px 15px;
   border-radius: var(--border-radius-2);
   flex-flow: column nowrap;
 
@@ -102,11 +101,12 @@ const StyleCloseDialogButton = styled(Svg)`
 
 const MyDialog = styled.div`
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column nowrap;
   width: 350px;
-  height: max-content;
-  justify-content: center;
-  gap: 40px;
+  height: 160px;
+  justify-content: space-between;
+align-items: center;
+padding: 20px 0;
 `;
 const DialogTitle = styled.p`
   font-family: NoirPro-Bold;
@@ -117,7 +117,13 @@ const DialogTitle = styled.p`
   letter-spacing: 1px;
   width: 100%;
   word-spacing: 3px;
-  margin-top: 30px;
+`;
+
+const DialogButtons = styled.div`
+width: 100%;
+display: flex;
+justify-content: center;
+gap: 40px;
 `;
 
 function ConfirmUnpairDialog({
@@ -138,15 +144,17 @@ function ConfirmUnpairDialog({
       </StyleCloseDialogButton>
       <MyDialog>
         <DialogTitle>Unpair wristband?</DialogTitle>
-        <ButtonTextBasic
-          onClick={() => {
-            onUnpair();
-            setOpen(false);
-          }}
-        >
-          unpair
-        </ButtonTextBasic>
-        <ButtonTextBasic onClick={() => setOpen(false)}>cancel</ButtonTextBasic>
+        <DialogButtons>
+          <ButtonTextBasic
+            onClick={() => {
+              onUnpair();
+              setOpen(false);
+            }}
+          >
+            unpair
+          </ButtonTextBasic>
+          <ButtonTextBasic onClick={() => setOpen(false)}>cancel</ButtonTextBasic>
+        </DialogButtons>
       </MyDialog>
     </StyleBasicDialog>
   );

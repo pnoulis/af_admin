@@ -20,6 +20,7 @@ const StyleLayoutAddPlayer = styled.div`
   /* Dimensions */
   width: 100%;
   height: 100%;
+padding-left: 50px;
   /* Position */
   /* Fonts */
   /* Effects */
@@ -35,8 +36,7 @@ const StyleLayoutItemPlayerForm = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 350px;
-  margin: auto;
+max-width: 400px;
 `;
 
 function AddPlayer() {

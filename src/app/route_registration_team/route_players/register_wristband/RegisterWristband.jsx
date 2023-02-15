@@ -5,6 +5,7 @@ import { WristbandStatus } from "./WristbandStatus";
 import {
   useRegistrationContext,
   usePairPlayerWristband,
+  useRemovePlayerRoster,
 } from "/src/app/route_registration_team";
 
 const StyleLayoutRegisterWristband = styled.div`
@@ -13,17 +14,12 @@ const StyleLayoutRegisterWristband = styled.div`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 300px;
+  grid-template-rows: minmax(15%, max-content) 1fr;
   grid-template-areas: "team_roster" "wristband_status";
-  justify-items: center;
-  align-items: center;
   gap: 30px;
   /* Dimensions */
-  width: 80%;
-  height: 100%;
   padding-bottom: 50px;
   /* Position */
-  margin: auto;
   /* Fonts */
   /* Effects */
   /* Children */
@@ -31,33 +27,34 @@ const StyleLayoutRegisterWristband = styled.div`
 
 const StyleLayoutItemTeamRoster = styled(TeamRoster)`
   grid-area: team_roster;
-  align-self: flex-start;
 `;
 const StyleLayoutItemWristbandStatus = styled(WristbandStatus)`
   grid-area: wristband_status;
+height: 300px;
+align-self: center;
 `;
 
-function RegisterWristband() {
+function RegisterWristband({className}) {
   const { state, dispatchRegistration } = useRegistrationContext();
   const handlePairPlayerWristband = usePairPlayerWristband(
     state,
     dispatchRegistration
   );
-
-  const handleOnPlayerRemove = React.useCallback(() => {}, []);
-
-  React.useEffect(() => {
-    console.log(state);
-  }, [state]);
+  const handleRemovePlayerRoster = useRemovePlayerRoster(
+    state,
+    dispatchRegistration,
+  );
 
   return (
-    <StyleLayoutRegisterWristband>
+    <StyleLayoutRegisterWristband className={className}>
       <StyleLayoutItemTeamRoster
         roster={state.active?.roster}
-        onPlayerRemove={handleOnPlayerRemove}
+        onPlayerRemove={handleRemovePlayerRoster}
         onWristbandPair={handlePairPlayerWristband}
       />
-      <StyleLayoutItemWristbandStatus />
+      <StyleLayoutItemWristbandStatus
+        pairing={state.active?.roster.some((player) => player.wristband?.pairing)}
+      />
     </StyleLayoutRegisterWristband>
   );
 }

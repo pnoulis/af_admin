@@ -11,6 +11,7 @@ const StyleLayoutRoutePlayers = styled.div`
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 2fr;
   grid-template-areas: "add_player register_wristband";
+gap: 50px;
   /* Dimensions */
   width: 100%;
   height: 100%;
@@ -27,6 +28,8 @@ const StyleLayoutItemAddPlayer = styled(AddPlayer)`
 
 const StyleLayoutItemRegisterWristband = styled(RegisterWristband)`
   grid-area: register_wristband;
+width: 90%;
+margin: 0 auto;
 `;
 
 function RoutePlayers() {

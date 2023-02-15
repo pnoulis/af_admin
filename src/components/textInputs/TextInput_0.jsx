@@ -47,6 +47,15 @@ const StyledTextInput = styled.div`
     pointer-events: none;
   }
 
+
+&:not(:focus-within) .input::placeholder {
+opacity: 0;
+}
+
+&:focus-within .input::placeholder {
+opacity: 1;
+}
+
   .input:focus ~ label,
   input:not(:placeholder-shown) ~ label {
     top: 0px;
@@ -77,7 +86,7 @@ const StyledTextInput = styled.div`
   }
 `;
 
-function TextInput_0({ className, type, name, placeholder, ...props }) {
+function TextInput_0({ className, type, name, label, placeholder, ...props }) {
   const { fields, errors, setForm } = FormStore.use();
   const onChange = useCallback(
     (e) => {
@@ -98,7 +107,7 @@ function TextInput_0({ className, type, name, placeholder, ...props }) {
         {...props}
       ></input>
       <label className="label" htmlFor={name}>
-        {name}
+        {label || name}
       </label>
     </StyledTextInput>
   );

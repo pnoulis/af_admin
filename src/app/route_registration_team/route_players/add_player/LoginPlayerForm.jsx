@@ -5,9 +5,9 @@ import styled from "styled-components";
 import { FormStore } from "/src/stores";
 import {
   useLoginPlayer,
+  useAddPlayerToTeam,
   useRegistrationContext,
 } from "/src/app/route_registration_team";
-import { useAddPlayerToTeam } from "../../events";
 
 const TextInput = styled(TextInput_0)`
   height: 55px;
@@ -43,7 +43,7 @@ const StyleLoginPlayerForm = styled.form`
 `;
 
 const StyleErrorMessage = styled.p`
-  color: red;
+  color: var(--error-2);
   text-align: center;
 `;
 

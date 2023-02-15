@@ -40,8 +40,12 @@ const WRISTBAND_SCHEMA = {
   /**
      @value {String} - a wristband is
      first paired, then registered, then verified.
+     0 - null
+     1 - paired
+     2 - registered
+     3 - verified
   */
-  status: null,
+  status: 0,
 
   /**
      @value {Boolean} - Maybe not needed.
@@ -164,27 +168,31 @@ const registrationReducer = (state, action) => {
         active: team,
       };
     case "remove_player":
-      break;
+    state.active.roster = state.active.roster.filter((player) => player.username !== action.player.username);
+    return {
+      ...state,
+    };
+    break;
     case "pair_wristband": // thin, toggle
       state.active.roster = state.active.roster.map((player) => {
         if (player.username === action.player.username) {
-          player.wristband = {
-            number:
-              action.wristband?.wristbandNumber || WRISTBAND_SCHEMA.number,
-            colorCode:
-              action.wristband?.wristbandColor || WRISTBAND_SCHEMA.color,
-            status: action.wristband ? WRISTBAND_STATUS["paired"] : null,
-            pairing: action.pairing,
-          };
+          if (action.wristband) {
+            player.wristband = {
+              ...action.wristband,
+              status: WRISTBAND_STATUS['registered'],
+              pairing: false,
+            };
+          } else {
+            player.wristband = {
+              ...WRISTBAND_SCHEMA,
+              pairing: action.pairing,
+            };
+          }
         } else {
           player.wristband.pairing = false;
         }
         return player;
       });
-      return {
-        ...state,
-      };
-    case "unpair_wristband":
       return {
         ...state,
       };
@@ -223,8 +231,14 @@ const useRegistrationContext = () => {
 const RegistrationProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(
     registrationReducer,
-    registrationTestState[1]()
+    REGISTRATION_SCHEMA,
+    // registrationTestState[1]()
   );
+
+  React.useEffect(() => {
+    console.log(state);
+  }, [state]);
+
   return (
     <RegistrationContext.Provider
       value={{ state, dispatchRegistration: dispatch }}

@@ -1,6 +1,20 @@
 import * as React from "react";
-import styled from "styled-components";
+import styled, {keyframes, css} from "styled-components";
 import { ReactComponent as WristbandIcon } from "/assets/icons/wristband_image.svg";
+
+const animate = keyframes`
+50% {
+fill: var(--grey-1);
+}
+`;
+const animatePairing = css`
+  border-color: var(--success);
+
+.handBracelet .circle {
+fill: var(--success);
+animation: ${animate} 1s infinite;
+}
+`;
 
 const StyleWristbandStatus = styled.div`
   all: unset;
@@ -16,27 +30,22 @@ const StyleWristbandStatus = styled.div`
   /* Position */
   /* Fonts */
   /* Effects */
-  box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.3); /*black with 30% opacity*/
-  border: 3px solid transparent;
+  box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.5); //black with 30% opacity
+  border: 4px solid transparent;
   border-radius: var(--border-radius-2);
 
-  &.pairing {
-    border-color: var(--success);
-    animation: pairing 1s infinite;
-  }
+${({ pairing }) => (pairing ? animatePairing : '')}
 
-  @keyframes pairing {
-    50% {
-      border-color: white;
-    }
-  }
-  /* Children */
+    /* Children */
 `;
+
+
 
 function WristbandStatus({ pairing, className }) {
   return (
     <StyleWristbandStatus
-      className={className + `${pairing ? " pairing" : ""}`}
+      pairing={pairing}
+      className={className}
     >
       <WristbandIcon />
     </StyleWristbandStatus>

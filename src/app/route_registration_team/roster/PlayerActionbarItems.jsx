@@ -67,10 +67,15 @@ const StylePlayerActionbarItemWristbandPair = styled(SvgBall)`
   ${({ pairing }) => (pairing ? animatePairing : "")};
 `;
 
-function PlayerActionbarItemRosterRemove({ size, ...props }) {
+function PlayerActionbarItemRosterRemove({
+  player,
+  onPlayerRemove = () => {},
+  size,
+  ...props
+}) {
   return (
     <Tooltip>
-      <TooltipTrigger {...props}>
+      <TooltipTrigger onClick={() => onPlayerRemove(player)} {...props}>
         <SvgButton size={size || "30px"}>
           <TrashIcon />
         </SvgButton>
@@ -78,27 +83,20 @@ function PlayerActionbarItemRosterRemove({ size, ...props }) {
       <StyleTooltipContent>remove player</StyleTooltipContent>
     </Tooltip>
   );
-
-  return (
-    <SvgTooltip title="remove player" size={size || "30px"}>
-      <Trash />
-    </SvgTooltip>
-  );
 }
 
 function PlayerActionbarItemWristbandPair({
-  pairing,
-  wristbandColorCode,
+  player,
+  onWristbandPair = () => {},
   size,
   ...props
 }) {
   return (
     <Tooltip>
-      <TooltipTrigger {...props}>
+      <TooltipTrigger onClick={() => onWristbandPair(player)} {...props}>
         <StylePlayerActionbarItemWristbandPair
-          className={pairing ? " pairing" : ""}
-          pairing={pairing}
-          wristbandColorCode={wristbandColorCode}
+          pairing={player.wristband.pairing}
+          wristbandColorCode={player.wristband.colorCode}
           size={size || "30px"}
         >
           <Signal />

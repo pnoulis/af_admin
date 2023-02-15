@@ -91,11 +91,98 @@ function PublishFailureLogin() {
   );
 }
 
+function PublishSuccessRegister() {
+  const { server } = useMqtt();
+  const [message, setMessage] = React.useState({});
+
+  React.useEffect(() => {
+    const unsubscribe = server.subscribe("/player/register", (err, message) => {
+      if (err) {
+        throw new Error(err);
+      }
+      setMessage(message);
+    });
+    return () => unsubscribe();
+  }, []);
+
+
+  const payload = {
+    timestamp: 123456789,
+    result: 'OK',
+    player: {
+      id: "a18f9fb7-9c63-4c6f-bbc0-946c9fe216fd",
+      firstName: "pavlos",
+      lastName: "noulis",
+      username: "pnoulis",
+      phone: 123456789, // Integer
+      email: "email@at.com",
+    }
+  };
+
+  return (
+    <StyleMqttRouteItem
+      onClick={() => {
+        server.publish("/player/register", {
+          ...payload,
+          player: {
+            ...payload.player,
+            ...message,
+          },
+        });
+      }}
+    >
+      publish success register
+    </StyleMqttRouteItem>
+  );
+}
+
+function PublishFailureRegister() {
+  const { server } = useMqtt();
+  const payload = {
+    timestamp: 123456789,
+    result: 'NOK',
+    message: 'Users phone number already exist',
+  };
+
+  return (
+    <StyleMqttRouteItem
+      onClick={() => {
+        server.publish("/player/register", payload);
+      }}
+    >
+      publish failure register
+    </StyleMqttRouteItem>
+  );
+}
+
+function PublishWristbandScan() {
+  const { server } = useMqtt();
+  const payload = {
+    timestamp: 123456789,
+    result: 'OK',
+    wristbandNumber: 10,
+    wristbandColor: 2,
+  };
+
+  return (
+    <StyleMqttRouteItem
+      onClick={() => {
+        server.publish('/wristband/scan', payload);
+      }}
+    >
+      publish wristband scan
+    </StyleMqttRouteItem>
+  );
+}
+
 function RouteIndex() {
   return (
     <StyleMqttRoutes>
       <PublishSuccessLogin />
       <PublishFailureLogin />
+      <PublishSuccessRegister />
+      <PublishFailureRegister />
+      <PublishWristbandScan/>
       <MqttRoute>one</MqttRoute>
       <MqttRoute>one</MqttRoute>
       <MqttRoute>one</MqttRoute>
