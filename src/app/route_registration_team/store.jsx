@@ -199,7 +199,7 @@ const registrationReducer = (state, action) => {
           if (action.wristband) {
             player.wristband = {
               ...action.wristband,
-              status: WRISTBAND_STATUS["registered"],
+              status: WRISTBAND_STATUS["paired"],
               pairing: false,
             };
           } else {
@@ -217,7 +217,15 @@ const registrationReducer = (state, action) => {
         ...state,
       };
     case "register_wristband":
-      break;
+      state.active.roster = state.active.roster.map((player) => {
+        if (player.username === action.player.username) {
+          player.wristband.status = WRISTBAND_STATUS["registered"];
+        }
+        return player;
+      });
+      return {
+        ...state,
+      };
     case "verify_wristband":
       break;
     case "merge_team":

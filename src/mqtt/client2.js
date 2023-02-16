@@ -395,6 +395,7 @@ Proxy.prototype.publish = function (alias, payload, options, cb) {
   }
 
   this._publish(pub, payload, options, client);
+  return () => this.unregisterClient(sub, client.id);
 };
 
 Proxy.prototype._publish = function (pub, payload, options, client) {

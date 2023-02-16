@@ -1125,3 +1125,31 @@ const pavlos = new Person();
 
 
 
+
+* Business logic middleware system
+** About
+This is an attempt to implement some variation of the model-view-controller
+pattern in a front end app.
+** The problem
+React is a front-end library intended to be used as the VIEW component of
+patterns such as MVC...etc.
+
+Often React is used in such a manner that its reach is expanded to include
+domains which it was not designed to cover either on purpose or by lack of
+technical knowledge.
+
+For example, hooks such as useState, useReducer and useEffect are thought of as
+implementations of the Model or Controller component of the various
+MVC...patterns.
+
+As such it is common to see data fetching, logging, validations, extensions or
+anything else within React Components. Basically React Components are
+over-utilized. They are thought of as containers of logic or actions. They act
+as both the view, the controller and the model.
+
+That is not to say that React Components must not be used in such a way. Rather
+it is saying that React Programmers often use them as such without realizing it.
+
+Therefore the purpose of this article is to explore the means by which one may
+use React strictly as the VIEW component of an MVC pattern by extracting
+the Model and the Controller part.

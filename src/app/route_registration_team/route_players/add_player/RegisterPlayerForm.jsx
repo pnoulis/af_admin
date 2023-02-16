@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import { TextInput_0 } from "/src/components/textInputs";
 import { ButtonText } from "/src/components/buttons";
 import styled from "styled-components";
@@ -9,9 +9,8 @@ import {
   useRegistrationContext,
 } from "/src/app/route_registration_team";
 
-
 const TextInput = styled(TextInput_0)`
-  height: 55px;
+  height: 50px;
   font-size: var(--text-sm);
   .input {
     border: 2px solid black;
@@ -49,7 +48,7 @@ const StyleErrorMessage = styled.p`
 `;
 
 function RegisterPlayerForm() {
-const { state, dispatchRegistration } = useRegistrationContext();
+  const { state, dispatchRegistration } = useRegistrationContext();
   const handleRegisterPlayer = useRegisterPlayer();
   const handleAddplayerToTeam = useAddPlayerToTeam();
   const [form, setForm] = FormStore.init({
@@ -93,11 +92,15 @@ const { state, dispatchRegistration } = useRegistrationContext();
         }}
       >
         <legend>register player</legend>
-        <TextInput name="firstName" label='first name'/>
-        <TextInput name="lastName" label='last name'/>
+        <TextInput name="firstName" label="first name" />
+        <TextInput name="lastName" label="last name" />
         <TextInput type="email" name="email" />
         <TextInput type="tel" name="tel" />
-        <TextInput name="dateOfBirth" label='date of birth' placeholder='1993-05-30'/>
+        <TextInput
+          name="dateOfBirth"
+          label="date of birth"
+          placeholder="1993-05-30"
+        />
         <TextInput name="username" />
         <TextInput type="text" name="password" />
         <StyleErrorMessage>{form.error}</StyleErrorMessage>
