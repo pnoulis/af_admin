@@ -31,13 +31,21 @@ const StyleLayoutPlayerWidget = styled.article`
 
 const StyleLayoutItemUsername = styled.p``;
 
-function PlayerWidget({ player, onPlayerRemove, onWristbandPair }) {
+function PlayerWidget({ index, player, onPlayerRemove, onWristbandPair }) {
   return (
     <StyleLayoutPlayerWidget>
-      <StyleLayoutItemUsername>{player.username}</StyleLayoutItemUsername>
+      <StyleLayoutItemUsername>
+        {player.assigned ? player.username : `player #${index + 1}`}
+      </StyleLayoutItemUsername>
       <PlayerActionbar>
-        <PlayerActionbarItemWristbandPair player={player} onWristbandPair={onWristbandPair}/>
-        <PlayerActionbarItemRosterRemove player={player} onPlayerRemove={onPlayerRemove}/>
+        <PlayerActionbarItemWristbandPair
+          player={player}
+          onWristbandPair={onWristbandPair}
+        />
+        <PlayerActionbarItemRosterRemove
+          player={player}
+          onPlayerRemove={onPlayerRemove}
+        />
       </PlayerActionbar>
     </StyleLayoutPlayerWidget>
   );

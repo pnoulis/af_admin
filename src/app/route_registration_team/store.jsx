@@ -54,6 +54,7 @@ const WRISTBAND_SCHEMA = {
 };
 
 const PLAYER_SCHEMA = {
+  assigned: false,
   username: "",
   firstName: "",
   wristband: WRISTBAND_SCHEMA,
@@ -131,7 +132,14 @@ const TEAM_SCHEMA = {
      1. The user makes such a request.
   */
   status: "",
-  roster: [],
+  roster: [
+    PLAYER_SCHEMA,
+    PLAYER_SCHEMA,
+    PLAYER_SCHEMA,
+    PLAYER_SCHEMA,
+    PLAYER_SCHEMA,
+    PLAYER_SCHEMA,
+  ],
 };
 const REGISTRATION_SCHEMA = {
   /**
@@ -143,7 +151,7 @@ const REGISTRATION_SCHEMA = {
 
      active = teams[n]
    */
-  active: null,
+  active: TEAM_SCHEMA,
   teams: [],
 };
 const RegistrationContext = React.createContext({});
@@ -153,10 +161,18 @@ const registrationReducer = (state, action) => {
       break;
     case "add_player":
       const team = state.active || TEAM_SCHEMA;
-      team.roster.push({
-        ...PLAYER_SCHEMA,
-        username: action.player.username,
-        firstName: action.player.firstName,
+      let assigned = false;
+      team.roster = team.roster.map((player) => {
+        if (!player.assigned && !assigned) {
+          assigned = true;
+          return {
+            ...PLAYER_SCHEMA,
+            username: action.player.username,
+            firstName: action.player.firstName,
+            assigned: true,
+          };
+        }
+        return player;
       });
 
       if (!team.id) {
@@ -168,18 +184,22 @@ const registrationReducer = (state, action) => {
         active: team,
       };
     case "remove_player":
-    state.active.roster = state.active.roster.filter((player) => player.username !== action.player.username);
-    return {
-      ...state,
-    };
-    break;
+      state.active.roster = state.active.roster.map((player) => {
+        if (player.username === action.player.username) {
+          return PLAYER_SCHEMA;
+        }
+        return player;
+      });
+      return {
+        ...state,
+      };
     case "pair_wristband": // thin, toggle
       state.active.roster = state.active.roster.map((player) => {
         if (player.username === action.player.username) {
           if (action.wristband) {
             player.wristband = {
               ...action.wristband,
-              status: WRISTBAND_STATUS['registered'],
+              status: WRISTBAND_STATUS["registered"],
               pairing: false,
             };
           } else {
@@ -231,7 +251,7 @@ const useRegistrationContext = () => {
 const RegistrationProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(
     registrationReducer,
-    REGISTRATION_SCHEMA,
+    REGISTRATION_SCHEMA
     // registrationTestState[1]()
   );
 

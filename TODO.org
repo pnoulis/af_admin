@@ -59,3 +59,7 @@ delete team.
 use indexDb and service workers.
 
 * TODO create a better modal system
+* A new team must be populated with 6 number of players
+The playerWidgets shall thus be displayying not a name but rather
+the string player#1.
+Adding a person to the roster then means finding 

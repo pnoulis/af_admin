@@ -3,10 +3,6 @@ import styled from "styled-components";
 import { ToggleForm } from "./ToggleForm";
 import { LoginPlayerForm } from "./LoginPlayerForm";
 import { RegisterPlayerForm } from "./RegisterPlayerForm";
-import {
-  useAddPlayerToTeam,
-  useRegistrationContext,
-} from "/src/app/route_registration_team";
 
 const StyleLayoutAddPlayer = styled.div`
   all: unset;
@@ -20,7 +16,7 @@ const StyleLayoutAddPlayer = styled.div`
   /* Dimensions */
   width: 100%;
   height: 100%;
-padding-left: 50px;
+  padding-left: 50px;
   /* Position */
   /* Fonts */
   /* Effects */
@@ -36,12 +32,10 @@ const StyleLayoutItemPlayerForm = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-max-width: 400px;
+  max-width: 400px;
 `;
 
 function AddPlayer() {
-  const { state, dispatchRegistration } = useRegistrationContext();
-  const handleAddPlayerToTeam = useAddPlayerToTeam(state, dispatchRegistration);
   const [show, setShow] = React.useState(false);
 
   return (

@@ -75,7 +75,10 @@ function PlayerActionbarItemRosterRemove({
 }) {
   return (
     <Tooltip>
-      <TooltipTrigger onClick={() => onPlayerRemove(player)} {...props}>
+      <TooltipTrigger
+        onClick={() => player.assigned && onPlayerRemove(player)}
+        {...props}
+      >
         <SvgButton size={size || "30px"}>
           <TrashIcon />
         </SvgButton>
@@ -93,7 +96,10 @@ function PlayerActionbarItemWristbandPair({
 }) {
   return (
     <Tooltip>
-      <TooltipTrigger onClick={() => onWristbandPair(player)} {...props}>
+      <TooltipTrigger
+        onClick={() => player.assigned && onWristbandPair(player)}
+        {...props}
+      >
         <StylePlayerActionbarItemWristbandPair
           pairing={player.wristband.pairing}
           wristbandColorCode={player.wristband.colorCode}
