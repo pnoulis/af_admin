@@ -39,28 +39,31 @@ function usePairPlayerWristband(state, setState) {
     return () => unsubscribe();
   }, [state, setState]);
 
-  const handlePairPlayerWristband = React.useCallback((player) => {
-    if (player.wristband.status >= WRISTBAND_STATUS["paired"]) {
-      Modal.render(
-        <ConfirmUnpairDialog
-          initialOpen
-          onUnpair={() =>
-            setState({
-              type: "pair_wristband",
-              player,
-              pairing: false,
-            })
-          }
-        />
-      );
-    } else {
-      setState({
-        type: "pair_wristband",
-        player,
-        pairing: !player.wristband.pairing,
-      });
-    }
-  }, []);
+  const handlePairPlayerWristband = React.useCallback(
+    (player) => {
+      if (player.wristband.status >= WRISTBAND_STATUS["paired"]) {
+        Modal.render(
+          <ConfirmUnpairDialog
+            initialOpen
+            onUnpair={() =>
+              setState({
+                type: "pair_wristband",
+                player,
+                pairing: false,
+              })
+            }
+          />
+        );
+      } else {
+        setState({
+          type: "pair_wristband",
+          player,
+          pairing: !player.wristband.pairing,
+        });
+      }
+    },
+    [client]
+  );
 
   return handlePairPlayerWristband;
 }

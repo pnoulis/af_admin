@@ -1129,7 +1129,23 @@ const pavlos = new Person();
 * Business logic middleware system
 ** About
 This is an attempt to implement some variation of the model-view-controller
-pattern in a front end app.
+pattern in a single page web application.
+** The MVC pattern
+The MVC pattern stands for Model View Controller and in the middle is the User.
+
+The user is the initiator of events.
+
+A user triggered event is usually the start of chain of events each propably
+dependent on another.
+
+Each event in the sequence and the infrastructure used to accommodate those
+events are part of the controller.
+
+So user triggered events initiate a usually a complex sequence that controls the
+application.
+
+The controller is responsible for 
+
 ** The problem
 React is a front-end library intended to be used as the VIEW component of
 patterns such as MVC...etc.
@@ -1153,3 +1169,7 @@ it is saying that React Programmers often use them as such without realizing it.
 Therefore the purpose of this article is to explore the means by which one may
 use React strictly as the VIEW component of an MVC pattern by extracting
 the Model and the Controller part.
+
+** A common pattern using React as both the Model the View and the Controller
+** A solution
+

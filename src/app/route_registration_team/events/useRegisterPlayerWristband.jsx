@@ -13,7 +13,7 @@ function useRegisterPlayerWristband(state, setState) {
     (player) => {
       if (player.wristband.status < WRISTBAND_STATUS["paired"]) {
         throw new Error(
-          `Trying to register an unpaired wristband to player:${player.username}`
+          `Trying to register an unpaired wristband to player ${player.username}`
         );
       }
 
@@ -30,12 +30,10 @@ function useRegisterPlayerWristband(state, setState) {
 
           if (res.result === "OK") {
             setState({ type: "register_wristband", player });
-            FlashMessage.info(
-              `Successfully registered wristband to player:${player.username}`
-            );
           } else {
+            setState({ type: "pair_wristband", player, pairing: false });
             FlashMessage.error(
-              `Failed to register wristband to player:${player.username}`
+              `Failed to register wristband to player ${player.username}`
             );
           }
         }

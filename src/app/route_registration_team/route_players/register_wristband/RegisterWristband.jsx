@@ -4,8 +4,10 @@ import { TeamRoster } from "./TeamRoster";
 import { WristbandStatus } from "./WristbandStatus";
 import {
   useRegistrationContext,
+  useRegisterPlayerWristband,
   usePairPlayerWristband,
   useRemovePlayerRoster,
+  WRISTBAND_STATUS,
 } from "/src/app/route_registration_team";
 
 const StyleLayoutRegisterWristband = styled.div`
@@ -30,11 +32,11 @@ const StyleLayoutItemTeamRoster = styled(TeamRoster)`
 `;
 const StyleLayoutItemWristbandStatus = styled(WristbandStatus)`
   grid-area: wristband_status;
-height: 300px;
-align-self: center;
+  height: 300px;
+  align-self: center;
 `;
 
-function RegisterWristband({className}) {
+function RegisterWristband({ className }) {
   const { state, dispatchRegistration } = useRegistrationContext();
   const handlePairPlayerWristband = usePairPlayerWristband(
     state,
@@ -42,8 +44,22 @@ function RegisterWristband({className}) {
   );
   const handleRemovePlayerRoster = useRemovePlayerRoster(
     state,
-    dispatchRegistration,
+    dispatchRegistration
   );
+  const handleRegisterPlayerWristband = useRegisterPlayerWristband(
+    state,
+    dispatchRegistration
+  );
+
+  React.useEffect(() => {
+    const registerPlayer = state.active?.roster.find(
+      (player) => player.wristband.status === WRISTBAND_STATUS["paired"]
+    );
+
+    if (registerPlayer) {
+      handleRegisterPlayerWristband(registerPlayer);
+    }
+  }, [state]);
 
   return (
     <StyleLayoutRegisterWristband className={className}>
@@ -53,7 +69,9 @@ function RegisterWristband({className}) {
         onWristbandPair={handlePairPlayerWristband}
       />
       <StyleLayoutItemWristbandStatus
-        pairing={state.active?.roster.some((player) => player.wristband?.pairing)}
+        pairing={state.active?.roster.some(
+          (player) => player.wristband?.pairing
+        )}
       />
     </StyleLayoutRegisterWristband>
   );

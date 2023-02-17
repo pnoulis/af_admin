@@ -105,10 +105,9 @@ function PublishSuccessRegister() {
     return () => unsubscribe();
   }, []);
 
-
   const payload = {
     timestamp: 123456789,
-    result: 'OK',
+    result: "OK",
     player: {
       id: "a18f9fb7-9c63-4c6f-bbc0-946c9fe216fd",
       firstName: "pavlos",
@@ -116,7 +115,7 @@ function PublishSuccessRegister() {
       username: "pnoulis",
       phone: 123456789, // Integer
       email: "email@at.com",
-    }
+    },
   };
 
   return (
@@ -140,8 +139,8 @@ function PublishFailureRegister() {
   const { server } = useMqtt();
   const payload = {
     timestamp: 123456789,
-    result: 'NOK',
-    message: 'Users phone number already exist',
+    result: "NOK",
+    message: "Users phone number already exist",
   };
 
   return (
@@ -159,7 +158,7 @@ function PublishWristbandScan() {
   const { server } = useMqtt();
   const payload = {
     timestamp: 123456789,
-    result: 'OK',
+    result: "OK",
     wristbandNumber: 10,
     wristbandColor: 2,
   };
@@ -167,10 +166,48 @@ function PublishWristbandScan() {
   return (
     <StyleMqttRouteItem
       onClick={() => {
-        server.publish('/wristband/scan', payload);
+        server.publish("/wristband/scan", payload);
       }}
     >
       publish wristband scan
+    </StyleMqttRouteItem>
+  );
+}
+
+function PublishSuccessWristbandRegister() {
+  const { server } = useMqtt();
+  const payload = {
+    timestamp: 123456789,
+    result: "OK",
+    message: "successfully registerWristbandToPlayer",
+  };
+
+  return (
+    <StyleMqttRouteItem
+      onClick={() => {
+        server.publish("/wristband/register", payload);
+      }}
+    >
+      publish wristband register
+    </StyleMqttRouteItem>
+  );
+}
+
+function PublishFailureWristbandRegister() {
+  const { server } = useMqtt();
+  const payload = {
+    timestamp: 123456789,
+    result: "NOK",
+    message: "Failed",
+  };
+
+  return (
+    <StyleMqttRouteItem
+      onClick={() => {
+        server.publish("/wristband/register", payload);
+      }}
+    >
+      failed to register wristband
     </StyleMqttRouteItem>
   );
 }
@@ -182,7 +219,9 @@ function RouteIndex() {
       <PublishFailureLogin />
       <PublishSuccessRegister />
       <PublishFailureRegister />
-      <PublishWristbandScan/>
+      <PublishWristbandScan />
+      <PublishSuccessWristbandRegister />
+      <PublishFailureWristbandRegister />
       <MqttRoute>one</MqttRoute>
       <MqttRoute>one</MqttRoute>
       <MqttRoute>one</MqttRoute>
