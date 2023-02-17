@@ -108,6 +108,55 @@ const devMqttTopics = [
       ],
     },
   },
+
+  // validate wristband
+  {
+    summary: "wristband validate",
+    alias: "/wristband/isValid",
+    pub: {
+      topic: "/themaze/${clientId}/gui/player/isValid/response",
+      alias: "/wristband/isValid/response",
+      payloads: [
+        {
+          summary:
+            "server successfully verifies incoming wristband is registered to user",
+          data: {
+            timestamp: 12345689,
+            result: "OK",
+            player: {
+              id: "c324879-8798799-879879...",
+              firstName: "pavlos",
+              lastName: "noulis",
+              username: "pnoulis",
+              registeredWristbandNumber: 3,
+            },
+          },
+        },
+        {
+          summary:
+            "server fails to verify incoming wristband is registered to user",
+          data: {
+            timestamp: 12345689,
+            result: "NOK",
+            message: "player has already merged his wristband",
+          },
+        },
+      ],
+    },
+    sub: {
+      topic: "/themaze/${clientId}/gui/player/isValid",
+      alias: "/wristband/isValid",
+      payloads: [
+        {
+          summary: "Client publishes his intent to verify a wristband",
+          data: {
+            timestamp: 123456789,
+            wristbandNumber: 3,
+          },
+        },
+      ],
+    },
+  },
 ];
 
 const topics = {

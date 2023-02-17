@@ -193,26 +193,55 @@ const registrationReducer = (state, action) => {
       return {
         ...state,
       };
-    case "pair_wristband": // thin, toggle
+    case "scanning_wristband":
       state.active.roster = state.active.roster.map((player) => {
         if (player.username === action.player.username) {
-          if (action.wristband) {
-            player.wristband = {
-              ...action.wristband,
-              status: WRISTBAND_STATUS["paired"],
-              pairing: false,
-            };
-          } else {
-            player.wristband = {
-              ...WRISTBAND_SCHEMA,
-              pairing: action.pairing,
-            };
-          }
-        } else {
-          player.wristband.pairing = false;
+          player.wristband.scanning = action.player.scanning;
+        }
+      });
+      return {
+        ...state,
+      };
+    case "start_pairing_wristband":
+      state.active.roster = state.active.roster.map((player) => {
+        if (player.username === action.player.username) {
+          player.wristband = {
+            ...WRISTBAND_SCHEMA,
+            ...player.wristband,
+            pairing: true,
+          };
         }
         return player;
       });
+      return {
+        ...state,
+      };
+    case "stop_pairing_wristband":
+      state.active.roster = state.active.roster.map((player) => {
+        if (player.username === action.player.username) {
+          player.wristband = {
+            ...WRISTBAND_SCHEMA,
+            pairing: false,
+          };
+        }
+        return player;
+      });
+      return {
+        ...state,
+      };
+    case "pair_wristband":
+      state.active.roster = state.active.roster.map((player) => {
+        if (player.username === action.player.username) {
+          player.wristband = {
+            ...player.wristband,
+            ...action.wristband,
+            pairing: false,
+            status: WRISTBAND_STATUS["paired"],
+          };
+        }
+        return player;
+      });
+
       return {
         ...state,
       };
@@ -227,7 +256,18 @@ const registrationReducer = (state, action) => {
         ...state,
       };
     case "verify_wristband":
-      break;
+      state.active.roster = state.active.roster.map((player) => {
+        if (player.username === action.player.username) {
+          player.wristband = {
+            ...player.wristband,
+            status: WRISTBAND_STATUS["verified"],
+          };
+        }
+        return player;
+      });
+      return {
+        ...state,
+      };
     case "merge_team":
       break;
     case "add_package":
@@ -260,7 +300,6 @@ const RegistrationProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(
     registrationReducer,
     REGISTRATION_SCHEMA
-    // registrationTestState[1]()
   );
 
   React.useEffect(() => {

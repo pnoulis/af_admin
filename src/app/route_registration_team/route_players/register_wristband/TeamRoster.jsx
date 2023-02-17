@@ -10,25 +10,26 @@ const StyleLayoutTeamRoster = styled.div`
   width: 100%;
 `;
 
-const StyleLayoutItem = styled.div``;
+const StyleLayoutItemPlayerWidget = styled(PlayerWidget)``;
 
 function TeamRoster({
-  onPlayerRemove,
-  onWristbandPair,
   roster = [],
+  onStartPairingPlayerWristband,
+  onStopPairingPlayerWristband,
+  onRemovePlayerRoster,
   className,
 }) {
   return (
     <StyleLayoutTeamRoster className={className}>
       {roster.map((player, i) => (
-        <StyleLayoutItem key={i}>
-          <PlayerWidget
-            index={i}
-            player={player}
-            onPlayerRemove={onPlayerRemove}
-            onWristbandPair={onWristbandPair}
-          />
-        </StyleLayoutItem>
+        <StyleLayoutItemPlayerWidget
+          key={i}
+          index={i}
+          player={player}
+          onStartPairingPlayerWristband={onStartPairingPlayerWristband}
+          onStopPairingPlayerWristband={onStopPairingPlayerWristband}
+          onRemovePlayerRoster={onRemovePlayerRoster}
+        />
       ))}
     </StyleLayoutTeamRoster>
   );

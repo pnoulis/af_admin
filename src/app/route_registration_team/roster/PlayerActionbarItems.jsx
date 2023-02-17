@@ -53,7 +53,7 @@ const StyleTooltipContent = styled(TooltipContent)`
 
 const StylePlayerActionbarItemWristbandPair = styled(SvgBall)`
   &:hover {
-    cursor: pointer;
+    cursor: ${({ disable }) => (disable ? "revert" : "pointer")};
   }
 
   background-color: ${({ wristbandColorCode }) => {
@@ -69,14 +69,14 @@ const StylePlayerActionbarItemWristbandPair = styled(SvgBall)`
 
 function PlayerActionbarItemRosterRemove({
   player,
-  onPlayerRemove = () => {},
+  onRemovePlayerRoster = () => {},
   size,
   ...props
 }) {
   return (
     <Tooltip>
       <TooltipTrigger
-        onClick={() => player.assigned && onPlayerRemove(player)}
+        onClick={() => player.assigned && onRemovePlayerRoster(player)}
         {...props}
       >
         <SvgButton size={size || "30px"}>
@@ -92,15 +92,22 @@ function PlayerActionbarItemWristbandPair({
   player,
   onWristbandPair = () => {},
   size,
+  disable,
   ...props
 }) {
+  disable ??= !player.assigned;
+
   return (
     <Tooltip>
       <TooltipTrigger
-        onClick={() => player.assigned && onWristbandPair(player)}
+        onClick={(e) => {
+          e.stopPropagation();
+          player.assigned && onWristbandPair(player);
+        }}
         {...props}
       >
         <StylePlayerActionbarItemWristbandPair
+          disable={disable}
           pairing={player.wristband.pairing}
           wristbandColorCode={player.wristband.colorCode}
           size={size || "30px"}

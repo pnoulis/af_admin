@@ -8,6 +8,7 @@ function useRegisterPlayerWristband(state, setState) {
     throw new Error("Null state to useRegisterPlayerWristband middleware");
   }
   const { client } = useMqtt();
+  const unsubscribe = React.useRef(null);
 
   const handleRegisterPlayerWristband = React.useCallback(
     (player) => {
@@ -17,7 +18,7 @@ function useRegisterPlayerWristband(state, setState) {
         );
       }
 
-      client.publish(
+      unsubscribe.current = client.publish(
         "/wristband/register",
         {
           username: player.username,
@@ -41,6 +42,10 @@ function useRegisterPlayerWristband(state, setState) {
     },
     [state, setState]
   );
+
+  React.useEffect(() => {
+    return () => unsubscribe.current && unsubscribe.current();
+  }, []);
 
   return handleRegisterPlayerWristband;
 }

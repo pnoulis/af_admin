@@ -5,6 +5,13 @@ import {
   PlayerActionbarItemRosterRemove,
   PlayerActionbar,
 } from "/src/app/route_registration_team/roster";
+import {
+  useRegistrationContext,
+  useStartPairingPlayerWristband,
+  useStopPairingPlayerWristband,
+  useRemovePlayerRoster,
+  WRISTBAND_STATUS,
+} from "/src/app/route_registration_team";
 
 const StyleLayoutPlayerWidget = styled.article`
   all: unset;
@@ -31,7 +38,13 @@ const StyleLayoutPlayerWidget = styled.article`
 
 const StyleLayoutItemUsername = styled.p``;
 
-function PlayerWidget({ index, player, onPlayerRemove, onWristbandPair }) {
+function PlayerWidget({
+  index,
+  player,
+  onStartPairingPlayerWristband,
+  onStopPairingPlayerWristband,
+  onRemovePlayerRoster,
+}) {
   return (
     <StyleLayoutPlayerWidget>
       <StyleLayoutItemUsername>
@@ -40,11 +53,17 @@ function PlayerWidget({ index, player, onPlayerRemove, onWristbandPair }) {
       <PlayerActionbar>
         <PlayerActionbarItemWristbandPair
           player={player}
-          onWristbandPair={onWristbandPair}
+          onWristbandPair={(player) => {
+            if (player.wristband.pairing) {
+              onStopPairingPlayerWristband(player);
+            } else {
+              onStartPairingPlayerWristband(player);
+            }
+          }}
         />
         <PlayerActionbarItemRosterRemove
           player={player}
-          onPlayerRemove={onPlayerRemove}
+          onRemovePlayerRoster={onRemovePlayerRoster}
         />
       </PlayerActionbar>
     </StyleLayoutPlayerWidget>

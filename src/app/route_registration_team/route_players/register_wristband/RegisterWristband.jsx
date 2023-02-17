@@ -7,6 +7,8 @@ import {
   useRegisterPlayerWristband,
   usePairPlayerWristband,
   useRemovePlayerRoster,
+  useStopPairingPlayerWristband,
+  useStartPairingPlayerWristband,
   WRISTBAND_STATUS,
 } from "/src/app/route_registration_team";
 
@@ -38,10 +40,16 @@ const StyleLayoutItemWristbandStatus = styled(WristbandStatus)`
 
 function RegisterWristband({ className }) {
   const { state, dispatchRegistration } = useRegistrationContext();
-  const handlePairPlayerWristband = usePairPlayerWristband(
+  const handleStartPairingPlayerWristband = useStartPairingPlayerWristband(
     state,
     dispatchRegistration
   );
+  const handleStopPairingPlayerWristband = useStopPairingPlayerWristband(
+    state,
+    dispatchRegistration
+  );
+  usePairPlayerWristband(state, dispatchRegistration);
+
   const handleRemovePlayerRoster = useRemovePlayerRoster(
     state,
     dispatchRegistration
@@ -65,8 +73,9 @@ function RegisterWristband({ className }) {
     <StyleLayoutRegisterWristband className={className}>
       <StyleLayoutItemTeamRoster
         roster={state.active?.roster}
-        onPlayerRemove={handleRemovePlayerRoster}
-        onWristbandPair={handlePairPlayerWristband}
+        onStopPairingPlayerWristband={handleStopPairingPlayerWristband}
+        onStartPairingPlayerWristband={handleStartPairingPlayerWristband}
+        onRemovePlayerRoster={handleRemovePlayerRoster}
       />
       <StyleLayoutItemWristbandStatus
         pairing={state.active?.roster.some(

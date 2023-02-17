@@ -212,6 +212,73 @@ function PublishFailureWristbandRegister() {
   );
 }
 
+function PublishSuccessWristbandVerify() {
+  const { server } = useMqtt();
+  const [message, setMessage] = React.useState({});
+
+  const payload = {
+    timestamp: 12345689,
+    result: "OK",
+    player: {
+      id: "a18f9fb7-9c63-4c6f-bbc0-946c9fe216fd",
+      firstName: "pavlos",
+      lastName: "noulis",
+      username: "pnoulis",
+      phone: 123456789, // Integer
+      email: "email@at.com",
+      registeredWristbandNumber: 3,
+    },
+  };
+
+  React.useEffect(() => {
+    const unsubscribe = server.subscribe(
+      "/wristband/isValid",
+      (err, message) => {
+        if (err) {
+          throw new Error(err);
+        }
+        setMessage(message);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <StyleMqttRouteItem
+      onClick={() => {
+        server.publish("/wristband/isValid", {
+          ...payload,
+          player: {
+            ...payload.player,
+            ...message,
+          },
+        });
+      }}
+    >
+      publish success wristband verify
+    </StyleMqttRouteItem>
+  );
+}
+
+function PublishFailureWristbandVerify() {
+  const { server } = useMqtt();
+  const payload = {
+    timestapm: 123456789,
+    result: "NOK",
+    message: "player has already merged his wristband",
+  };
+  return (
+    <StyleMqttRouteItem
+      onClick={() => {
+        server.publish("/wristband/isValid", payload);
+      }}
+    >
+      publish failure wristband verify
+    </StyleMqttRouteItem>
+  );
+}
+
 function RouteIndex() {
   return (
     <StyleMqttRoutes>
@@ -222,6 +289,8 @@ function RouteIndex() {
       <PublishWristbandScan />
       <PublishSuccessWristbandRegister />
       <PublishFailureWristbandRegister />
+      <PublishSuccessWristbandVerify />
+      <PublishFailureWristbandVerify />
       <MqttRoute>one</MqttRoute>
       <MqttRoute>one</MqttRoute>
       <MqttRoute>one</MqttRoute>
