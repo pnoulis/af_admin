@@ -9,13 +9,12 @@ import {
 
 const StyleLayoutRouteMerge = styled.div`
   all: unset;
-  /* Type */
-  display: block;
   box-sizing: border-box;
+  /* Type */
+  display: flex;
+  align-items: center;
   /* Dimensions */
-  width: 100%;
-  height: 100%;
-  padding: 50px;
+  padding-top: 100px;
   /* Position */
   /* Fonts */
   /* Effects */
@@ -24,7 +23,9 @@ const StyleLayoutRouteMerge = styled.div`
 
 const StyleLayoutItemMergeTeam = styled(MergeTeam)``;
 
-const StyleLayoutItemVerifyWristbands = styled(VerifyWristband)``;
+const StyleLayoutItemVerifyWristbands = styled(VerifyWristband)`
+flex: 1;
+`;
 
 function RouteMerge() {
   const { state, dispatchRegistration } = useRegistrationContext();

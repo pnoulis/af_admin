@@ -18,10 +18,7 @@ const StyleLayoutVerifyWristband = styled.div`
   grid-template-rows: 100px 1fr;
   grid-template-areas: "header" "team_roster";
   gap: 100px;
-  margin-top: 100px;
   /* Dimensions */
-  width: 100%;
-  height: 100%;
   /* Position */
   /* Fonts */
   /* Effects */
