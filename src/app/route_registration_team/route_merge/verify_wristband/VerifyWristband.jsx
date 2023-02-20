@@ -1,12 +1,13 @@
 import * as React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { TeamRoster } from "./TeamRoster";
 import {
   useRegistrationContext,
   useStartPairingPlayerWristband,
-  usePairPlayerWristband,
+  WRISTBAND_STATUS,
 } from "/src/app/route_registration_team";
 import { useMqtt } from "/src/mqtt";
+import { FlashMessage } from '/src/flash_messages';
 
 const StyleLayoutVerifyWristband = styled.div`
   all: unset;
@@ -17,6 +18,7 @@ const StyleLayoutVerifyWristband = styled.div`
   grid-template-rows: 100px 1fr;
   grid-template-areas: "header" "team_roster";
   gap: 100px;
+  margin-top: 100px;
   /* Dimensions */
   width: 100%;
   height: 100%;
@@ -42,7 +44,9 @@ const StyleLayoutItemTeamRoster = styled(TeamRoster)`
   grid-area: team_roster;
 `;
 
-function VerifyWristband({ className }) {
+
+
+function VerifyWristband({ onVerifiedWristbands, className }) {
   const { state, dispatchRegistration } = useRegistrationContext();
   const { client } = useMqtt();
   const [err, setErr] = React.useState("");
@@ -53,7 +57,8 @@ function VerifyWristband({ className }) {
     );
 
     if (!registeredPlayer) {
-      return alert("wristband does not belong to any player in the roster");
+      FlashMessage.warn(`Player ${player.username} is not part of the roster`);
+      return;
     }
 
     dispatchRegistration({ type: "verify_wristband", player });
@@ -66,7 +71,9 @@ function VerifyWristband({ className }) {
 
   React.useEffect(() => {
     state.active?.roster.forEach((player) => {
-      handleStartPairingPlayerWristband(player, "overwrite");
+      if (player.wristband.status < WRISTBAND_STATUS['verified']) {
+        handleStartPairingPlayerWristband(player, "overwrite");
+      }
     });
 
     const unsubscribe = client.subscribe("wristband/scan", (err, res) => {
@@ -85,6 +92,7 @@ function VerifyWristband({ className }) {
           if (res.result === "OK") {
             handleValidatePlayerWristband(res.player);
           } else {
+            // modal, remove player from team
             setErr(res.message);
           }
         }
@@ -98,7 +106,6 @@ function VerifyWristband({ className }) {
     <StyleLayoutVerifyWristband className={className}>
       <StyleLayoutItemHeader>scan player's wristbands</StyleLayoutItemHeader>
       <StyleLayoutItemTeamRoster roster={state.active?.roster} />
-      <p>{err}</p>
     </StyleLayoutVerifyWristband>
   );
 }

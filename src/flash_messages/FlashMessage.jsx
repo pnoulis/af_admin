@@ -26,7 +26,7 @@ FlashMessage.prototype.render = function render(fmRoot, fmContent) {
   this.setFm({ timeout: fmRoot.getAttribute("data-timeout") });
 };
 
-FlashMessage.prototype.createRoot = function create({ timeout = 5000 } = {}) {
+FlashMessage.prototype.createRoot = function create({ timeout = 7000 } = {}) {
   timeout = Date.now() + timeout;
   const fmRoot = document.createElement("article");
   fmRoot.setAttribute("class", "flash-message");

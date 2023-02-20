@@ -24,27 +24,23 @@ const StyleLayoutRouteMerge = styled.div`
 
 const StyleLayoutItemMergeTeam = styled(MergeTeam)``;
 
-const StyleLayoutItemValidateWristband = styled(VerifyWristband)``;
+const StyleLayoutItemVerifyWristbands = styled(VerifyWristband)``;
 
 function RouteMerge() {
   const { state, dispatchRegistration } = useRegistrationContext();
   const [toggle, setToggle] = React.useState(false);
 
-  React.useEffect(() => {
-    if (
-      state.active?.roster.every(
-        (player) => player.wristband?.status === WRISTBAND_STATUS["verified"]
-      )
-    ) {
-      setToggle(true);
-    }
-  }, [state]);
+  const handleToggleMergeTeam = () => {
+    setToggle(true);
+  }
+
+
   return (
     <StyleLayoutRouteMerge>
       {toggle ? (
         <StyleLayoutItemMergeTeam />
       ) : (
-        <StyleLayoutItemValidateWristband />
+        <StyleLayoutItemVerifyWristbands onVerifiedWristbands={handleToggleMergeTeam}/>
       )}
     </StyleLayoutRouteMerge>
   );

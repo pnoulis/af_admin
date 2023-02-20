@@ -4,6 +4,7 @@ import {
   PanelHeaderNavbar,
   PanelHeaderNavbarItem,
 } from "/src/components/styled/panels";
+import { TeamWidget } from './team_widget';
 import { linkIndex } from "./route_index";
 import { linkPlayers } from "./route_players";
 import { linkMerge } from "./route_merge";
@@ -41,6 +42,7 @@ function RegistrationPanelHeader() {
           renderIcon={<SubmitTeamIcon />}
         />
       </PanelHeaderNavbar>
+      <TeamWidget/>
     </StyleLayoutPanelItemHeader>
   );
 }

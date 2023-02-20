@@ -1,5 +1,6 @@
 import * as React from "react";
 import { registrationTestState } from "./store.test";
+import { generateRandomName } from "/src/lib";
 
 const WRISTBAND_STATUS = {
   paired: 1,
@@ -78,18 +79,33 @@ const PACKAGE_SCHEMA = {
   netCost: 0, // Sum of netPersonCost
 };
 
+const TEAM_STATUS = {
+  'new': 0,
+  'cached': 1,
+  'registered': 2,
+  'packaged': 3,
+  'playing': 4,
+  'paused': 5,
+};
+
+const ROSTER_STATUS = {
+  'new': 0,
+  'verified': 1,
+};
+
 const TEAM_SCHEMA = {
   /**
      @value {String} - sha256...or Whatever
      Not certain if id will be used.
   */
-  id: "",
+
+  id: Math.random().toString(16).slice(2, 8),
 
   /**
      @value {String} - The teams name.
      The team name acts as the teams main identifier id.
   */
-  name: "",
+  name: generateRandomName(),
 
   /**
      @value {String} - A newly created team finds itself
@@ -131,7 +147,8 @@ const TEAM_SCHEMA = {
      A Team moves to the 'paused' state when:
      1. The user makes such a request.
   */
-  status: "",
+  status: TEAM_STATUS['new'],
+  rosterStatus: ROSTER_STATUS['new'],
   roster: [
     PLAYER_SCHEMA,
     PLAYER_SCHEMA,
@@ -261,15 +278,23 @@ const registrationReducer = (state, action) => {
           player.wristband = {
             ...player.wristband,
             status: WRISTBAND_STATUS["verified"],
+            pairing: false,
           };
         }
         return player;
       });
+      if (state.active.roster.some((player) => player.wristband.status >= WRISTBAND_STATUS['verified'])) {
+        state.active.rosterStatus = ROSTER_STATUS['verified'];
+      }
       return {
         ...state,
       };
     case "merge_team":
-      break;
+      state.active.name = action.teamName;
+      state.active.status = TEAM_STATUS['registered'];
+      return {
+        ...state,
+      }
     case "add_package":
       break;
     case "add_package_discount":
@@ -315,4 +340,10 @@ const RegistrationProvider = ({ children }) => {
   );
 };
 
-export { useRegistrationContext, RegistrationProvider, WRISTBAND_STATUS };
+export {
+  useRegistrationContext,
+  RegistrationProvider,
+  WRISTBAND_STATUS,
+  ROSTER_STATUS,
+  TEAM_STATUS
+};

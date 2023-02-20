@@ -917,6 +917,12 @@ Not able to do since src/index.jsx uses jsx syntax to render the React component
 *** register wristband
 *** validate wristband
 *** merge team
+After each players wristband has been verified.
+
+The merge subpanel toggles to reveal the new team name form.
+
+There the user creates a new team.
+
 *** create team
 ** Wristband Pairing
 THe registerWristband component is responsbile for pairing wristbands

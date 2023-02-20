@@ -59,6 +59,7 @@ function TextInput_1({ className, type, name, placeholder, ...props }) {
         autoComplete="off"
         placeholder={placeholder || " "}
         onChange={onChange}
+        value={fields[name]}
         {...props}
       ></input>
     </StyleTextInput_1>

@@ -26,6 +26,7 @@ function reducer(state, action) {
     case "INPUT":
       newState = {
         ...state,
+        error: "",
         fields: {
           ...state.fields,
           [action.name]: Field.reduce(action.name, action.value),

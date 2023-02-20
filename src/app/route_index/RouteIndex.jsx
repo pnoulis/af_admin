@@ -279,6 +279,43 @@ function PublishFailureWristbandVerify() {
   );
 }
 
+function PublishSuccessMergeTeam() {
+  const { server } = useMqtt();
+  const payload = {
+    timestamp: 123456789,
+    result: 'OK',
+    message: 'successfully create team',
+  };
+
+  return (
+    <StyleMqttRouteItem
+    onClick={() => {
+      server.publish('team/merge', payload);
+    }}
+    >
+      publish success team merge
+    </StyleMqttRouteItem>
+  )
+}
+
+function PublishFailureMergeTeam() {
+  const { server } = useMqtt();
+  const payload = {
+    timestamp: 123456789,
+    result: 'NOK',
+    message: 'team with this name already exist',
+  };
+  return (
+    <StyleMqttRouteItem
+    onClick={() => {
+      server.publish('team/merge', payload);
+    }}
+    >
+      publish failure team merge
+    </StyleMqttRouteItem>
+  )
+}
+
 function RouteIndex() {
   return (
     <StyleMqttRoutes>
@@ -291,6 +328,8 @@ function RouteIndex() {
       <PublishFailureWristbandRegister />
       <PublishSuccessWristbandVerify />
       <PublishFailureWristbandVerify />
+      <PublishSuccessMergeTeam />
+      <PublishFailureMergeTeam />
       <MqttRoute>one</MqttRoute>
       <MqttRoute>one</MqttRoute>
       <MqttRoute>one</MqttRoute>

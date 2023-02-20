@@ -157,6 +157,46 @@ const devMqttTopics = [
       ],
     },
   },
+  {
+    summary: 'merge team',
+    alias: '/team/merge',
+    pub: {
+      topic: '/themaze/${clientId}/gui/team/merge/response',
+      alias: '/team/merge/response',
+      payloads: [
+        {
+          summary: 'Server successfully merges the team',
+          data: {
+            timestamp: 123456789,
+            result: 'OK',
+            message: 'successfully create team',
+          },
+        },
+      {
+        summary: 'Server failes to create team because name is already registered',
+        data: {
+          timestamp: 123456789,
+          result: 'NOK',
+          message: 'team with this name already exist',
+        },
+      },
+      ],
+    },
+    sub: {
+      topic: '/themaze/${clientId}/gui/team/merge',
+      alias: '/team/merge',
+      payloads: [
+        {
+          summary: 'Client requests a new team to be created',
+          data: {
+            timestamp: 123456789,
+            teamName: 'the_tigers',
+            usernames: ["one", "two"],
+          },
+        },
+      ],
+    }
+  }
 ];
 
 const topics = {

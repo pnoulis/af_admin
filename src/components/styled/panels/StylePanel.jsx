@@ -26,6 +26,8 @@ const StyleLayoutPanelItemHeader = styled.header`
   all: unset;
   /* Type */
   box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
   /* Dimensions */
   /* Position */
   grid-area: header;
