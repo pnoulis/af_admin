@@ -20,8 +20,7 @@ const StylePlayerActionbarItemPrice = styled.div`
 
   & .price {
     position: relative;
-    top: 4px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-family: NoirPro-Medium;
     color: var(--primary-strong);
   }
@@ -128,10 +127,10 @@ function PlayerActionbarItemDiscount({ size }) {
   );
 }
 
-function PlayerActionbarItemPrice({ size }) {
+function PlayerActionbarItemPrice({ size, cost, className }) {
   return (
-    <StylePlayerActionbarItemPrice>
-      <p className="price">300,5</p>
+    <StylePlayerActionbarItemPrice className={className}>
+      <p className="price">{cost.netPersonCost}</p>
       <SvgBall
         className="svgball"
         size={size || "28px"}

@@ -7,6 +7,8 @@ const afpackages = [
     catalogue: [
       {
         label: 30,
+        units: 30,
+        price: 55,
       },
       {
         label: 60,

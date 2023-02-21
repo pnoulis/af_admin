@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import { Dropdown_0 } from "/src/components/dropdowns";
 import { ReactComponent as Checkbox } from "/assets/icons/checkbox-cropped.svg";
 
@@ -12,7 +12,7 @@ const Dropdown = styled(Dropdown_0)`
 `;
 
 const StylePackageConfiguratorCard = styled.div`
- display: flex;
+  display: flex;
   position: relative;
   z-index: 1;
   // Dimensions
@@ -25,7 +25,8 @@ const StylePackageConfiguratorCard = styled.div`
   // Appearance
   border-radius: var(--border-radius-2);
   background-color: var(--card-basic-color);
-  box-shadow: var(--card-basic-shadow);
+  box-shadow: 5px -5px 50px rgba(0, 0, 0, 0.1), -1px 1px 20px rgba(0, 0, 0, 0.1);
+  // box-shadow: var(--card-basic-shadow-2);
   border: 4px solid var(--card-basic-color);
   cursor: pointer;
   border-color: ${(props) =>
@@ -78,20 +79,29 @@ function PackageConfiguratorCard({
   subtitle,
   catalogue,
   placeholder,
+  selected,
   onPackageConfigured,
   className,
 }) {
   return (
     <StylePackageConfiguratorCard className={className}>
-      <span className="package-selected-indicator">
-        <Checkbox />
-      </span>
+      {selected && (
+        <span className="package-selected-indicator">
+          <Checkbox />
+        </span>
+      )}
       <h1 className="package-title">{title}</h1>
       <section className="package-configurator">
         <h3 className="package-configurator-title">{subtitle}</h3>
         <Dropdown
-          items={catalogue.map((afPackage) => afPackage.label) || []}
-          placeholder={placeholder || "custom"}
+          items={
+            catalogue.map((p) => ({
+              ...p,
+              label: `${p.amount} ${p.unit}`,
+            })) || []
+          }
+          reset={!selected}
+          placeholder={placeholder || title}
           onSelected={onPackageConfigured}
         />
       </section>

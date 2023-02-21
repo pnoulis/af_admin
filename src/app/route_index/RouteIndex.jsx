@@ -188,7 +188,7 @@ function PublishSuccessWristbandRegister() {
         server.publish("/wristband/register", payload);
       }}
     >
-      publish wristband register
+      publish success wristband register
     </StyleMqttRouteItem>
   );
 }
@@ -207,7 +207,7 @@ function PublishFailureWristbandRegister() {
         server.publish("/wristband/register", payload);
       }}
     >
-      failed to register wristband
+      publish failure wristband register
     </StyleMqttRouteItem>
   );
 }
@@ -283,37 +283,105 @@ function PublishSuccessMergeTeam() {
   const { server } = useMqtt();
   const payload = {
     timestamp: 123456789,
-    result: 'OK',
-    message: 'successfully create team',
+    result: "OK",
+    message: "successfully create team",
   };
 
   return (
     <StyleMqttRouteItem
-    onClick={() => {
-      server.publish('team/merge', payload);
-    }}
+      onClick={() => {
+        server.publish("team/merge", payload);
+      }}
     >
       publish success team merge
     </StyleMqttRouteItem>
-  )
+  );
 }
 
 function PublishFailureMergeTeam() {
   const { server } = useMqtt();
   const payload = {
     timestamp: 123456789,
-    result: 'NOK',
-    message: 'team with this name already exist',
+    result: "NOK",
+    message: "team with this name already exist",
   };
   return (
     <StyleMqttRouteItem
-    onClick={() => {
-      server.publish('team/merge', payload);
-    }}
+      onClick={() => {
+        server.publish("team/merge", payload);
+      }}
     >
       publish failure team merge
     </StyleMqttRouteItem>
-  )
+  );
+}
+
+function PublishSuccessListPackages() {
+  const { server } = useMqtt();
+  const payload = {
+    timestamp: 123456789,
+    result: "OK",
+    packages: [
+      {
+        name: "Per Time 5",
+        amount: 5,
+        type: "time",
+        cost: 100,
+      },
+      {
+        name: "Per Time 10",
+        amount: 10,
+        type: "time",
+        cost: 200,
+      },
+      {
+        name: "Per Time 15",
+        amount: 15,
+        type: "time",
+        cost: 300,
+      },
+      {
+        name: "Per Time 20",
+        amount: 20,
+        type: "time",
+        cost: 400,
+      },
+      {
+        name: "Per Mission 5",
+        amount: 5,
+        type: "mission",
+        cost: 100,
+      },
+      {
+        name: "Per Mission 10",
+        amount: 10,
+        type: "mission",
+        cost: 200,
+      },
+      {
+        name: "Per Mission 15",
+        amount: 15,
+        type: "mission",
+        cost: 300,
+      },
+      {
+        name: "Per Mission 20",
+        amount: 20,
+        type: "mission",
+        cost: 400,
+      },
+    ],
+  };
+
+  return (
+    <StyleMqttRouteItem
+      onClick={() => {
+        server.publish("packages/list", payload);
+      }}
+    >
+      publish success list packages
+    </StyleMqttRouteItem>
+  );
 }
 
 function RouteIndex() {
@@ -330,10 +398,7 @@ function RouteIndex() {
       <PublishFailureWristbandVerify />
       <PublishSuccessMergeTeam />
       <PublishFailureMergeTeam />
-      <MqttRoute>one</MqttRoute>
-      <MqttRoute>one</MqttRoute>
-      <MqttRoute>one</MqttRoute>
-      <MqttRoute>one</MqttRoute>
+      <PublishSuccessListPackages />
     </StyleMqttRoutes>
   );
 }

@@ -1,0 +1,24 @@
+* Payment procedure
+
+clients adds package
+client pays for package added
+client adds package
+clients adds package
+client pays for packages added
+client 
+
+* Packages Playing
+team_registered
+
+transition to team_playing
+
+users scan their wristbands.
+When all the wristbands have been scanned:
+
+if package > 0 then
+transition to team_playing.
+to the first package of the available packages.
+
+
+team_next_room
+

@@ -39,8 +39,7 @@ const StyleLayoutNavLink = styled(NavLink)`
   border-radius: var(--border-radius-1);
   box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.3);
   background-color: rgb(48, 25, 52);
-  transform: scale(1);
-  transition: transform .5s, background-color .5s;
+  transition: transform 0.5s, background-color 0.5s;
 
   &:hover {
     transform: scale(1.1);
@@ -70,8 +69,8 @@ const StyleLayoutNavlinkItemIcon = styled.div`
 
   & .navlinkItemIcon {
     fill: white;
-    width: ${({size}) => size || '44px'};
-    height: ${({size}) => size || '44px'};
+    width: ${({ size }) => size || "44px"};
+    height: ${({ size }) => size || "44px"};
   }
 `;
 
@@ -94,12 +93,18 @@ const StyleLayoutNavlinkItemText = styled.p`
   /* Children */
 `;
 
-function PanelHeaderNavbarItem({ path, label, renderIcon, iconSize, ...props }) {
+function PanelHeaderNavbarItem({
+  path,
+  label,
+  renderIcon,
+  iconSize,
+  ...props
+}) {
   return (
     <StyleLayoutNavbarItem>
       <StyleLayoutNavLink to={path} end onClick={createRipple}>
         <StyleLayoutNavlinkItemIcon size={iconSize}>
-          <Svg className='navlinkItemIcon'>{renderIcon}</Svg>
+          <Svg className="navlinkItemIcon">{renderIcon}</Svg>
         </StyleLayoutNavlinkItemIcon>
         <StyleLayoutNavlinkItemText>{label}</StyleLayoutNavlinkItemText>
       </StyleLayoutNavLink>

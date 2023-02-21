@@ -100,27 +100,30 @@ const StyleDropdown_0 = styled.div`
     }
   }
 
-  ${({ upside }) => css`
-    .list {
-      bottom: 5rem;
-      top: revert;
-    }
+  ${({ upside }) =>
+    upside &&
+    css`
+      .list {
+        bottom: 5rem;
+        top: revert;
+      }
 
-    .selected-icon {
-      transform: translateY(-50%) rotate(-90deg);
-    }
+      .selected-icon {
+        transform: translateY(-50%) rotate(-90deg);
+      }
 
-    &.open .selected-icon {
-      transform: translateY(-50%) rotate(90deg);
-    }
-  `}
+      &.open .selected-icon {
+        transform: translateY(-50%) rotate(90deg);
+      }
+    `}
 `;
 
 function Dropdown_0({
   className,
-  upside,
+  upside = false,
   name,
   items,
+  reset,
   placeholder,
   onSelected,
 }) {
@@ -145,9 +148,15 @@ function Dropdown_0({
 
   useEffect(() => {
     if (!isOpen && value) {
-      onSelected(value);
+      onSelected(items.find((item) => item.label === value));
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (reset) {
+      setValue("");
+    }
+  }, [reset]);
 
   return (
     <StyleDropdown_0
@@ -157,6 +166,7 @@ function Dropdown_0({
     >
       <div className="selected">
         <input
+          readOnly
           className="selected-input"
           type="text"
           name={name}
@@ -173,7 +183,7 @@ function Dropdown_0({
       <ul className="list">
         {items.map((item, i) => (
           <li key={i} className="item" onClick={handleInputChange}>
-            {item}
+            {item.label}
           </li>
         ))}
       </ul>

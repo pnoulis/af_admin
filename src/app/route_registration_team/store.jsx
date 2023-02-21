@@ -80,17 +80,17 @@ const PACKAGE_SCHEMA = {
 };
 
 const TEAM_STATUS = {
-  'new': 0,
-  'cached': 1,
-  'registered': 2,
-  'packaged': 3,
-  'playing': 4,
-  'paused': 5,
+  new: 0,
+  cached: 1,
+  registered: 2,
+  packaged: 3,
+  playing: 4,
+  paused: 5,
 };
 
 const ROSTER_STATUS = {
-  'new': 0,
-  'verified': 1,
+  new: 0,
+  verified: 1,
 };
 
 const TEAM_SCHEMA = {
@@ -147,8 +147,8 @@ const TEAM_SCHEMA = {
      A Team moves to the 'paused' state when:
      1. The user makes such a request.
   */
-  status: TEAM_STATUS['new'],
-  rosterStatus: ROSTER_STATUS['new'],
+  status: TEAM_STATUS["new"],
+  rosterStatus: ROSTER_STATUS["new"],
   roster: [
     PLAYER_SCHEMA,
     PLAYER_SCHEMA,
@@ -157,6 +157,7 @@ const TEAM_SCHEMA = {
     PLAYER_SCHEMA,
     PLAYER_SCHEMA,
   ],
+  package: PACKAGE_SCHEMA,
 };
 const REGISTRATION_SCHEMA = {
   /**
@@ -283,20 +284,44 @@ const registrationReducer = (state, action) => {
         }
         return player;
       });
-      if (state.active.roster.some((player) => player.wristband.status >= WRISTBAND_STATUS['verified'])) {
-        state.active.rosterStatus = ROSTER_STATUS['verified'];
+      if (
+        state.active.roster.some(
+          (player) => player.wristband.status >= WRISTBAND_STATUS["verified"]
+        )
+      ) {
+        state.active.rosterStatus = ROSTER_STATUS["verified"];
       }
       return {
         ...state,
       };
     case "merge_team":
       state.active.name = action.teamName;
-      state.active.status = TEAM_STATUS['registered'];
+      state.active.status = TEAM_STATUS["registered"];
       return {
         ...state,
-      }
+      };
     case "add_package":
-      break;
+      state.active.package = {
+        ...PACKAGE_SCHEMA,
+        name: action.package.name,
+        costPerPerson: state.active.roster.map((player) => {
+          const cost = {
+            username: player.username,
+            discountCode: "",
+            discountAmount: "",
+            personCost: Number.parseFloat(
+              action.package.cost / state.active.roster.length
+            ).toFixed(2),
+          };
+          cost.netPersonCost = cost.personCost;
+          return cost;
+        }),
+        packageCost: action.package.cost,
+        netCost: action.package.cost,
+      };
+      return {
+        ...state,
+      };
     case "add_package_discount":
       break;
     case "add_player_discount":
@@ -345,5 +370,5 @@ export {
   RegistrationProvider,
   WRISTBAND_STATUS,
   ROSTER_STATUS,
-  TEAM_STATUS
+  TEAM_STATUS,
 };

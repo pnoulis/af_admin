@@ -157,46 +157,130 @@ const devMqttTopics = [
       ],
     },
   },
+
+  // Merge team
   {
-    summary: 'merge team',
-    alias: '/team/merge',
+    summary: "merge team",
+    alias: "/team/merge",
     pub: {
-      topic: '/themaze/${clientId}/gui/team/merge/response',
-      alias: '/team/merge/response',
+      topic: "/themaze/${clientId}/gui/team/merge/response",
+      alias: "/team/merge/response",
       payloads: [
         {
-          summary: 'Server successfully merges the team',
+          summary: "Server successfully merges the team",
           data: {
             timestamp: 123456789,
-            result: 'OK',
-            message: 'successfully create team',
+            result: "OK",
+            message: "successfully create team",
           },
         },
-      {
-        summary: 'Server failes to create team because name is already registered',
-        data: {
-          timestamp: 123456789,
-          result: 'NOK',
-          message: 'team with this name already exist',
+        {
+          summary:
+            "Server failes to create team because name is already registered",
+          data: {
+            timestamp: 123456789,
+            result: "NOK",
+            message: "team with this name already exist",
+          },
         },
-      },
       ],
     },
     sub: {
-      topic: '/themaze/${clientId}/gui/team/merge',
-      alias: '/team/merge',
+      topic: "/themaze/${clientId}/gui/team/merge",
+      alias: "/team/merge",
       payloads: [
         {
-          summary: 'Client requests a new team to be created',
+          summary: "Client requests a new team to be created",
           data: {
             timestamp: 123456789,
-            teamName: 'the_tigers',
+            teamName: "the_tigers",
             usernames: ["one", "two"],
           },
         },
       ],
-    }
-  }
+    },
+  },
+
+  // List packages
+  {
+    summary: "get packages",
+    alias: "packages/list",
+    pub: {
+      topic: "themaze/${clientId}/gui/packages/all/response",
+      alias: "/packages/list/response",
+      payloads: [
+        {
+          summary: "Successfull listing of packages",
+          data: {
+            timestamp: 123456789,
+            result: "OK",
+            packages: [
+              {
+                name: "Per Time 5",
+                amount: 5,
+                type: "time",
+                cost: 100,
+              },
+              {
+                name: "Per Time 10",
+                amount: 10,
+                type: "time",
+                cost: 200,
+              },
+              {
+                name: "Per Time 15",
+                amount: 15,
+                type: "time",
+                cost: 300,
+              },
+              {
+                name: "Per Time 20",
+                amount: 20,
+                type: "time",
+                cost: 400,
+              },
+              {
+                name: "Per Mission 5",
+                amount: 5,
+                type: "mission",
+                cost: 100,
+              },
+              {
+                name: "Per Mission 10",
+                amount: 10,
+                type: "mission",
+                cost: 200,
+              },
+              {
+                name: "Per Mission 15",
+                amount: 15,
+                type: "mission",
+                cost: 300,
+              },
+              {
+                name: "Per Mission 20",
+                amount: 20,
+                type: "mission",
+                cost: 400,
+              },
+            ],
+          },
+        },
+      ],
+    },
+    sub: {
+      topic: "/themaze/${clientId}/gui/packages/all",
+      alias: "/packages/list",
+      payloads: [
+        {
+          summary: "Client requests available packages",
+          data: {
+            timestamp: 123456789,
+          },
+        },
+      ],
+    },
+  },
 ];
 
 const topics = {

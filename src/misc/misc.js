@@ -19,4 +19,42 @@ function mapWristbandColorCode(wristbandColorCode) {
   }
 }
 
-export { mapWristbandColorCode };
+function mapServerPackagesToClient(packages) {
+  const clientPackages = new Map();
+
+  // Time packages
+  const timePackages = {
+    name: "time",
+    catalogue: [],
+  };
+  timePackages.catalogue = packages
+    .filter((p) => p.type === "time")
+    .map((p) => ({
+      name: p.name,
+      amount: p.amount,
+      cost: p.cost,
+      unit: "minutes",
+      type: "time",
+    }));
+  clientPackages.set("time", timePackages);
+
+  // Mission packages
+  const missionPackages = {
+    name: "mission",
+    catalogue: [],
+  };
+  missionPackages.catalogue = packages
+    .filter((p) => p.type === "mission")
+    .map((p) => ({
+      name: p.name,
+      amount: p.amount,
+      cost: p.cost,
+      unit: "missions",
+      type: "mission",
+    }));
+  clientPackages.set("mission", missionPackages);
+
+  return clientPackages;
+}
+
+export { mapWristbandColorCode, mapServerPackagesToClient };

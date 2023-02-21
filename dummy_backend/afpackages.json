@@ -9,6 +9,7 @@
     "price_unit": "euro",
     "constant_unit_cost": 1.5,
     "player_coefficient": 1.05
+
   },
   {
     "package_id": 2,
