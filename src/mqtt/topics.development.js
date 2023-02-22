@@ -20,12 +20,12 @@ const devMqttTopics = [
     summary: "Register player",
     alias: "/player/register",
     pub: {
-      topic: "/themaze/${clientId}/gui/player/register/response",
+      topic: "/themaze/${clientId}/gui/player/registration/response",
       alias: "/player/register",
       payloads: [],
     },
     sub: {
-      topic: "/themaze/${clientId}/gui/player/register",
+      topic: "/themaze/${clientId}/gui/player/registration",
       alias: "/player/register",
       payloads: [],
     },

@@ -1179,3 +1179,108 @@ the Model and the Controller part.
 ** A common pattern using React as both the Model the View and the Controller
 ** A solution
 
+* Packages
+** Layout
+The packages route is divided into 4 sections.
+
+1. Sidebar
+2. Packages
+3. Team discount
+4. Player discount
+
+
+The Packages section is itself a dynamic route representing a package.
+
+/registration/team/packages/[dynamic_route_representing_a_package]
+
+/registration/teams/[team]/packages/[package]
+
+The /registration/teams/[team]/packages/ is responsible for displaying each configured
+package belonging to the selecting team
+
+If no configured packages exist the route displays a non-configured route.
+The non-configured package name could be configure
+/registration/teams/[team]/packages/new
+
+When the team is done configuring /registration/teams/[team]/packages/new and
+emits the event add_package_to_team the location is set to:
+/registration/teams/[team]/packages/package_id
+
+** Sidebar behavior
+The sidebars only role is to house components, nothing more.
+*** PackagesList
+It is the PackagesList component which is responsible for:
+
+displaying a list of package links.
+Creation of new package configurator.
+
+In order to achive the two requirements the packagesList must:
+
+create a vertical scrollable column context where its contents are listItems.
+
+If the listItems overflow the packagesList becomes scrollable. The last listItem
+should be a button (lets call it, <AddNewPackage/>) whose task is the creation
+of new package configurator.
+
+
+The addNewPackage is positioned as the last child of the list until the contents
+overflow the list in which case the addNewPackage is removed from normal flow
+and made sticky to the list container.
+
+displaying in a column links to the packages if any a team has configured.
+
+The list in the starting state displays at least one link to a non-configured
+package which is also viewed in the <Outlet/>. A click on a package link shall
+make that package active in the context of the <RoutePackage>.
+
+At the bottom of the packages list a button is
+displayed. That button creates a new list item and generates and switches to the
+route represeting the newly created package.If the list items overflow their
+container the button is removed from normal flow and made sticky to the list
+container.
+
+* Requirements
+** Creation of teams
+** Addition of more than one packages to each team.
+** Ability to stop and start a team.
+** Ability to keep information about a cashier such as:
+In the context of a cashier session.
+The net profit.
+The profit per team.
+The amount of teams created.
+Other statistics.
+
+** Packages
+**** Flow 1
+The customer requests a package for his team.
+The customer pays.
+
+The customer requests another package for his team. x2
+The customer pays.
+
+The customer 
+** Customer stories
+*** story 1
+customer walks in the building.
+customer walks to the cashier.
+customer requests the registration of a new team.
+roster logs in / roster registers.
+roster scans wristbands. (register)
+roster scans wristbands. (verify)
+customer requests the addition of _N_ number of packages.
+roster pays.
+roster requests permission to enter a room.
+roster scans wirstbands
+roster is granted permission to enter the room.
+roster walks in to the room.
+roster is playing.
+roster is notified as to the termination of their room session.
+roster walks out of the room.
+roster requests permission to enter a room.
+roster scans wristbands.
+roster is granted permission to enter a room.
+roster walks in to the room.
+roster is playing.
+roster walks out of the room.
+
+

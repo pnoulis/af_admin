@@ -59,10 +59,11 @@ function RegisterPlayerForm() {
       firstName: "",
       lastName: "",
       email: "",
-      tel: "",
-      dateOfBirth: "",
+      phone: "",
+      birthDate: "",
       username: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -95,14 +96,15 @@ function RegisterPlayerForm() {
         <TextInput name="firstName" label="first name" />
         <TextInput name="lastName" label="last name" />
         <TextInput type="email" name="email" />
-        <TextInput type="tel" name="tel" />
+        <TextInput type="phone" name="phone" />
         <TextInput
-          name="dateOfBirth"
+          name="birthDate"
           label="date of birth"
           placeholder="1993-05-30"
         />
         <TextInput name="username" />
         <TextInput type="text" name="password" />
+        <TextInput type="text" name="confirmPassword" />
         <StyleErrorMessage>{form.error}</StyleErrorMessage>
         <ButtonText
           form="registerPlayerForm"

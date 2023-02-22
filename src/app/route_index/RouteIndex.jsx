@@ -387,18 +387,18 @@ function PublishSuccessListPackages() {
 function RouteIndex() {
   return (
     <StyleMqttRoutes>
-      <PublishSuccessLogin />
-      <PublishFailureLogin />
-      <PublishSuccessRegister />
-      <PublishFailureRegister />
-      <PublishWristbandScan />
-      <PublishSuccessWristbandRegister />
-      <PublishFailureWristbandRegister />
-      <PublishSuccessWristbandVerify />
-      <PublishFailureWristbandVerify />
-      <PublishSuccessMergeTeam />
-      <PublishFailureMergeTeam />
-      <PublishSuccessListPackages />
+      {/* <PublishSuccessLogin /> */}
+      {/* <PublishFailureLogin /> */}
+      {/* <PublishSuccessRegister /> */}
+      {/* <PublishFailureRegister /> */}
+      {/* <PublishWristbandScan /> */}
+      {/* <PublishSuccessWristbandRegister /> */}
+      {/* <PublishFailureWristbandRegister /> */}
+      {/* <PublishSuccessWristbandVerify /> */}
+      {/* <PublishFailureWristbandVerify /> */}
+      {/* <PublishSuccessMergeTeam /> */}
+      {/* <PublishFailureMergeTeam /> */}
+      {/* <PublishSuccessListPackages /> */}
     </StyleMqttRoutes>
   );
 }
