@@ -1284,3 +1284,101 @@ roster is playing.
 roster walks out of the room.
 
 
+
+
+
+* All Events
+roster walked in to the room
+
+* User events start
+Customer registers
+Customer logs in
+Customer scans wristband
+Customer switches wristband
+Customer creates team
+Customer selects existing team
+Player wants to be part of a team.
+Player wants to be removed from a team.
+Player wants to switch to another team.
+Team want to add a package.
+Team want to remove a package.
+Team wants to augment a package (add more time, missions ....)
+Team wants to start playing.
+Team opens door.
+Team closes door.
+Team sets room difficulty.
+Teams panics.
+Teams pauses game.
+Teams resumes game.
+Team wants to add a discount.
+Customer wants to add a discount.
+Team win.
+Team lose.
+Team wants to pay.
+Team wants a refund.
+Cashier wants to log in.
+Cashier wants to log out.
+Admin wants to log in.
+Admin wants to log out.
+Admin wants to register.
+Admin wants to register a cashier.
+Admin wants to delete a cashier.
+Admin wants to edit a cashier.
+Admin wants to edit a package.
+Admin wants to add a package.
+Admin wants to delete a package.
+Admin wants to create a discount.
+Admin wants to remove a discount.
+Admin wants to create a player only discount.
+Admin wants to remove a player only discount.
+Admin wants to notify players of available discounts.
+* User Events
+Roster opens door
+Roster closes door
+Roster selects room difficulty
+Roster merges team
+Roster panics
+Customer registers
+Customer logs in
+Customer scans wristband
+Roster player wants to switch to other Team.
+Roster adds package
+Roster removes package
+Roster pauses game
+Roster starts game
+Roster postpones game
+Roster adds player
+Roster removes player
+Roster pays
+Roster requests refund
+Cashier logs in
+Cashier logs out
+Cashier edits Customer.
+Admin logs in
+Admin logs out
+Admin registers cashier.
+Admin deletes cashier.
+Admin edits cashier.
+* Room events
+walked in the room
+walked out of the room
+lost game
+won game
+panic
+open door
+close door
+choose game difficulty
+* Inside room screen
+set game difficulty
+change language
+panic
+* Outside room screen
+change language
+* Registration screen
+player registration
+player login
+team merge
+wristband register
+wristband verify
+wristband scan
+
