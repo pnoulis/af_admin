@@ -1290,6 +1290,26 @@ roster walks out of the room.
 * All Events
 roster walked in to the room
 
+* Player initiated environment events
+team opened door
+team closed door
+team lost
+team won
+user scanned wristband
+team panicked
+team choose difficulty
+sensors send local points
+* Team statuses
+Team registered
+Team playing
+Team paused
+* What can i track?
+team is in that room
+team in that room points
+team who its roster is
+team playing time
+team package time remaining
+team package time
 * User events start
 Customer registers
 Customer logs in
@@ -1328,6 +1348,7 @@ Admin wants to edit a package.
 Admin wants to add a package.
 Admin wants to delete a package.
 Admin wants to create a discount.
+Admin wants to edit a discount.
 Admin wants to remove a discount.
 Admin wants to create a player only discount.
 Admin wants to remove a player only discount.
@@ -1382,3 +1403,17 @@ wristband register
 wristband verify
 wristband scan
 
+
+* State machines
+** transitions
+*** What is a transition
+transition: (state, event) => nextState
+
+a reducer is a transition.
+
+function transition(state, event) {
+ return nextState;
+}
+
+** events
+** finite states
