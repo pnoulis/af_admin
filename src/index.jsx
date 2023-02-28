@@ -22,6 +22,7 @@ if (import.meta.env.PROD) {
     {
       path: "/",
       children: [...routesApp, ...testRoutes],
+      // children: [...testRoutes],
     },
   ]);
 }

@@ -61,9 +61,17 @@ const PLAYER_SCHEMA = {
   wristband: WRISTBAND_SCHEMA,
 };
 
+const PACKAGE_STATUS = {
+  new: 0,
+  registered: 1,
+  paid: 2,
+  active: 3,
+};
+
 const PACKAGE_SCHEMA = {
   id: 0, // id sha256...or whatever
   name: "", // 30 missions
+  status: PACKAGE_STATUS,
   discountCode: "", // id sha256...or whatever
   discountAmount: "", // % || integer
   costPerPerson: [
@@ -157,7 +165,7 @@ const TEAM_SCHEMA = {
     PLAYER_SCHEMA,
     PLAYER_SCHEMA,
   ],
-  package: PACKAGE_SCHEMA,
+  packages: [PACKAGE_SCHEMA],
 };
 const REGISTRATION_SCHEMA = {
   /**
@@ -301,24 +309,40 @@ const registrationReducer = (state, action) => {
         ...state,
       };
     case "add_package":
-      state.active.package = {
+      const newPackage = {
         ...PACKAGE_SCHEMA,
-        name: action.package.name,
-        costPerPerson: state.active.roster.map((player) => {
-          const cost = {
-            username: player.username,
-            discountCode: "",
-            discountAmount: "",
-            personCost: Number.parseFloat(
-              action.package.cost / state.active.roster.length
-            ).toFixed(2),
-          };
-          cost.netPersonCost = cost.personCost;
-          return cost;
-        }),
-        packageCost: action.package.cost,
-        netCost: action.package.cost,
+        name: "new",
       };
+      state.active.packages = [...state.active.packages, newPackage];
+      console.log(state);
+      // state.active.package = {
+      //   ...PACKAGE_SCHEMA,
+      //   name: action.package.name,
+      //   costPerPerson: state.active.roster.map((player) => {
+      //     const cost = {
+      //       username: player.username,
+      //       discountCode: "",
+      //       discountAmount: "",
+      //       personCost: Number.parseFloat(
+      //         action.package.cost / state.active.roster.length
+      //       ).toFixed(2),
+      //     };
+      //     cost.netPersonCost = cost.personCost;
+      //     return cost;
+      //   }),
+      //   packageCost: action.package.cost,
+      //   netCost: action.package.cost,
+      // };
+      // return {
+      //   ...state,
+      // };
+      return {
+        ...state,
+      };
+    case "remove_package":
+      state.active.packages = state.active.packages.filter(
+        (afpackage) => afpackage.name !== action.name
+      );
       return {
         ...state,
       };
