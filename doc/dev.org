@@ -1,0 +1,31 @@
+* About
+This file acts as a journal or notepad towards the goal of assisting the
+development of af_admin.
+* Core Agent Factory State Machine
+** About
+The agent factory state machine implements a hierarchical finite state machine.
+Meaning it is a state machine composed of state machines.
+
+** file structure
+** Events
+** Initializing the state machine
+*** Options
+*** cached data
+My state machine should have the ability to be provided with its initial state.
+Both for testing purposes and because it is a requirement.
+** Some transitions are asynchronous
+*** Implementing transitions as a promise
+*** promises
+
+States:
+pending
+fulfilled
+rejected
+settled
+
+*** then
+then(optional fn onFulfilled, optional fn onRejected)
+
+returns synchronously a promise
+
+
