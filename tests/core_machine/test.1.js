@@ -25,7 +25,7 @@ const data = {
 };
 
 export function test1(coreMachine) {
-  console.log("TEST 1 [coreMachine]");
+  console.log("[TEST]:coreMachine");
   const afm = new coreMachine.AgentFactoryMachine(data);
   afm.init();
 

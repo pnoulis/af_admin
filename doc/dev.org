@@ -13,6 +13,7 @@ Meaning it is a state machine composed of state machines.
 *** cached data
 My state machine should have the ability to be provided with its initial state.
 Both for testing purposes and because it is a requirement.
+** Persisting the state machine
 ** Some transitions are asynchronous
 *** Implementing transitions as a promise
 *** promises
