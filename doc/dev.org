@@ -9,10 +9,30 @@ Meaning it is a state machine composed of state machines.
 ** file structure
 ** Events
 ** Initializing the state machine
+*** About
+The Agent Factory State Machine is complicated.
+It depends on various services in order to perform its function.
+
+Many of its services are asynchronous.
+
+The database service is asynchronous.
+The Mqtt client service is asynchronous.
+Retrieving the cached data if any is also asynchronous.
+
+
+Most database and mqtt clients such as mongoose and mqtt.js implement the
+EventEmitter interface.
+
+some actions of the AFM are dependent upon their services.
+
+
 *** Options
 *** cached data
 My state machine should have the ability to be provided with its initial state.
 Both for testing purposes and because it is a requirement.
+*** Store
+*** Mqtt Client
+*** Logger
 ** Persisting the state machine
 ** Some transitions are asynchronous
 *** Implementing transitions as a promise
@@ -29,4 +49,7 @@ then(optional fn onFulfilled, optional fn onRejected)
 
 returns synchronously a promise
 
-
+** Handling the stores asynchronous initializiation
+*** Local initialization check
+*** Delayed startup
+*** pre initialization queues
