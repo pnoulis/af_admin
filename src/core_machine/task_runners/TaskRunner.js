@@ -1,5 +1,67 @@
 import { EventEmitter } from "node:events";
 
+class TaskRunner extends EventEmitter {
+  constructor(config = {}) {
+    super();
+    this.config = this.parseConfig(config);
+    this.jobQueue = [];
+    this.connected = false;
+    this.states = {
+      idle: new States.Idle(this),
+      pending: new States.Pending(this),
+      online: new States.Online(this),
+    };
+    this.setState(this.states.idle.getState());
+  }
+
+  queue(job) {
+    this.jobQueue.push(job);
+  }
+
+  flush() {
+    const now = Date.now();
+    this.jobQueue = this.jobQueue.filter((job) => {
+      if (now > job.expire) {
+        console.log("job expired");
+        job.done = true;
+        // even if the job has expired, it does not hurt to try
+        // running it one last time
+        job.execute();
+      }
+      return !job.done;
+    });
+  }
+
+  serviceOn() {
+    this.connected = true;
+  }
+
+  serviceOff() {
+    this.connected = false;
+  }
+
+  run(task, expire) {
+    expire = Date.now() + (expire || this.config.taskExpire);
+    return this.state.run(task, expire);
+  }
+
+  setState(state) {
+    const oldState = `[TRANSITION]:afm ${this.state?.name}`;
+    this.state = state;
+    console.log(oldState + ` -> ${this.state.name}`);
+    if ("initialize" in this.state) {
+      this.state.initialize();
+    }
+  }
+
+  parseConfig(config) {
+    return {
+      taskExpire: 3000,
+      ...config,
+    };
+  }
+}
+
 const States = {};
 States.Idle = function Idle(taskRunner) {
   this.name = "idle";
@@ -138,68 +200,5 @@ States.Online.prototype.run = function online(task, expire) {
   this.taskRunner.queue(job);
   this.runJobs();
 };
-
-class TaskRunner extends EventEmitter {
-  constructor(config = {}) {
-    super();
-    this.config = this.parseConfig(config);
-    this.jobQueue = [];
-    this.connected = false;
-    this.states = {
-      idle: new States.Idle(this),
-      pending: new States.Pending(this),
-      online: new States.Online(this),
-    };
-    this.setState(this.states.idle.getState());
-  }
-
-  queue(job) {
-    this.jobQueue.push(job);
-  }
-
-  flush() {
-    const now = Date.now();
-    this.jobQueue = this.jobQueue.filter((job) => {
-      if (now > job.expire) {
-        console.log("job expired");
-        job.done = true;
-
-        // even if the job has expired, it does not hurt to try
-        // running it one last time
-        job.execute();
-      }
-      return !job.done;
-    });
-  }
-
-  serviceOn() {
-    this.connected = true;
-  }
-
-  serviceOff() {
-    this.connected = false;
-  }
-
-  run(task, expire) {
-    expire = Date.now() + (expire || this.config.taskExpire);
-    return this.state.run(task, expire);
-  }
-
-  setState(state) {
-    const oldState = `[TRANSITION]:afm ${this.state?.name}`;
-    this.state = state;
-    console.log(oldState + ` -> ${this.state.name}`);
-    if ("initialize" in this.state) {
-      this.state.initialize();
-    }
-  }
-
-  parseConfig(config) {
-    return {
-      taskExpire: 3000,
-      ...config,
-    };
-  }
-}
 
 export { TaskRunner };

@@ -1,4 +1,4 @@
-import { TaskRunner } from "../genericTaskRunner.js";
+import { TaskRunner } from "./TaskRunner.js";
 
 class FileRunner extends TaskRunner {
   constructor(fileClient) {
