@@ -1,8 +1,7 @@
-import { EventEmitter } from 'node:events';
+import { EventEmitter } from "node:events";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "url";
-
 
 class FileClient extends EventEmitter {
   constructor(filepath) {
@@ -39,17 +38,13 @@ class FileClient extends EventEmitter {
   /**
    * @return {Promise}
    */
-  async connect() {
+  connect() {
     // flag options:
     // a+ -> open for reading and appending, create if not exist
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        this.handle = await fs.open(this.path, "a+");
-        this.emit("connected");
-      }, 2000);
+    return fs.open(this.path, "a+").then((handle) => {
+      this.handle = handle;
+      this.emit("connected");
     });
-    // this.handle = await fs.open(this.path, "a+");
-    // this.emit("connected");
   }
 }
 
