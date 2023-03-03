@@ -53,3 +53,61 @@ returns synchronously a promise
 *** Local initialization check
 *** Delayed startup
 *** pre initialization queues
+** Task runner
+starts at offline mode.
+listens on events. When the underlying service becomes online
+switches to the online state. if there are pending tasks transitions
+to the pending state.
+
+
+idle.run =
+create a promise
+create a task.
+return the promise
+push the task in the taskQueue
+is the connection online?
+if yes switch to online state.
+if no switch to pending state.
+change the state to pending.
+
+pending state.
+set up a polling timer.
+each second or whatever.
+remove expired tasks.
+checks if the the connection is online.
+If yes remove the timer.
+switch to online state.
+do not allow timer to actually run forever.
+
+online run
+there is already a polling timer in place whatever.
+create a promise.
+create a task.
+return the promise.
+push the task in the taskQueuue
+update the polling expiration timer.
+
+
+runningTasks state.
+for each task.
+check connection
+if off switch to pending state.
+if on run task.
+
+run tasks sequentially.
+check connection.
+If connection has gone offline transition to pending state.
+While the tasks are running
+
+runningTasks run
+create a promise.
+create a task.
+return the promise.
+push the task in the taskQueue
+
+
+
+
+
+
+
