@@ -1,4 +1,4 @@
-export function test3(store) {
+export function test3(TaskRunners, ServiceClients) {
   console.log(
     "[TEST]:store handling asynchronous initialization\
  using the local initialization technique"
