@@ -101,3 +101,25 @@ run all jobs
 
 
 
+** Persisting the State of the AgentFactoryMachine
+*** resources
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Terminology
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Browser_storage_limits_and_eviction_criteria
+https://en.wikipedia.org/wiki/Object_database
+*** create object store
+createObjectStore(name, options);
+
+where options:
+
+{
+keyPath: 'id',
+autoIncrement: boolean,
+}
+*** CRUD operations procedure
+**** get database object
+**** open transaction on database
+**** open object store on transaction
+**** perform operation on object store
+** Transfer the mqtt client
