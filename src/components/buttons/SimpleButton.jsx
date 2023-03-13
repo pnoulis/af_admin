@@ -9,7 +9,8 @@ const ButtonStyled = styled("button")`
   box-sizing: border-box;
 
   // content
-  font-family: "Roboto";
+  // font-family: 'Roboto';
+  font-family: NoirPro-Medium;
   font-size: var(--text-md);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -19,19 +20,15 @@ const ButtonStyled = styled("button")`
   color: var(--text-on-dark-basic);
 
   // dimensions
-  width: max-content;
+  width: 120px;
+  height: 40px;
   padding: 0 1.5em;
-  height: 55px;
 
   // appearance
-  background-image: var(--btn-primary-color);
-  background-size: 200% auto;
   border-radius: var(--border-radius-0);
   cursor: pointer;
   box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.3); /*black with 30% opacity*/
-
-  // dynamic
-  transition: 0.5s;
+  background-color: var(--primary-strong);
 
   // position
   position: relative;
@@ -41,13 +38,16 @@ const ButtonStyled = styled("button")`
     background-position: right center;
   }
 
+  &:hover {
+    opacity: 0.8;
+  }
+
   &:disabled {
     opacity: 50%;
-    cursor: default;
   }
 `;
 
-export function ButtonText({ children, ...props }) {
+export function ButtonTextBasic({ children, ...props }) {
   return (
     <ButtonStyled onClick={createRipple} {...props}>
       {children}

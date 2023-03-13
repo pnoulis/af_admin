@@ -63,7 +63,6 @@ function RegisterPlayerForm() {
       birthDate: "",
       username: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
@@ -104,7 +103,6 @@ function RegisterPlayerForm() {
         />
         <TextInput name="username" />
         <TextInput type="text" name="password" />
-        <TextInput type="text" name="confirmPassword" />
         <StyleErrorMessage>{form.error}</StyleErrorMessage>
         <ButtonText
           form="registerPlayerForm"

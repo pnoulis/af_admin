@@ -1,27 +1,29 @@
-import React from "react";
-import { createRipple } from "/src/lib";
+import * as React from "react";
 import styled from "styled-components";
+import { createRipple } from "/src/lib";
+import { NavLink } from "react-router-dom";
 
-const ButtonStyled = styled("button")`
+const StyleFancyLink = styled(NavLink)`
   // defaults
   all: unset;
-  display: revert;
+  display: flex;
   box-sizing: border-box;
+  background-color: red;
 
-  // content
   font-family: "Roboto";
   font-size: var(--text-md);
   text-transform: uppercase;
   letter-spacing: 1px;
   word-spacing: 3px;
-  text-align: center;
-  line-height: 0;
   color: var(--text-on-dark-basic);
+  align-items: center;
+  justify-content: center;
 
   // dimensions
+  min-width: 120px;
   width: max-content;
   padding: 0 1.5em;
-  height: 55px;
+  aspect-ratio: 2.25 / 0.8;
 
   // appearance
   background-image: var(--btn-primary-color);
@@ -47,10 +49,12 @@ const ButtonStyled = styled("button")`
   }
 `;
 
-export function ButtonText({ children, ...props }) {
+function FancyLinkButton({ path, label, ...props }) {
   return (
-    <ButtonStyled onClick={createRipple} {...props}>
-      {children}
-    </ButtonStyled>
+    <StyleFancyLink to={path} end onClick={createRipple} {...props}>
+      {label}
+    </StyleFancyLink>
   );
 }
+
+export { FancyLinkButton };

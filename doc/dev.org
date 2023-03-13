@@ -1403,7 +1403,6 @@ wristband register
 wristband verify
 wristband scan
 
-
 * State machines
 ** transitions
 *** What is a transition
@@ -1417,3 +1416,8 @@ function transition(state, event) {
 
 ** events
 ** finite states
+* Teams table at registration/teams
+** rows must be selectable.
+** only one row can be selected.
+** The currently active team must be the one selected
+** on double click the team becomes active

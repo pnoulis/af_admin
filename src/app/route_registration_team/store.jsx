@@ -346,6 +346,11 @@ const registrationReducer = (state, action) => {
       return {
         ...state,
       };
+    case "set_teams":
+      return {
+        ...state,
+        teams: action.teams,
+      };
     case "add_package_discount":
       break;
     case "add_player_discount":

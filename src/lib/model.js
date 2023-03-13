@@ -36,7 +36,6 @@ function Wristband() {
 
 function Package() {
   this.state = init;
-
   function init() {}
   function registered() {}
   function paid() {}
@@ -51,4 +50,14 @@ function Session() {
   function live() {}
   function cached() {}
   function archived() {}
+}
+
+function Mqtt() {}
+
+function App() {
+  this.state = init;
+  this.session = new Session();
+  this.mqtt = new Mqtt();
+  function init() {}
+  function loaded() {}
 }

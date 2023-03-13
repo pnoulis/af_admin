@@ -108,6 +108,7 @@ body {
   --text-on-dark-accent: var(--primary-subtle);
   --text-on-white: hsl(var(--base-black), 5%);
   --panel-shadow: 5px -5px 50px rgba(0, 0, 0, 0.1), -1px 1px 50px rgba(0, 0, 0, 0.1);
+  --panel-shadow-1: 5px 10px 30px rgba(0, 0, 0, 0.1), -2px 0 15px rgba(0, 0, 0, 0.1);
   --panel-color: white;
   --modal-backdrop-1: hsl(240, 64%, 80%);
 
