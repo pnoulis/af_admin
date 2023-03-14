@@ -71,7 +71,7 @@ const PACKAGE_STATUS = {
 const PACKAGE_SCHEMA = {
   id: 0, // id sha256...or whatever
   name: "", // 30 missions
-  status: PACKAGE_STATUS,
+  status: PACKAGE_STATUS.new,
   discountCode: "", // id sha256...or whatever
   discountAmount: "", // % || integer
   costPerPerson: [
@@ -165,7 +165,7 @@ const TEAM_SCHEMA = {
     PLAYER_SCHEMA,
     PLAYER_SCHEMA,
   ],
-  packages: [PACKAGE_SCHEMA],
+  packages: [],
 };
 const REGISTRATION_SCHEMA = {
   /**
@@ -346,6 +346,14 @@ const registrationReducer = (state, action) => {
       return {
         ...state,
       };
+    case "set_packages":
+      return {
+        ...state,
+        active: {
+          ...state.active,
+          packages: action.packages,
+        },
+      };
     case "set_teams":
       return {
         ...state,
@@ -400,4 +408,6 @@ export {
   WRISTBAND_STATUS,
   ROSTER_STATUS,
   TEAM_STATUS,
+  PACKAGE_STATUS,
+  PACKAGE_SCHEMA,
 };

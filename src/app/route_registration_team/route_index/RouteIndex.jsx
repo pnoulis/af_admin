@@ -14,6 +14,7 @@ const StyleLayoutRouteTeamsIndex = styled.div`
   flex-flow: column nowrap;
   box-sizing: border-box;
   margin: auto;
+  gap: 40px;
   /* Dimensions */
   width: 100%;
   height: 100%;

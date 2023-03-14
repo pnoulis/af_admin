@@ -8,15 +8,15 @@ const StyleRoutePackage = styled.div`
   box-sizing: border-box;
   // Type
   display: grid;
-  grid-template-columns: 250px 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  max-height: 100%;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 1fr;
   grid-template-areas:
     "sidebar packages packages"
     "sidebar team_discount players_discount";
   // Dimensions
   width: 100%;
   height: 100%;
+  padding-top: 30px;
   // Position
   // Fonts
   // Effects
@@ -46,16 +46,13 @@ const StylePlayersDiscount = styled.section`
 
 const StyleSidebar = styled(Sidebar)`
   grid-area: sidebar;
-  background-color: lightblue;
 `;
 
 function RoutePackage() {
   return (
     <StyleRoutePackage>
       <StyleSidebar />
-      <div>
-        <Outlet />
-      </div>
+      <Outlet />
       {/* <StylePackages>packages</StylePackages> */}
       {/* <StyleTeamDiscount>team discount</StyleTeamDiscount> */}
       {/* <StylePlayersDiscount>players discount</StylePlayersDiscount> */}

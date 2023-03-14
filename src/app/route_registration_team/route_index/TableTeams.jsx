@@ -186,9 +186,17 @@ function TableTeams({ rows }) {
         width: "100%",
         margin: "auto",
         border: "none",
+        height: "100%",
       }}
     >
-      <Paper sx={{ width: "100%", mb: 2, boxShadow: "var(--panel-shadow-1)" }}>
+      <Paper
+        sx={{
+          width: "100%",
+          mb: 2,
+          boxShadow: "var(--panel-shadow-1)",
+          height: "100%",
+        }}
+      >
         <TableTeamsToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
