@@ -14,6 +14,29 @@ const StyleLayoutItemConfiguratorCard = styled(PackageConfiguratorCard)`
   flex: 0 0 400px;
   height: 250px;
 `;
+
+const catalogue = [
+  {
+    amount: 10,
+    unit: "minutes",
+  },
+  {
+    amount: 20,
+    unit: "minutes",
+  },
+  {
+    amount: 30,
+    unit: "minutes",
+  },
+  {
+    amount: 40,
+    unit: "minutes",
+  },
+  {
+    amount: 50,
+    unit: "minutes",
+  },
+];
 function Packages({ className }) {
   const { client } = useMqtt();
   const [packages, setPackages] = React.useState(null);
@@ -39,7 +62,7 @@ function Packages({ className }) {
 
   React.useEffect(() => {
     if (!selectedPackage) return;
-    dispatchRegistration({ type: "add_package", package: selectedPackage });
+    // dispatchRegistration({ type: "add_package", package: selectedPackage });
   }, [selectedPackage]);
 
   return (
@@ -47,14 +70,14 @@ function Packages({ className }) {
       <StyleLayoutItemConfiguratorCard
         title="time"
         subtitle="amount of time"
-        catalogue={packages?.get("time").catalogue || []}
+        catalogue={packages?.get("time").catalogue || catalogue}
         selected={selectedPackage?.type === "time"}
         onPackageConfigured={handlePackageConfigured}
       />
       <StyleLayoutItemConfiguratorCard
         title="missions"
         subtitle="number of missions"
-        catalogue={packages?.get("mission").catalogue || []}
+        catalogue={packages?.get("mission").catalogue || catalogue}
         selected={selectedPackage?.type === "mission"}
         onPackageConfigured={handlePackageConfigured}
       />

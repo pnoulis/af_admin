@@ -1,10 +1,11 @@
 import { RoutePackage } from "./RoutePackage";
 import { routeNewPackage } from "./newPackage";
+import { routeIndex } from "./RouteIndex";
 
 const routePackage = {
   path: "/registration/team/packages",
   element: <RoutePackage />,
-  children: [routeNewPackage],
+  children: [routeIndex, routeNewPackage],
 };
 
 const linkPackage = {

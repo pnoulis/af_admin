@@ -244,7 +244,8 @@ Proxy.prototype.parseConfig = function (config) {
     },
     logger: {
       ...config.logger,
-      verbosity: config.logger?.verbosity || "trace",
+      verbosity: "silent",
+      // verbosity: config.logger?.verbosity || "trace",
     },
   };
 };

@@ -4,6 +4,7 @@ import { Package } from "./Package";
 import { AddPackage } from "./AddPackage";
 import { useRegistrationContext } from "/src/app/route_registration_team";
 import { NavLink } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const StylePackagesList = styled.div`
   display: flex;
@@ -95,6 +96,9 @@ function PackagesList({ className, ...props }) {
   const { state, dispatchRegistration } = useRegistrationContext();
   const pref = React.useRef(null);
   const ref = React.useRef(null);
+  const listRef = React.useRef([]);
+  const location = useLocation();
+  const params = useParams();
 
   // React.useEffect(() => {
   //   if (state.active?.packages.length === 0) {
@@ -105,6 +109,20 @@ function PackagesList({ className, ...props }) {
   // }, []);
 
   React.useEffect(() => {
+    console.log(location);
+    console.log(params);
+    const reg = new RegExp(`/${params.pkgId}$`);
+
+    console.log(listRef.current);
+    const item = listRef.current.find((el) => el.id === params.pkgId);
+    if (item) {
+      item.node.scrollIntoView();
+    }
+
+    // if (reg.test(location.pathname)) {
+    //   console.log("it matches");
+    //   console.log(listRef);
+    // }
     // console.log("mounting");
     // if (!ref.current) return;
     // console.log(ref.current.maxHeight);
@@ -112,13 +130,22 @@ function PackagesList({ className, ...props }) {
     // if (!ref.current.style.maxHeight) {
     //   ref.current.style.maxHeight = `${pref.current.offsetHeight - 20}px`;
     // }
-  }, []);
+  }, [state.active.packages]);
 
   return (
     <StylePackagesList ref={pref} className={className} {...props}>
       <StyleScrollableContent ref={ref}>
         {state.active?.packages.map((afpackage, i) => (
-          <StyleScrollableContentItem to={afpackage.id} key={afpackage.name}>
+          <StyleScrollableContentItem
+            ref={(node) =>
+              listRef.current.push({
+                id: afpackage.id,
+                node,
+              })
+            }
+            to={afpackage.id}
+            key={afpackage.name}
+          >
             {afpackage.name}
             <StyleStatus>new</StyleStatus>
           </StyleScrollableContentItem>

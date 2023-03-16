@@ -49,9 +49,9 @@ function Sidebar(props) {
       return;
     }
 
-    if (!/\d+$/.test(location)) {
-      navigate(`./${state.active.packages[0].id}`);
-    }
+    // if (!/\d+$/.test(location)) {
+    //   navigate(`./${state.active.packages[0].id}`);
+    // }
   }, []);
 
   return (
