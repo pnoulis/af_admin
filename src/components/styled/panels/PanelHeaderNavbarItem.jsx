@@ -98,11 +98,12 @@ function PanelHeaderNavbarItem({
   label,
   renderIcon,
   iconSize,
+  end = true,
   ...props
 }) {
   return (
     <StyleLayoutNavbarItem>
-      <StyleLayoutNavLink to={path} onClick={createRipple}>
+      <StyleLayoutNavLink to={path} onClick={createRipple} end={end}>
         <StyleLayoutNavlinkItemIcon size={iconSize}>
           <Svg className="navlinkItemIcon">{renderIcon}</Svg>
         </StyleLayoutNavlinkItemIcon>

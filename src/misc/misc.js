@@ -1,3 +1,21 @@
+function mapTeamStatus(status) {
+  switch (status) {
+  case 0:
+    return 'new';
+  case 1:
+    return 'cached';
+  case 2:
+    return 'registered';
+  case 3:
+    return 'packaged';
+  case 4:
+    return 'playing';
+  case 5:
+    return 'paused';
+  default:
+    throw new Error(`Unknown team status index: ${status}`);
+  }
+}
 function mapWristbandColorCode(wristbandColorCode) {
   switch (wristbandColorCode) {
     case 0:
@@ -57,4 +75,4 @@ function mapServerPackagesToClient(packages) {
   return clientPackages;
 }
 
-export { mapWristbandColorCode, mapServerPackagesToClient };
+export { mapWristbandColorCode, mapServerPackagesToClient, mapTeamStatus };

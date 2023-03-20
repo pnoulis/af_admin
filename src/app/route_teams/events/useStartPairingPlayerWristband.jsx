@@ -1,5 +1,5 @@
 import * as React from "react";
-import { WRISTBAND_STATUS } from "/src/app/route_registration_team";
+import { WRISTBAND_STATUS } from "/src/app/route_teams/store.jsx";
 import { Modal } from "/src/modals";
 import { ConfirmUnpairDialog } from "./ConfirmUnpairDialog";
 
@@ -10,7 +10,6 @@ function useStartPairingPlayerWristband(state, setState) {
 
   const handleStartPairingPlayerWristband = React.useCallback(
     (player, overwrite) => {
-      console.log(player);
       if (!overwrite && player.wristband.status >= WRISTBAND_STATUS["paired"]) {
         Modal.render(
           <ConfirmUnpairDialog
@@ -24,6 +23,7 @@ function useStartPairingPlayerWristband(state, setState) {
           />
         );
       } else {
+        console.log(player);
         setState({ type: "start_pairing_wristband", player });
       }
     },

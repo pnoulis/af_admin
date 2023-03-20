@@ -8,6 +8,9 @@ Modal.prototype.render = function render(modal) {
     throw new Error("<ModalsRoot/> has not mounted");
   }
 
+  if (this.mountPoint.children.length >= 1) {
+    this.mountPoint.children[0].remove();
+  }
   const modalRoot = document.createElement("article");
   const reactroot = ReactClient.createRoot(modalRoot);
   this.mountPoint.appendChild(modalRoot);

@@ -91,7 +91,7 @@ function PlayerActionbarItemWristbandPair({
   player,
   onWristbandPair = () => {},
   size,
-  disable,
+  disable = false,
   ...props
 }) {
   disable ??= !player.assigned;

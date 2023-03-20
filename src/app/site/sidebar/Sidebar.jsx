@@ -4,7 +4,7 @@ import { Navbar } from "./Navbar";
 import { LangWidget } from "./LangWidget";
 import { TimeWidget } from "./TimeWidget";
 import background from "/assets/backgrounds/sidebar.png";
-import { linkRegistrationTeam } from "/src/app/links";
+import { linkRegistrationTeam, linkRouteTeams } from "/src/app/links";
 
 const StyleLayoutSidebar = styled.div`
   all: unset;
@@ -94,7 +94,7 @@ function Sidebar() {
       </StyleLayoutSidebarItemHeader>
       <StyleLayoutSidebarItemLine />
       <StyleLayoutSidebarItemNavbar>
-        <Navbar items={[linkRegistrationTeam]} />
+        <Navbar items={[linkRegistrationTeam, linkRouteTeams]} />
       </StyleLayoutSidebarItemNavbar>
       <StyleLayoutSidebarItemTimeWidget>
         <TimeWidget />

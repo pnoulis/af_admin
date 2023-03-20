@@ -39,7 +39,6 @@ export default function App() {
   return (
     <React.Fragment>
       <Container>
-        <p>helol</p>
         {/* <Header/> */}
         {/* <Sidebar/> */}
         {/* <Page> */}
