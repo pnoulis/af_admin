@@ -3,7 +3,10 @@ import styled from "styled-components";
 import { FormStore } from "/src/stores";
 import { TextInput_0 } from "/src/components/textInputs";
 import { ButtonText } from "/src/components/buttons/index.js";
-import { useTeamsContext } from '/src/app/route_teams/store.jsx';
+import {
+  useTeamsContext,
+  WRISTBAND_STATUS,
+} from "/src/app/route_teams/store.jsx";
 
 const TextInput = styled(TextInput_0)`
   height: 100%;
@@ -70,13 +73,20 @@ function FilterTeams() {
         id="filterTeamsForm"
         onSubmit={(e) => {
           e.preventDefault();
-          const [key, value] = form.fields.filters.split(':');
-          const filteredTeams = state.teams.filter((team) => team[key] === value);
-          console.log(filteredTeams);
-          dispatch({type: "new_state", new: {
-            ...state,
-            filter: filteredTeams,
-          }});
+          let [key, value] = form.fields.filters.split(":");
+          if (key === "status") {
+            value = WRISTBAND_STATUS[value];
+          }
+          const filteredTeams = state.teams.filter(
+            (team) => team[key] === value
+          );
+          dispatch({
+            type: "new_state",
+            new: {
+              ...state,
+              filter: filteredTeams,
+            },
+          });
         }}
       >
         <legend>filter</legend>

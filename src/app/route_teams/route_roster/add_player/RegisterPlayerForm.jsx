@@ -6,8 +6,8 @@ import { FormStore } from "/src/stores";
 import {
   useRegisterPlayer,
   useAddPlayerToTeam,
-  useRegistrationContext,
-} from "/src/app/route_registration_team";
+  useTeamsContext,
+} from "/src/app/route_teams";
 
 const TextInput = styled(TextInput_0)`
   height: 50px;
@@ -48,7 +48,7 @@ const StyleErrorMessage = styled.p`
 `;
 
 function RegisterPlayerForm() {
-  const { state, dispatchRegistration } = useRegistrationContext();
+  const { state, dispatch } = useTeamsContext();
   const handleRegisterPlayer = useRegisterPlayer();
   const handleAddplayerToTeam = useAddPlayerToTeam();
   const [form, setForm] = FormStore.init({
@@ -59,8 +59,6 @@ function RegisterPlayerForm() {
       firstName: "",
       lastName: "",
       email: "",
-      phone: "",
-      birthDate: "",
       username: "",
       password: "",
     },
@@ -76,7 +74,7 @@ function RegisterPlayerForm() {
         setForm("setSubmit", false);
       } else {
         setForm("reset");
-        handleAddplayerToTeam(state, dispatchRegistration, res.player);
+        handleAddplayerToTeam(state, dispatch, res.player);
       }
     });
   }, [form.submitting]);
@@ -102,7 +100,7 @@ function RegisterPlayerForm() {
           form="registerPlayerForm"
           type="submit"
           disabled={form.submitting}
-    style={{width: '200px'}}
+          style={{ width: "200px" }}
         >
           register
         </ButtonText>

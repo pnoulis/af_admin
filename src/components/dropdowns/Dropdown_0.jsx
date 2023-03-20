@@ -158,6 +158,14 @@ function Dropdown_0({
     }
   }, [reset]);
 
+  React.useEffect(() => {
+    items.forEach((item) => {
+      if (item.selected) {
+        setValue(item.label);
+      }
+    });
+  }, []);
+
   return (
     <StyleDropdown_0
       className={`${className ? className : ""} ${isOpen ? "open" : "closed"} ${
@@ -181,11 +189,13 @@ function Dropdown_0({
         </span>
       </div>
       <ul className="list">
-        {items.map((item, i) => (
-          <li key={i} className="item" onClick={handleInputChange}>
-            {item.label}
-          </li>
-        ))}
+        {items.map((item, i) => {
+          return (
+            <li key={i} className="item" onClick={handleInputChange}>
+              {item.label}
+            </li>
+          );
+        })}
       </ul>
     </StyleDropdown_0>
   );

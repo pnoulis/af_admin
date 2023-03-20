@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   StyleLayoutPanelItemHeader,
   PanelHeaderNavbar,
@@ -13,8 +13,8 @@ import { ReactComponent as AddPackageIcon } from "/assets/icons/add_package.svg"
 import { ReactComponent as SubmitTeamIcon } from "/assets/icons/summary.svg";
 import { ReactComponent as CreateTeam } from "/assets/icons/merge_team-cropped.svg";
 import { ReactComponent as PriceTeamIcon } from "/assets/icons/euro-cropped.svg";
-import { TeamWidget } from './team_widget';
-import { useTeamsContext } from './store';
+import { TeamWidget } from "./team_widget";
+import { useTeamsContext } from "./store";
 
 function TeamsPanelHeader() {
   const { state, dispatch } = useTeamsContext();
@@ -22,7 +22,7 @@ function TeamsPanelHeader() {
     <StyleLayoutPanelItemHeader>
       <PanelHeaderNavbar>
         <PanelHeaderNavbarItem
-          path={'/teams'}
+          path={"/teams"}
           label="teams"
           renderIcon={<AddPackageIcon />}
         />
@@ -30,22 +30,25 @@ function TeamsPanelHeader() {
           /* {...linkPlayers} */
           path={`/teams/${state.active.id}/roster`}
           label="roster"
+          end={false}
           renderIcon={<AddPlayerIcon />}
         />
         <PanelHeaderNavbarItem
           /* {...linkPackage} */
           path={`/teams/${state.active.id}/packages`}
           label="packages"
+          end={false}
           renderIcon={<PriceTeamIcon />}
         />
         <PanelHeaderNavbarItem
           /* {...linkSummary} */
           path={`/teams/${state.active.id}/summary`}
-          label='summary'
+          label="summary"
+          end={false}
           renderIcon={<SubmitTeamIcon />}
         />
       </PanelHeaderNavbar>
-      <TeamWidget/>
+      <TeamWidget />
     </StyleLayoutPanelItemHeader>
   );
 }

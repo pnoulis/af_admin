@@ -38,10 +38,14 @@ function NewTeamButton() {
 
   const handleSubmit = (nteams, group) => {
     const newTeams = [...state.teams, ...generateTeams(nteams, group)];
-    dispatch({ type: "new_state", new: {
-      ...state,
-      teams: newTeams,
-    }});
+    dispatch({
+      type: "new_state",
+      new: {
+        ...state,
+        teams: newTeams,
+        active: newTeams[newTeams.length - 1],
+      },
+    });
   };
 
   return (

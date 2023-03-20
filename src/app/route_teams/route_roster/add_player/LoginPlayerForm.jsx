@@ -6,8 +6,8 @@ import { FormStore } from "/src/stores";
 import {
   useLoginPlayer,
   useAddPlayerToTeam,
-  useRegistrationContext,
-} from "/src/app/route_registration_team";
+  useTeamsContext,
+} from "/src/app/route_teams";
 
 const TextInput = styled(TextInput_0)`
   height: 55px;
@@ -48,7 +48,7 @@ const StyleErrorMessage = styled.p`
 `;
 
 function LoginPlayerForm() {
-  const { state, dispatchRegistration } = useRegistrationContext();
+  const { state, dispatch } = useTeamsContext();
   const handleLoginPlayer = useLoginPlayer();
   const handleAddplayerToTeam = useAddPlayerToTeam();
   const [form, setForm] = FormStore.init({
@@ -63,7 +63,12 @@ function LoginPlayerForm() {
 
   React.useEffect(() => {
     if (!form.submitting) return;
+    // handleLoginPlayer(form.fields, (err, res) => {
+    //   console.log(err);
+    //   console.log(res);
+    // });
     handleLoginPlayer(form.fields, (err, res) => {
+      console.log(err);
       if (err) {
         throw new Error("500 - Internal server error page");
       } else if (res.result === "NOK") {
@@ -71,7 +76,7 @@ function LoginPlayerForm() {
         setForm("setSubmit", false);
       } else {
         setForm("reset");
-        handleAddplayerToTeam(state, dispatchRegistration, res.player);
+        handleAddplayerToTeam(state, dispatch, res.player);
       }
     });
   }, [form.submitting]);
@@ -94,7 +99,7 @@ function LoginPlayerForm() {
           form="loginPlayerForm"
           type="submit"
           disabled={form.submitting}
-    style={{width: "200px"}}
+          style={{ width: "200px" }}
         >
           login
         </ButtonText>

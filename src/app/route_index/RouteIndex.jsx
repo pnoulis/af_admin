@@ -113,8 +113,8 @@ function PublishSuccessRegister() {
       firstName: "pavlos",
       lastName: "noulis",
       username: "pnoulis",
-      phone: 123456789, // Integer
       email: "email@at.com",
+      password: "yolo",
     },
   };
 
@@ -387,18 +387,18 @@ function PublishSuccessListPackages() {
 function RouteIndex() {
   return (
     <StyleMqttRoutes>
-      {/* <PublishSuccessLogin /> */}
-      {/* <PublishFailureLogin /> */}
-      {/* <PublishSuccessRegister /> */}
-      {/* <PublishFailureRegister /> */}
-      {/* <PublishWristbandScan /> */}
-      {/* <PublishSuccessWristbandRegister /> */}
-      {/* <PublishFailureWristbandRegister /> */}
-      {/* <PublishSuccessWristbandVerify /> */}
-      {/* <PublishFailureWristbandVerify /> */}
-      {/* <PublishSuccessMergeTeam /> */}
-      {/* <PublishFailureMergeTeam /> */}
-      {/* <PublishSuccessListPackages /> */}
+      <PublishSuccessLogin />
+      <PublishFailureLogin />
+      <PublishSuccessRegister />
+      <PublishFailureRegister />
+      <PublishWristbandScan />
+      <PublishSuccessWristbandRegister />
+      <PublishFailureWristbandRegister />
+      <PublishSuccessWristbandVerify />
+      <PublishFailureWristbandVerify />
+      <PublishSuccessMergeTeam />
+      <PublishFailureMergeTeam />
+      <PublishSuccessListPackages />
     </StyleMqttRoutes>
   );
 }

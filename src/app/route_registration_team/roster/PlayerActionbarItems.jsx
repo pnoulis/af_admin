@@ -101,7 +101,11 @@ function PlayerActionbarItemWristbandPair({
       <TooltipTrigger
         onClick={(e) => {
           e.stopPropagation();
-          player.assigned && onWristbandPair(player);
+          if (player.group) {
+            onWristbandPair(player);
+          } else if (player.assigned) {
+            onWristbandPair(player);
+          }
         }}
         {...props}
       >
